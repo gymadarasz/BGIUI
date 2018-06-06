@@ -1,11 +1,14 @@
 #include "Graph.h"
 
 
-Graph::Graph(int top, int left, int width, int height, const char* title) {
+Graph::Graph(int top, int left, int width, int height, const char* title, int bgcolor, int hbcolor) {
     initwindow(width, height);
     hWnd = FindWindow(NULL, "Windows BGI");
     SetWindowPos(hWnd, NULL, top, left, width, height, SWP_SHOWWINDOW);
     SetWindowText(hWnd, title);
+    
+    this->bgcolor = bgcolor;
+    this->hbcolor = hbcolor;
 
     // use in release mode only:
     // ShowWindow(GetConsoleWindow(), SW_HIDE);
@@ -59,17 +62,43 @@ void Graph::registry(Canvas* canvas) {
     }
 }
 
-void Graph::tick() {
+void Graph::highlight(Canvas* canvas, bool activate) {
+    RECT rect;
+    canvas->getRect(&rect);
     
+    int c = getcolor();
+    setcolor(activate ? hbcolor : bgcolor);
+    rectangle(rect.left-1, rect.top-1, rect.right+1, rect.bottom+1);
+    setcolor(c);
+}
+
+void Graph::tick() {
+    int x, y;
+
     // any mouse click event?
     events.onClick.happend = false;
     if(ismouseclick(WM_LBUTTONDOWN)) {
-        int x, y;
         getmouseclick(WM_LBUTTONDOWN, x, y);
         events.onClick.happend = true;
-        events.onClick.x = x;
-        events.onClick.y = y;
+        events.onClick.position.x = x;
+        events.onClick.position.y = y;
     }
+    
+    // maybe mouse moved?
+    events.onMouseMove.happend = false;
+    x = mousex();
+    y = mousey();
+    if (x != lastMouseX || y != lastMouseY) {
+        events.onMouseMove.happend = true;
+        events.onMouseMove.current.x = x;
+        events.onMouseMove.current.y = y;
+        events.onMouseMove.previous.x = lastMouseX;
+        events.onMouseMove.previous.y = lastMouseY;
+        lastMouseX = x;
+        lastMouseY = y;
+    }
+    
+    
     
     
     // tick for each component..
@@ -87,4 +116,6 @@ void Graph::run() {
         delay(1);
     }
 }
+
+
 
