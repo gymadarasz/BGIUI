@@ -1,0 +1,4 @@
+_safe/
+*.o
+*.exe
+*.gch
