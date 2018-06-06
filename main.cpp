@@ -1,6 +1,4 @@
-#include "Graph.h"
-#include "Canvas.h"
-#include "Button.h"
+#include "BGIUI.h"
 
 
 void test() {
