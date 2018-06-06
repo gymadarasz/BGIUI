@@ -23,9 +23,10 @@ public:
     
     Graph(int top, int left, int width, int height, const char* title);
     void fillBox(int top, int left, int width, int height, int color);
-    void text(int top, int left, int color, char* txt);
+    void text(int top, int left, int color, int bgcolor, const char* txt);
     void registry(Canvas* canvas);
     void tick();
+    void run();
 };
 
 #endif

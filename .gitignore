@@ -2,3 +2,4 @@ _safe/
 *.o
 *.exe
 *.gch
+gmon.out

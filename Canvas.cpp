@@ -30,10 +30,16 @@ void Canvas::tick() {
             onClick(graph->events.onClick.x-left, graph->events.onClick.y-top);
         }
     }
+    
+    onTick();
 }
 
 void Canvas::onClick(int x, int y) {
     printf("Canvas::onClick\n");
+}
+
+void Canvas::onTick() {
+    //printf("Canvas::onTick\n");
 }
 
 

@@ -40,10 +40,14 @@ void Graph::fillBox(int top, int left, int width, int height, int color) {
     setcolor(c);
 }
 
-void Graph::text(int top, int left, int color, char* txt) {
+void Graph::text(int top, int left, int color, int bgcolor, const char* txt) {
     int c = getcolor();
-    outtextxy(left, top, txt);
+    int b = getbkcolor();
+    setcolor(color);
+    setbkcolor(bgcolor);
+    outtextxy(left, top, (char*)txt);
     setcolor(c);
+    setbkcolor(b);
 }
 
 void Graph::registry(Canvas* canvas) {
@@ -74,6 +78,13 @@ void Graph::tick() {
         if (NULL != canvases[i]) {
             canvases[i]->tick();
         }
+    }
+}
+
+void Graph::run() {
+    while(1) {
+        tick();
+        delay(1);
     }
 }
 
