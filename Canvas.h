@@ -22,6 +22,7 @@ public:
     void tick();
     virtual void onTick();
     virtual void onClick(int x, int y);
+    virtual void onDblClick(int x, int y);
     virtual void onMouseMove(int x, int y, int prevx, int prevy);
     virtual void onMouseOver(int x, int y);
     virtual void onMouseLeave(int x, int y);

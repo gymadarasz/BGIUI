@@ -77,11 +77,20 @@ void Graph::tick() {
 
     // any mouse click event?
     events.onClick.happend = false;
-    if(ismouseclick(WM_LBUTTONDOWN)) {
+    if (ismouseclick(WM_LBUTTONDOWN)) {
         getmouseclick(WM_LBUTTONDOWN, x, y);
         events.onClick.happend = true;
         events.onClick.position.x = x;
         events.onClick.position.y = y;
+    }
+    
+    // double click?
+    events.onDblClick.happend = false;
+    if (ismouseclick(WM_LBUTTONDBLCLK)) {
+        getmouseclick(WM_LBUTTONDBLCLK, x, y);
+        events.onDblClick.happend = true;
+        events.onDblClick.position.x = x;
+        events.onDblClick.position.y = y;
     }
     
     // maybe mouse moved?

@@ -28,6 +28,10 @@ public:
         } onClick;
         struct {
             bool happend;
+            POINT position;
+        } onDblClick;
+        struct {
+            bool happend;
             POINT current;
             POINT previous;
         } onMouseMove;

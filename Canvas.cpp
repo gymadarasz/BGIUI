@@ -35,12 +35,14 @@ bool Canvas::inside(POINT point) {
 
 void Canvas::tick() {
     
-
     onTick();
     
-        //printf("click at (%d, %d) but we in (%d, %d, %d, %d)\n", x, y, left, top, width, height);
     if (graph->events.onClick.happend && inside(graph->events.onClick.position)) {
         onClick(graph->events.onClick.position.x-left, graph->events.onClick.position.y-top);
+    }
+    
+    if (graph->events.onDblClick.happend && inside(graph->events.onDblClick.position)) {
+        onDblClick(graph->events.onDblClick.position.x-left, graph->events.onDblClick.position.y-top);
     }
     
     if (graph->events.onMouseMove.happend) {
@@ -64,6 +66,10 @@ void Canvas::onTick() {
 
 void Canvas::onClick(int x, int y) {
     printf("Canvas::onClick\n");
+}
+
+void Canvas::onDblClick(int x, int y) {
+    printf("Canvas::onDblClick\n");
 }
 
 void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {
