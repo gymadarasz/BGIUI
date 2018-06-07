@@ -1,12 +1,16 @@
-#include "BGIUI.h"
-
+#include "Graph.h"
+#include "Canvas.h"
+#include "Button.h"
+#include "Switch.h"
 
 void test() {
-    Graph graph1(0, 0, 640, 480, "BGIUI Test Window");
-    Canvas canvas1(&graph1, 10, 10, 120, 120);
-    Button button1(&graph1, 10, 140);
+    Canvas canvas(NULL, 0, 0, 640, 480);
+    Graph graph(0, 0, &canvas, "BGIUI Test Window");
+    Canvas canvas1(&graph, 10, 10, 120, 120);
+    Button button2(&graph, 10, 140);
+    Switch switch3(&graph, 40, 140);
 
-    graph1.run();
+    graph.run();
 }
 
 int main(int argc, char** argv) {

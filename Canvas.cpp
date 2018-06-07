@@ -4,9 +4,14 @@
 
 class graph;
 
+int Canvas::nxt = 0;
+
 Canvas::Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor) {
+    id = ++nxt;
     this->graph = graph;
-    this->graph->registry(this);
+    if (NULL != graph) {
+        this->graph->registry(this);
+    }
     this->top = top;
     this->left = left;
     this->width = width;
@@ -25,6 +30,18 @@ RECT* Canvas::getRect(RECT* rect) {
     rect->right = left + width;
     rect->bottom = top + height;
     return rect;
+}
+
+int Canvas::getWidth() {
+    return width;
+}
+
+int Canvas::getHeight() {
+    return height;
+}
+
+void Canvas::setGraph(Graph* graph) {
+    this->graph = graph;
 }
 
 bool Canvas::inside(POINT point) {
@@ -57,19 +74,19 @@ void Canvas::tick() {
             onMouseLeave(graph->events.onMouseMove.previous.x-left, graph->events.onMouseMove.previous.y-top);
         }
     }
-    
+
 }
 
 void Canvas::onTick() {
-    //printf("Canvas::onTick\n");
+//    printf("Canvas::onTick\n");
 }
 
 void Canvas::onClick(int x, int y) {
-    printf("Canvas::onClick\n");
+//    printf("Canvas[%d]::onClick\n", id);
 }
 
 void Canvas::onDblClick(int x, int y) {
-    printf("Canvas::onDblClick\n");
+//    printf("Canvas[%d]::onDblClick\n", id);
 }
 
 void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {
@@ -77,12 +94,12 @@ void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {
 }
 
 void Canvas::onMouseOver(int x, int y) {
-    printf("Canvas::onMouseOver\n");
+//    printf("Canvas[%d]::onMouseOver\n", id);
     graph->highlight(this, true);
 }
 
 void Canvas::onMouseLeave(int x, int y) {
-    printf("Canvas::onMouseLeave\n");
+//    printf("Canvas[%d]::onMouseLeave\n", id);
     graph->highlight(this, false);
 }
 

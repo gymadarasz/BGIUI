@@ -1,13 +1,15 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include "Graph.h"
+#include <graphics.h>
 #include "style.h"
 
 class Graph;
 
 class Canvas {
+    static int nxt;
 protected:
+    int id;
     Graph* graph;
     int top;
     int left;
@@ -18,6 +20,9 @@ public:
     Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor = GD_CANVAS_BGCOLOR);
     void clear();
     RECT* getRect(RECT* rect);
+    int getWidth();
+    int getHeight();
+    void setGraph(Graph* graph);
     bool inside(POINT point);
     void tick();
     virtual void onTick();

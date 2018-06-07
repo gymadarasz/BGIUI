@@ -1,10 +1,12 @@
 #include "Graph.h"
 
+#include "Canvas.h"
 
-Graph::Graph(int top, int left, int width, int height, const char* title, int bgcolor, int hbcolor) {
-    initwindow(width, height);
+Graph::Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor, int hbcolor) {
+    initwindow(canvas->getWidth(), canvas->getHeight());
+    HWND hWnd;
     hWnd = FindWindow(NULL, "Windows BGI");
-    SetWindowPos(hWnd, NULL, top, left, width, height, SWP_SHOWWINDOW);
+    SetWindowPos(hWnd, NULL, top, left, canvas->getWidth(), canvas->getHeight(), SWP_SHOWWINDOW);
     SetWindowText(hWnd, title);
     
     this->bgcolor = bgcolor;
@@ -16,10 +18,13 @@ Graph::Graph(int top, int left, int width, int height, const char* title, int bg
     // use for debuging:
     // ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 
-    // clear ticks
+    // clear
     for (int i=0; i < CANVASES; i++) {
         canvases[i] = NULL;
     }
+
+    canvas->setGraph(this);
+    registry(canvas);
 }
 
 void Graph::fillBox(int top, int left, int width, int height, int color) {
@@ -106,18 +111,17 @@ void Graph::tick() {
         lastMouseX = x;
         lastMouseY = y;
     }
-    
-    
-    
-    
+
     // tick for each component..
-    
+
     for (int i=0; i < CANVASES; i++) {
         if (NULL != canvases[i]) {
             canvases[i]->tick();
         }
     }
+
 }
+
 
 void Graph::run() {
     while(1) {
