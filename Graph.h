@@ -29,6 +29,14 @@ public:
             POINT current;
             POINT previous;
         } onMouseMove;
+        struct {
+            bool happend;
+            POINT position;
+        } onMouseDown;
+        struct {
+            bool happend;
+            POINT position;
+        } onMouseUp;
     } events;
     
     Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor = GD_WIN_BGCOLOR);

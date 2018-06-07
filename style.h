@@ -7,7 +7,8 @@
 #define GD_AUTO             -1
 #define GD_WPADDING         10
 #define GD_HPADDING         5
-// todo: highlight border color on mouse over
+#define GD_HLBRCOLOR        WHITE       // highlighted border color on mouse over
+#define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
 
 // window
 #define GD_WIN_BGCOLOR      DARKGRAY
@@ -20,7 +21,7 @@
 
 #define GD_BTN_BGCOLOR      LIGHTGRAY
 #define GD_BTN_TXCOLOR      BLACK
-#define GD_BTN_BRCOLOR      DARKGRAY
+#define GD_BTN_BRCOLOR      LIGHTGRAY
 #define GD_BTN_TEXT         "Button"
 #define GD_BTN_WPADDING     GD_WPADDING
 #define GD_BTN_HPADDING     GD_HPADDING

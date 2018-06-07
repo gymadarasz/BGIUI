@@ -8,20 +8,19 @@ Switch::Switch(
         Button(graph, top, left, width, height, bgcolor, txcolor, brcolor, labelOff) {
     this->labelOff = labelOff;
     this->labelOn = labelOn;
-    on = false;
 }
 
-void Switch::draw() {
-    Button::draw();
+//void Switch::draw() {
+//    Button::draw();
+//}
+
+void Switch::onMouseDown(int x, int y) {
+    setPushed(!getPushed());
+    setText(getPushed() ? labelOn : labelOff);
 }
 
-void Switch::onClick(int x, int y) {
-    on = !on;
-    setLabel(on ? labelOn : labelOff);
-}
+void Switch::onMouseUp(int x, int y) {
 
-void Switch::onDblClick(int x, int y) {
-    onClick(x, y);
 }
 
 // ---- protected

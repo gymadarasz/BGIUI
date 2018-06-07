@@ -30,8 +30,10 @@ Canvas::Canvas(Graph* graph, int top, int left, int width, int height, int bgcol
     this->left = left;
     setWidth(width);
     setHeight(height);
-    this->bgcolor = bgcolor;
-    this->brcolor = brcolor;
+    setBgColor(bgcolor);
+    setBrColor(brcolor);
+    setHighlighted(false);
+    setPushed(false);
     changed = true;
 }
 
@@ -44,8 +46,8 @@ bool Canvas::isChanged() {
 void Canvas::draw() {
     int width = getWidth();
     int height = getHeight();
-    graph->box(top-1, left-1, width+2, height+2, brcolor, EMPTY_FILL);
-    graph->box(top, left, width, height, bgcolor);
+    graph->box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
+    graph->box(top, left, width, height, getBgColor());
 }
 
 RECT* Canvas::getRect(RECT* rect) {
@@ -65,7 +67,19 @@ int Canvas::getHeight() {
 }
 
 int Canvas::getBgColor() {
-    return bgcolor;
+    return getPushed() ? GD_PSBGCOLOR : bgcolor;
+}
+
+int Canvas::getBrColor() {
+    return getHighlighted() ? GD_HLBRCOLOR : brcolor;
+}
+
+bool Canvas::getHighlighted() {
+    return highlighted;
+}
+
+bool Canvas::getPushed() {
+    return pushed;
 }
 
 void Canvas::setWidth(int width) {
@@ -80,6 +94,21 @@ void Canvas::setHeight(int height) {
 
 void Canvas::setBgColor(int bgcolor) {
     this->bgcolor = bgcolor;
+    changed = true;
+}
+
+void Canvas::setBrColor(int brcolor) {
+    this->brcolor = brcolor;
+    changed = true;
+}
+
+void Canvas::setHighlighted(bool highlighted) {
+    this->highlighted = highlighted;
+    changed = true;
+}
+
+void Canvas::setPushed(bool pushed) {
+    this->pushed = pushed;
     changed = true;
 }
 
@@ -118,6 +147,14 @@ void Canvas::tick() {
         }
     }
 
+    if (graph->events.onMouseDown.happend && inside(graph->events.onMouseDown.position)) {
+        onMouseDown(graph->events.onMouseDown.position.x-left, graph->events.onMouseDown.position.y-top);
+    }
+
+    if (graph->events.onMouseUp.happend && inside(graph->events.onMouseUp.position)) {
+        onMouseUp(graph->events.onMouseUp.position.x-left, graph->events.onMouseUp.position.y-top);
+    }
+
 }
 
 void Canvas::onTick() {
@@ -139,12 +176,24 @@ void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {
 void Canvas::onMouseOver(int x, int y) {
 //    printf("Canvas[%d]::onMouseOver\n", id);
 //    graph->highlight(this, true);
+    setHighlighted(true);
 }
 
 void Canvas::onMouseLeave(int x, int y) {
 //    printf("Canvas[%d]::onMouseLeave\n", id);
 //    graph->highlight(this, false);
+    setHighlighted(false);
 }
+
+void Canvas::onMouseDown(int x, int y) {
+    //setPushed(true);
+}
+
+void Canvas::onMouseUp(int x, int y) {
+    //setPushed(false);
+}
+
+// --- private
 
 int Canvas::calcWidth() {
     return CANVAS_DEFAULT_WIDTH;

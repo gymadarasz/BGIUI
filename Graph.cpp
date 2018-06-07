@@ -79,10 +79,14 @@ void Graph::registry(Canvas* canvas) {
 void Graph::tick() {
     int x, y;
 
-    // any mouse click event?
+    // any mouse click event (or mouse down - same thing..)?
+    events.onMouseDown.happend = false;
     events.onClick.happend = false;
     if (ismouseclick(WM_LBUTTONDOWN)) {
         getmouseclick(WM_LBUTTONDOWN, x, y);
+        events.onMouseDown.happend = true;
+        events.onMouseDown.position.x = x;
+        events.onMouseDown.position.y = y;
         events.onClick.happend = true;
         events.onClick.position.x = x;
         events.onClick.position.y = y;
@@ -92,9 +96,21 @@ void Graph::tick() {
     events.onDblClick.happend = false;
     if (ismouseclick(WM_LBUTTONDBLCLK)) {
         getmouseclick(WM_LBUTTONDBLCLK, x, y);
+        events.onMouseDown.happend = true;
+        events.onMouseDown.position.x = x;
+        events.onMouseDown.position.y = y;
         events.onDblClick.happend = true;
         events.onDblClick.position.x = x;
         events.onDblClick.position.y = y;
+    }
+
+    // mouse released (mouse up)?
+    events.onMouseUp.happend = false;
+    if (ismouseclick(WM_LBUTTONUP)) {
+        getmouseclick(WM_LBUTTONUP, x, y);
+        events.onMouseUp.happend = true;
+        events.onMouseUp.position.x = x;
+        events.onMouseUp.position.y = y;
     }
     
     // maybe mouse moved?
