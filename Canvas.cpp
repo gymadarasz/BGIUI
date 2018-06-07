@@ -2,42 +2,85 @@
 
 #include "Graph.h"
 
+#define WINDOW_DEFAULT_WIDTH 800
+#define WINDOW_DEFAULT_HEIGHT 600
+#define CANVAS_DEFAULT_WIDTH 128
+#define CANVAS_DEFAULT_HEIGHT 160
+
 class graph;
 
 int Canvas::nxt = 0;
 
-Canvas::Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor) {
+Canvas::Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor, int brcolor) {
     id = ++nxt;
-    this->graph = graph;
+    setGraph(graph);
     if (NULL != graph) {
         this->graph->registry(this);
+    } else {
+        top = 0;
+        left = 0;
+        if (width == GD_AUTO) {
+            width = WINDOW_DEFAULT_WIDTH;
+        }
+        if (height == GD_AUTO) {
+            height = WINDOW_DEFAULT_HEIGHT;
+        }
     }
     this->top = top;
     this->left = left;
-    this->width = width;
-    this->height = height;
+    setWidth(width);
+    setHeight(height);
     this->bgcolor = bgcolor;
-    clear();
+    this->brcolor = brcolor;
+    changed = true;
 }
 
-void Canvas::clear() {
-    graph->fillBox(top, left, width, height, bgcolor);
+bool Canvas::isChanged() {
+    bool ret = changed;
+    changed = false;
+    return ret;
+}
+
+void Canvas::draw() {
+    int width = getWidth();
+    int height = getHeight();
+    graph->box(top-1, left-1, width+2, height+2, brcolor, EMPTY_FILL);
+    graph->box(top, left, width, height, bgcolor);
 }
 
 RECT* Canvas::getRect(RECT* rect) {
     rect->top = top;
     rect->left = left;
-    rect->right = left + width;
-    rect->bottom = top + height;
+    rect->right = left + getWidth();
+    rect->bottom = top + getHeight();
     return rect;
 }
 
 int Canvas::getWidth() {
-    return width;
+    return width != GD_AUTO ? width : calcWidth();
 }
 
 int Canvas::getHeight() {
-    return height;
+    return height != GD_AUTO ? height : calcHeight();
+}
+
+int Canvas::getBgColor() {
+    return bgcolor;
+}
+
+void Canvas::setWidth(int width) {
+    this->width = width;
+    changed = true;
+}
+
+void Canvas::setHeight(int height) {
+    this->height = height;
+    changed = true;
+}
+
+void Canvas::setBgColor(int bgcolor) {
+    this->bgcolor = bgcolor;
+    changed = true;
 }
 
 void Canvas::setGraph(Graph* graph) {
@@ -95,13 +138,19 @@ void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {
 
 void Canvas::onMouseOver(int x, int y) {
 //    printf("Canvas[%d]::onMouseOver\n", id);
-    graph->highlight(this, true);
+//    graph->highlight(this, true);
 }
 
 void Canvas::onMouseLeave(int x, int y) {
 //    printf("Canvas[%d]::onMouseLeave\n", id);
-    graph->highlight(this, false);
+//    graph->highlight(this, false);
 }
 
+int Canvas::calcWidth() {
+    return CANVAS_DEFAULT_WIDTH;
+}
 
+int Canvas::calcHeight() {
+    return CANVAS_DEFAULT_HEIGHT;
+}
 

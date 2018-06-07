@@ -16,15 +16,26 @@ protected:
     int width;
     int height;
     int bgcolor;
+    int brcolor;
+    bool changed;
+    virtual int calcWidth();
+    virtual int calcHeight();
 public:
-    Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor = GD_CANVAS_BGCOLOR);
-    void clear();
-    RECT* getRect(RECT* rect);
-    int getWidth();
-    int getHeight();
-    void setGraph(Graph* graph);
-    bool inside(POINT point);
-    void tick();
+    Canvas(
+        Graph* graph, int top, int left, int width = GD_AUTO, int height = GD_AUTO,
+        int bgcolor = GD_CANVAS_BGCOLOR, int brcolor = GD_CANVAS_BRCOLOR);
+    virtual bool isChanged();
+    virtual void draw();
+    virtual RECT* getRect(RECT* rect);
+    virtual int getWidth();
+    virtual int getHeight();
+    virtual int getBgColor();
+    virtual void setWidth(int width);
+    virtual void setHeight(int height);
+    virtual void setBgColor(int bgcolor);
+    virtual void setGraph(Graph* graph);
+    virtual bool inside(POINT point);
+    virtual void tick();
     virtual void onTick();
     virtual void onClick(int x, int y);
     virtual void onDblClick(int x, int y);

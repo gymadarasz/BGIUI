@@ -5,13 +5,18 @@
 
 class Button: public Canvas {
 protected:
-    int color;
+    int txcolor;
     const char* label;
     int padding;
+    virtual int calcWidth();
+    virtual int calcHeight();
 public:
-    Button(Graph* graph, int top, int left, int width = GD_BTN_WIDTH, int height = GD_BTN_HEIGHT, int bgcolor = GD_BTN_BGCOLOR, int color = GD_BTN_COLOR, const char* label = GD_BTN_TEXT, int padding = GD_BTN_PADDING);
-    void draw();
-    void setLabel(const char* label);
+    Button(
+        Graph* graph, int top, int left, int width = GD_AUTO, int height = GD_AUTO,
+        int bgcolor = GD_BTN_BGCOLOR, int txcolor = GD_BTN_TXCOLOR, int brcolor = GD_BTN_BRCOLOR,
+        const char* label = GD_BTN_TEXT);
+    virtual void draw();
+    virtual void setLabel(const char* label);
     //virtual void onClick(int x, int y);
 };
 

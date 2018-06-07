@@ -2,15 +2,14 @@
 
 #include "Canvas.h"
 
-Graph::Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor, int hbcolor) {
+Graph::Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor) {
     initwindow(canvas->getWidth(), canvas->getHeight());
     HWND hWnd;
     hWnd = FindWindow(NULL, "Windows BGI");
     SetWindowPos(hWnd, NULL, top, left, canvas->getWidth(), canvas->getHeight(), SWP_SHOWWINDOW);
     SetWindowText(hWnd, title);
     
-    this->bgcolor = bgcolor;
-    this->hbcolor = hbcolor;
+    canvas->setBgColor(bgcolor);
 
     // use in release mode only:
     // ShowWindow(GetConsoleWindow(), SW_HIDE);
@@ -27,7 +26,7 @@ Graph::Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor, 
     registry(canvas);
 }
 
-void Graph::fillBox(int top, int left, int width, int height, int color) {
+void Graph::box(int top, int left, int width, int height, int color, int fillpattern) {
 
     int right = left + width;
     int bottom = top + height;
@@ -36,7 +35,7 @@ void Graph::fillBox(int top, int left, int width, int height, int color) {
     getfillsettings(&fillinfo);
     int c = getcolor();
 
-    setfillstyle(1,color);
+    setfillstyle(fillpattern, color);
     setcolor(color);
 
     rectangle(left, top, right, bottom);
@@ -67,15 +66,15 @@ void Graph::registry(Canvas* canvas) {
     }
 }
 
-void Graph::highlight(Canvas* canvas, bool activate) {
-    RECT rect;
-    canvas->getRect(&rect);
-    
-    int c = getcolor();
-    setcolor(activate ? hbcolor : bgcolor);
-    rectangle(rect.left-1, rect.top-1, rect.right+1, rect.bottom+1);
-    setcolor(c);
-}
+//void Graph::highlight(Canvas* canvas, bool activate) {
+//    RECT rect;
+//    canvas->getRect(&rect);
+//    
+//    int c = getcolor();
+//    setcolor(activate ? hbcolor : canvases[0]->getBgColor());
+//    rectangle(rect.left-1, rect.top-1, rect.right+1, rect.bottom+1);
+//    setcolor(c);
+//}
 
 void Graph::tick() {
     int x, y;
@@ -112,11 +111,18 @@ void Graph::tick() {
         lastMouseY = y;
     }
 
-    // tick for each component..
+    // for each component..
 
     for (int i=0; i < CANVASES; i++) {
         if (NULL != canvases[i]) {
+            
+            // tick
             canvases[i]->tick();
+
+            // repaint if it's changed..
+            if (canvases[i]->isChanged()) {
+                canvases[i]->draw();
+            }
         }
     }
 

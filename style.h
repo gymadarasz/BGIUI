@@ -3,28 +3,33 @@
 
 // --------- STYLE DEFINITIONS DEFAULTS --------------
 
+// common
+#define GD_AUTO             -1
+#define GD_WPADDING         10
+#define GD_HPADDING         5
+// todo: highlight border color on mouse over
+
 // window
-#define GD_BGCOLOR          BLACK
-#define GD_HBCOLOR          WHITE       // highlight border color on mouse over
+#define GD_WIN_BGCOLOR      DARKGRAY
 
 // canvas
-#define GD_CANVAS_BGCOLOR   DARKGRAY
+#define GD_CANVAS_BGCOLOR   BLACK
+#define GD_CANVAS_BRCOLOR   DARKGRAY
 
 // buttons
-#define GD_BTN_WIDTH        120
-#define GD_BTN_HEIGHT       20
-#define GD_BTN_BGCOLOR      LIGHTGRAY
-#define GD_BTN_COLOR        BLACK
-#define GD_BTN_TEXT         "Button"
-#define GD_BTN_PADDING      5
 
-#define GD_SWITCH_WIDTH     30
-#define GD_SWITCH_HEIGHT    GD_BTN_HEIGHT
+#define GD_BTN_BGCOLOR      LIGHTGRAY
+#define GD_BTN_TXCOLOR      BLACK
+#define GD_BTN_BRCOLOR      DARKGRAY
+#define GD_BTN_TEXT         "Button"
+#define GD_BTN_WPADDING     GD_WPADDING
+#define GD_BTN_HPADDING     GD_HPADDING
+
 #define GD_SWITCH_BGCOLOR   GD_BTN_BGCOLOR
-#define GD_SWITCH_COLOR     GD_BTN_COLOR
-#define GD_SWITCH_OFF_TEXT  "Off"
-#define GD_SWITCH_ON_TEXT   "On "
-#define GD_SWITCH_PADDING   GD_BTN_PADDING
+#define GD_SWITCH_TXCOLOR   GD_BTN_TXCOLOR
+#define GD_SWITCH_BRCOLOR   GD_BTN_BRCOLOR
+#define GD_SWITCH_OFF_TEXT  "Off _/_"
+#define GD_SWITCH_ON_TEXT   "On  ___"
 
 // ----------------------------------------------------
 
