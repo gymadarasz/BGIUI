@@ -16,6 +16,8 @@ Switch* App1::switch1 = NULL;
 Button1* App1::clickBtn = NULL;
 Label* App1::msgLbl = NULL;
 
+Group* App1::pinset = NULL;
+
 void App1::init(Graph* graph) {
 
     // test initialization
@@ -29,5 +31,8 @@ void App1::init(Graph* graph) {
     
     clickBtn = new Button1(graph, 100, 150, "Click here!");
     msgLbl = new Label(graph, 100, 300, "<- click on it");
+    
+    //pinset = new Group(graph, 30, 30);
+    //pinset->add(canvas)
 
 }

@@ -13,6 +13,14 @@ namespace GUI {
         this->labelOn = labelOn;
     }
 
+    void Switch::onMouseOver(int x, int y) {
+        Canvas::onMouseOver(x, y);
+    }
+
+    void Switch::onMouseLeave(int x, int y) {
+        Canvas::onMouseLeave(x, y);
+    }
+    
     void Switch::onMouseDown(int x, int y) {
         setPushed(!getPushed());
         setText(getPushed() ? labelOn : labelOff);

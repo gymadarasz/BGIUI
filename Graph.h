@@ -43,8 +43,6 @@ namespace GUI {
         } events;
 
         Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor = GD_WIN_BGCOLOR);
-        void box(int top, int left, int width, int height, int color, int fillpattern = SOLID_FILL);
-        void text(int top, int left, int color, int bgcolor, const char* txt);
         void registry(Canvas* canvas);
     //    void highlight(Canvas* canvas, bool activate);
         void tick();

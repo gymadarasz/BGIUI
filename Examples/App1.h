@@ -7,6 +7,7 @@
 #include "../Button.h"
 #include "../Switch.h"
 #include "Button1.h"
+#include "../Group.h"
 
 using namespace GUI;
 
@@ -21,6 +22,8 @@ public:
 
     static Button1* clickBtn;
     static Label* msgLbl;
+    
+    static Group* pinset;
     
     App1(const char* title);
     virtual void init(Graph* graph);

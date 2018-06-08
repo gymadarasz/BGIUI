@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o App.o Canvas.o Graph.o Example/App1.o Label.o Button.o Switch.o Example/Button1.o
-LINKOBJ  = main.o App.o Canvas.o Graph.o Example/App1.o Label.o Button.o Switch.o Example/Button1.o
+OBJ      = main.o App.o Canvas.o Graph.o Label.o Button.o Switch.o Group.o Examples/App1.o Examples/Button1.o Painter.o
+LINKOBJ  = main.o App.o Canvas.o Graph.o Label.o Button.o Switch.o Group.o Examples/App1.o Examples/Button1.o Painter.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -L"bgi" -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 -m32 -g3
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"bgi"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"bgi"
@@ -36,9 +36,6 @@ Canvas.o: Canvas.cpp
 Graph.o: Graph.cpp
 	$(CPP) -c Graph.cpp -o Graph.o $(CXXFLAGS)
 
-Example/App1.o: Example/App1.cpp
-	$(CPP) -c Example/App1.cpp -o Example/App1.o $(CXXFLAGS)
-
 Label.o: Label.cpp
 	$(CPP) -c Label.cpp -o Label.o $(CXXFLAGS)
 
@@ -48,5 +45,14 @@ Button.o: Button.cpp
 Switch.o: Switch.cpp
 	$(CPP) -c Switch.cpp -o Switch.o $(CXXFLAGS)
 
-Example/Button1.o: Example/Button1.cpp
-	$(CPP) -c Example/Button1.cpp -o Example/Button1.o $(CXXFLAGS)
+Group.o: Group.cpp
+	$(CPP) -c Group.cpp -o Group.o $(CXXFLAGS)
+
+Examples/App1.o: Examples/App1.cpp
+	$(CPP) -c Examples/App1.cpp -o Examples/App1.o $(CXXFLAGS)
+
+Examples/Button1.o: Examples/Button1.cpp
+	$(CPP) -c Examples/Button1.cpp -o Examples/Button1.o $(CXXFLAGS)
+
+Painter.o: Painter.cpp
+	$(CPP) -c Painter.cpp -o Painter.o $(CXXFLAGS)

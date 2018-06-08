@@ -1,6 +1,7 @@
 #include "Label.h"
 
 #include "Graph.h"
+#include "Painter.h"
 
 namespace GUI {
 
@@ -18,13 +19,13 @@ namespace GUI {
         Canvas::draw();
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, txcolor, getBgColor(), getText());
+        Painter::text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, txcolor, getBgColor(), getText());
     }
 
     void Label::clearText() {
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, graph->getCanvas()->getBgColor(), graph->getCanvas()->getBgColor(), getText());
+        Painter::text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, graph->getCanvas()->getBgColor(), graph->getCanvas()->getBgColor(), getText());
     }
     
     const char* Label::getText() {

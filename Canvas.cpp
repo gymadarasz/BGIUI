@@ -1,6 +1,7 @@
 #include "Canvas.h"
 
 #include "Graph.h"
+#include "Painter.h"
 
 #define WINDOW_DEFAULT_WIDTH 800
 #define WINDOW_DEFAULT_HEIGHT 600
@@ -48,15 +49,15 @@ namespace GUI {
     void Canvas::draw() {
         int width = getWidth();
         int height = getHeight();
-        graph->box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
-        graph->box(top, left, width, height, getBgColor());
+        Painter::box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
+        Painter::box(top, left, width, height, getBgColor());
     }
     
     void Canvas::clear() {
         int width = getWidth();
         int height = getHeight();
-        graph->box(top-1, left-1, width+2, height+2, graph->getCanvas()->getBgColor(), EMPTY_FILL);
-        graph->box(top, left, width, height, graph->getCanvas()->getBgColor());
+        Painter::box(top-1, left-1, width+2, height+2, graph->getCanvas()->getBgColor(), EMPTY_FILL);
+        Painter::box(top, left, width, height, graph->getCanvas()->getBgColor());
     }
 
     RECT* Canvas::getRect(RECT* rect) {

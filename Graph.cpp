@@ -29,37 +29,6 @@ namespace GUI {
         registry(canvas);
     }
 
-    void Graph::box(int top, int left, int width, int height, int color, int fillpattern) {
-
-        int right = left + width;
-        int bottom = top + height;
-
-        fillsettingstype fillinfo;
-        getfillsettings(&fillinfo);
-        int c = getcolor();
-
-        setfillstyle(fillpattern, color);
-        setcolor(color);
-
-        rectangle(left, top, right, bottom);
-        if (left < right && top < bottom) {
-            floodfill(left+1, top+1, color);
-        }
-
-        setfillstyle(fillinfo.pattern, fillinfo.color);
-        setcolor(c);
-    }
-
-    void Graph::text(int top, int left, int color, int bgcolor, const char* txt) {
-        int c = getcolor();
-        int b = getbkcolor();
-        setcolor(color);
-        setbkcolor(bgcolor);
-        outtextxy(left, top, (char*)txt);
-        setcolor(c);
-        setbkcolor(b);
-    }
-
     void Graph::registry(Canvas* canvas) {
         for (int i=0; i < CANVASES; i++) {
             if (NULL == canvases[i]) {

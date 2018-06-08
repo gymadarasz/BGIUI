@@ -9,6 +9,14 @@ namespace GUI {
             Label(graph, top, left, text, width, height, bgcolor, txcolor, brcolor) {
 
     }
+
+    void Button::onMouseOver(int x, int y) {
+        Canvas::onMouseOver(x, y);
+    }
+
+    void Button::onMouseLeave(int x, int y) {
+        Canvas::onMouseLeave(x, y);
+    }
     
     void Button::onMouseDown(int x, int y) {
         setPushed(true);

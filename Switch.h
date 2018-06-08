@@ -16,6 +16,8 @@ namespace GUI {
             const char* labelOff = GD_SWITCH_OFF_TEXT, const char* labelOn = GD_SWITCH_ON_TEXT,
             int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_SWITCH_BGCOLOR, int txcolor = GD_SWITCH_TXCOLOR, int brcolor = GD_SWITCH_BRCOLOR);
+        virtual void onMouseOver(int x, int y);
+        virtual void onMouseLeave(int x, int y);
         virtual void onMouseDown(int x, int y);
         virtual void onMouseUp(int x, int y);
     };
