@@ -2,19 +2,23 @@
 
 #include "Graph.h"
 #include "Canvas.h"
-#include "Button.h"
-#include "Switch.h"
 
-App::App(const char* title) {
+namespace GUI {
 
-    Canvas canvas(NULL, 0, 0);
-    Graph graph(0, 0, &canvas, title);
-    Canvas canvas1(&graph, 10, 10);
-    Label label2(&graph, 10, 300);
-    Button button3(&graph, 10, 150);
-    Switch switch4(&graph, 40, 150);
+    App::App(const char* title) {
+        this->title = title;
+    }
+
+    void App::run() {
+        
+        Canvas canvas(NULL, 0, 0);
+        Graph graph(0, 0, &canvas, title);
+        
+        init(&graph);
+
+        graph.run();
+    }
     
-    graph.run();
+    void App::init(Graph* graph) {}
+
 }
-
-
