@@ -7,8 +7,10 @@ void test() {
     Canvas canvas(NULL, 0, 0);
     Graph graph(0, 0, &canvas, "BGIUI Test Window");
     Canvas canvas1(&graph, 10, 10);
-    Button button2(&graph, 10, 150);
-    Switch switch3(&graph, 40, 150);
+    Label label2(&graph, 10, 300);
+    Button button3(&graph, 10, 150);
+    Switch switch4(&graph, 40, 150);
+
 
     graph.run();
 }

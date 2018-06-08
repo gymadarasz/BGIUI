@@ -1,38 +1,12 @@
 #include "Button.h"
 
-#include "Graph.h"
-
 Button::Button(
     Graph* graph, int top, int left, int width, int height,
     int bgcolor, int txcolor, int brcolor, const char* text):
-        Canvas(graph, top, left, width, height, bgcolor, brcolor) {
-    this->txcolor = txcolor;
-    this->text = NULL;
-    setText(text);
-    changed = true;
+        Label(graph, top, left, width, height, bgcolor, txcolor, brcolor, text) {
+            
 }
 
-void Button::draw() {
-    Canvas::draw();
-    int w = textwidth((char*)getText());
-    int h = textheight((char*)getText());
-    graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, txcolor, getBgColor(), getText());
-}
-
-const char* Button::getText() {
-    return text;
-}
-
-void Button::setText(const char* text) {
-    // clear current text first if already set
-    if (NULL != getText()) {
-        int w = textwidth((char*)getText());
-        int h = textheight((char*)getText());
-        graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, getBgColor(), getBgColor(), getText());
-    }
-    this->text = text;
-    changed = true;
-}
 
 void Button::onMouseDown(int x, int y) {
     setPushed(true);

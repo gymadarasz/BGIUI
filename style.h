@@ -7,20 +7,31 @@
 #define GD_AUTO             -1
 #define GD_WPADDING         10
 #define GD_HPADDING         5
+#define GD_BGCOLOR          DARKGRAY
+#define GD_TXCOLOR          BLACK
 #define GD_HLBRCOLOR        WHITE       // highlighted border color on mouse over
 #define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
 
 // window
-#define GD_WIN_BGCOLOR      DARKGRAY
+#define GD_WIN_BGCOLOR      GD_BGCOLOR
 
 // canvas
 #define GD_CANVAS_BGCOLOR   BLACK
 #define GD_CANVAS_BRCOLOR   DARKGRAY
 
+// label
+
+#define GD_LBL_BGCOLOR      GD_WIN_BGCOLOR
+#define GD_LBL_TXCOLOR      GD_TXCOLOR
+#define GD_LBL_BRCOLOR      GD_WIN_BGCOLOR
+#define GD_LBL_TEXT         "Label"
+#define GD_LBL_WPADDING     0
+#define GD_LBL_HPADDING     0
+
 // buttons
 
 #define GD_BTN_BGCOLOR      LIGHTGRAY
-#define GD_BTN_TXCOLOR      BLACK
+#define GD_BTN_TXCOLOR      GD_LBL_TXCOLOR
 #define GD_BTN_BRCOLOR      LIGHTGRAY
 #define GD_BTN_TEXT         "Button"
 #define GD_BTN_WPADDING     GD_WPADDING

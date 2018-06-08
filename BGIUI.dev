@@ -28,8 +28,8 @@ Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=4
-CompilerSettings=0000000100000000101000000
-UnitCount=12
+CompilerSettings=0000000100000000001000000
+UnitCount=14
 
 [VersionInfo]
 Major=1
@@ -162,6 +162,26 @@ BuildCmd=
 
 [Unit12]
 FileName=Switch.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit13]
+FileName=Label.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit14]
+FileName=Label.cpp
 CompileCpp=1
 Folder=
 Compile=1
