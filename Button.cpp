@@ -17,6 +17,14 @@ void Button::onMouseUp(int x, int y) {
 }
 
 
+void Button::onMouseOver(int x, int y) {
+    Canvas::onMouseOver(x, y);
+}
+
+void Button::onMouseLeave(int x, int y) {
+    Canvas::onMouseLeave(x, y);
+}
+
 // ---- protected
 
 int Button::calcWidth() {

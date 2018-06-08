@@ -34,6 +34,14 @@ void Label::setText(const char* text) {
     changed = true;
 }
 
+void Label::onMouseOver(int x, int y) {
+    
+}
+
+void Label::onMouseLeave(int x, int y) {
+    
+}
+
 // ---- protected
 
 int Label::calcWidth() {

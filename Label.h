@@ -17,6 +17,8 @@ public:
     virtual void draw();
     virtual const char* getText();
     virtual void setText(const char* text);
+    virtual void onMouseOver(int x, int y);
+    virtual void onMouseLeave(int x, int y);
 };
 
 #endif

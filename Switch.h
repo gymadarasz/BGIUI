@@ -16,6 +16,8 @@ public:
 //    virtual void draw();
     virtual void onMouseDown(int x, int y);
     virtual void onMouseUp(int x, int y);
+    virtual void onMouseOver(int x, int y);
+    virtual void onMouseLeave(int x, int y);
 };
 
 #endif

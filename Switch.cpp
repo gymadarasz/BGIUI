@@ -20,7 +20,16 @@ void Switch::onMouseDown(int x, int y) {
 }
 
 void Switch::onMouseUp(int x, int y) {
+    
+}
 
+
+void Switch::onMouseOver(int x, int y) {
+    Canvas::onMouseOver(x, y);
+}
+
+void Switch::onMouseLeave(int x, int y) {
+    Canvas::onMouseLeave(x, y);
 }
 
 // ---- protected
