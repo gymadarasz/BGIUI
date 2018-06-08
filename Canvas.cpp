@@ -51,6 +51,13 @@ namespace GUI {
         graph->box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
         graph->box(top, left, width, height, getBgColor());
     }
+    
+    void Canvas::clear() {
+        int width = getWidth();
+        int height = getHeight();
+        graph->box(top-1, left-1, width+2, height+2, graph->getCanvas()->getBgColor(), EMPTY_FILL);
+        graph->box(top, left, width, height, graph->getCanvas()->getBgColor());
+    }
 
     RECT* Canvas::getRect(RECT* rect) {
         rect->top = top;

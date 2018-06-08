@@ -28,8 +28,8 @@ Folders=bgi,Example
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=4
-CompilerSettings=0000000100000000001000000
-UnitCount=14
+CompilerSettings=00000001g0000000001000000
+UnitCount=20
 
 [VersionInfo]
 Major=1
@@ -131,7 +131,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=App.h
+FileName=Button.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -141,7 +141,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=App.cpp
+FileName=Button.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -151,9 +151,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=Example\App1.h
+FileName=Switch.h
 CompileCpp=1
-Folder=Example
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -161,9 +161,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=Example\App1.cpp
+FileName=Switch.cpp
 CompileCpp=1
-Folder=Example
+Folder=
 Compile=1
 Link=1
 Priority=1000

@@ -31,6 +31,7 @@ namespace GUI {
             
         virtual bool isChanged();
         virtual void draw();
+        virtual void clear();
         virtual bool inside(POINT point);
         virtual void tick();
         virtual RECT* getRect(RECT* rect);

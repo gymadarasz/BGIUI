@@ -1,7 +1,6 @@
 #ifndef BUTTON1_H
 #define BUTTON1_H
 
-#include "../Graph.h"
 #include "../Button.h"
 
 using namespace GUI;

@@ -144,6 +144,11 @@ namespace GUI {
             delay(1);
         }
     }
+    
+    
+    Canvas* Graph::getCanvas() {
+        return canvases[0];
+    }
 
 }
 

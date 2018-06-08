@@ -6,6 +6,7 @@
 #include "../Label.h"
 #include "../Button.h"
 #include "../Switch.h"
+#include "Button1.h"
 
 using namespace GUI;
 
@@ -17,6 +18,9 @@ public:
     static Label* label3;
     static Button* button1;
     static Switch* switch1;
+
+    static Button1* clickBtn;
+    static Label* msgLbl;
     
     App1(const char* title);
     virtual void init(Graph* graph);

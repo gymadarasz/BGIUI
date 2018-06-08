@@ -40,8 +40,10 @@
 #define GD_SWITCH_BGCOLOR   GD_BTN_BGCOLOR
 #define GD_SWITCH_TXCOLOR   GD_BTN_TXCOLOR
 #define GD_SWITCH_BRCOLOR   GD_BTN_BRCOLOR
-#define GD_SWITCH_OFF_TEXT  "Off _/_"
-#define GD_SWITCH_ON_TEXT   "On  ___"
+#define GD_SWITCH_OFF_TEXT  "Off"
+#define GD_SWITCH_ON_TEXT   "On"
+//#define GD_SWITCH_OFF_TEXT  "_/_"
+//#define GD_SWITCH_ON_TEXT   "___"
 
 // ----------------------------------------------------
 

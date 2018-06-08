@@ -21,16 +21,23 @@ namespace GUI {
         graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, txcolor, getBgColor(), getText());
     }
 
+    void Label::clearText() {
+        int w = textwidth((char*)getText());
+        int h = textheight((char*)getText());
+        graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, graph->getCanvas()->getBgColor(), graph->getCanvas()->getBgColor(), getText());
+    }
+    
     const char* Label::getText() {
         return text;
     }
 
     void Label::setText(const char* text) {
-        // clear current text first if already set
+        // clear first if text already set because maybe text changes the size
         if (NULL != getText()) {
-            int w = textwidth((char*)getText());
-            int h = textheight((char*)getText());
-            graph->text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, getBgColor(), getBgColor(), getText());
+            clearText();
+            if (width == GD_AUTO || height == GD_AUTO) {
+                clear();
+            }
         }
         this->text = text;
         changed = true;

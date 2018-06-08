@@ -17,6 +17,7 @@ namespace GUI {
             int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_LBL_BGCOLOR, int txcolor = GD_LBL_TXCOLOR, int brcolor = GD_LBL_BRCOLOR);
         virtual void draw();
+        virtual void clearText();
         virtual const char* getText();
         virtual void setText(const char* text);
         virtual void onMouseOver(int x, int y);

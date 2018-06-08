@@ -13,6 +13,9 @@ Label* App1::label3 = NULL;
 Button* App1::button1 = NULL;
 Switch* App1::switch1 = NULL;
 
+Button1* App1::clickBtn = NULL;
+Label* App1::msgLbl = NULL;
+
 void App1::init(Graph* graph) {
 
     // test initialization
@@ -23,5 +26,8 @@ void App1::init(Graph* graph) {
     label3 = new Label(graph, 30, 300, "See more in the Example folder...");
     button1 = new Button(graph, 10, 150);
     switch1 = new Switch(graph, 40, 150);
+    
+    clickBtn = new Button1(graph, 100, 150, "Click here!");
+    msgLbl = new Label(graph, 100, 300, "<- click on it");
 
 }

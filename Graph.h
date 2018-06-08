@@ -49,6 +49,7 @@ namespace GUI {
     //    void highlight(Canvas* canvas, bool activate);
         void tick();
         void run();
+        Canvas* getCanvas();
     };
 
 }
