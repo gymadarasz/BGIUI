@@ -11,7 +11,7 @@ namespace GUI {
         virtual int calcHeight();
     public:
         Button(
-            Graph* graph, int top, int left, const char* text = GD_BTN_TEXT,
+            App* app, int top, int left, const char* text = GD_BTN_TEXT,
             int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_BTN_BGCOLOR, int txcolor = GD_BTN_TXCOLOR, int brcolor = GD_BTN_BRCOLOR);
         virtual void onMouseOver(int x, int y);

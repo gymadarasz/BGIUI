@@ -1,34 +1,19 @@
 #include "Canvas.h"
 
-#include "Graph.h"
 #include "Painter.h"
 
-#define WINDOW_DEFAULT_WIDTH 800
-#define WINDOW_DEFAULT_HEIGHT 600
 #define CANVAS_DEFAULT_WIDTH 128
 #define CANVAS_DEFAULT_HEIGHT 160
 
 namespace GUI {
 
-    class graph;
+    //class graph;
 
     int Canvas::nxt = 0;
 
-    Canvas::Canvas(Graph* graph, int top, int left, int width, int height, int bgcolor, int brcolor) {
+    Canvas::Canvas(App* app, int top, int left, int width, int height, int bgcolor, int brcolor) {
         id = ++nxt;
-        setGraph(graph);
-        if (NULL != graph) {
-            this->graph->registry(this);
-        } else {
-            top = 0;
-            left = 0;
-            if (width == GD_AUTO) {
-                width = WINDOW_DEFAULT_WIDTH;
-            }
-            if (height == GD_AUTO) {
-                height = WINDOW_DEFAULT_HEIGHT;
-            }
-        }
+        setApp(app);
         this->top = top;
         this->left = left;
         setWidth(width);
@@ -49,15 +34,15 @@ namespace GUI {
     void Canvas::draw() {
         int width = getWidth();
         int height = getHeight();
-        Painter::box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
-        Painter::box(top, left, width, height, getBgColor());
+        app->getPainter().box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
+        app->getPainter().box(top, left, width, height, getBgColor());
     }
     
     void Canvas::clear() {
         int width = getWidth();
         int height = getHeight();
-        Painter::box(top-1, left-1, width+2, height+2, graph->getCanvas()->getBgColor(), EMPTY_FILL);
-        Painter::box(top, left, width, height, graph->getCanvas()->getBgColor());
+        app->getPainter().box(top-1, left-1, width+2, height+2, app->getCanvas()->getBgColor(), EMPTY_FILL);
+        app->getPainter().box(top, left, width, height, app->getCanvas()->getBgColor());
     }
 
     RECT* Canvas::getRect(RECT* rect) {
@@ -122,8 +107,9 @@ namespace GUI {
         changed = true;
     }
 
-    void Canvas::setGraph(Graph* graph) {
-        this->graph = graph;
+    void Canvas::setApp(App* app) {
+        this->app = app;
+        this->app->registry(this);
     }
 
     bool Canvas::inside(POINT point) {
@@ -136,33 +122,35 @@ namespace GUI {
 
         onTick();
 
-        if (graph->events.onClick.happend && inside(graph->events.onClick.position)) {
-            onClick(graph->events.onClick.position.x-left, graph->events.onClick.position.y-top);
+        MouseEvents events = app->getMouse().getEvents();
+
+        if (events.onClick.happend && inside(events.onClick.position)) {
+            onClick(events.onClick.position.x-left, events.onClick.position.y-top);
         }
 
-        if (graph->events.onDblClick.happend && inside(graph->events.onDblClick.position)) {
-            onDblClick(graph->events.onDblClick.position.x-left, graph->events.onDblClick.position.y-top);
+        if (events.onDblClick.happend && inside(events.onDblClick.position)) {
+            onDblClick(events.onDblClick.position.x-left, events.onDblClick.position.y-top);
         }
 
-        if (graph->events.onMouseMove.happend) {
-            if (inside(graph->events.onMouseMove.current) && inside(graph->events.onMouseMove.previous)) {
+        if (events.onMouseMove.happend) {
+            if (inside(events.onMouseMove.current) && inside(events.onMouseMove.previous)) {
                 onMouseMove(
-                    graph->events.onMouseMove.current.x-left, graph->events.onMouseMove.current.y-top,
-                    graph->events.onMouseMove.previous.x-left, graph->events.onMouseMove.previous.y-top
+                    events.onMouseMove.current.x-left, events.onMouseMove.current.y-top,
+                    events.onMouseMove.previous.x-left, events.onMouseMove.previous.y-top
                 );
-            } else if (inside(graph->events.onMouseMove.current)) {
-                onMouseOver(graph->events.onMouseMove.current.x-left, graph->events.onMouseMove.current.y-top);
-            } else if (inside(graph->events.onMouseMove.previous)) {
-                onMouseLeave(graph->events.onMouseMove.previous.x-left, graph->events.onMouseMove.previous.y-top);
+            } else if (inside(events.onMouseMove.current)) {
+                onMouseOver(events.onMouseMove.current.x-left, events.onMouseMove.current.y-top);
+            } else if (inside(events.onMouseMove.previous)) {
+                onMouseLeave(events.onMouseMove.previous.x-left, events.onMouseMove.previous.y-top);
             }
         }
 
-        if (graph->events.onMouseDown.happend && inside(graph->events.onMouseDown.position)) {
-            onMouseDown(graph->events.onMouseDown.position.x-left, graph->events.onMouseDown.position.y-top);
+        if (events.onMouseDown.happend && inside(events.onMouseDown.position)) {
+            onMouseDown(events.onMouseDown.position.x-left, events.onMouseDown.position.y-top);
         }
 
-        if (graph->events.onMouseUp.happend && inside(graph->events.onMouseUp.position)) {
-            onMouseUp(graph->events.onMouseUp.position.x-left, graph->events.onMouseUp.position.y-top);
+        if (events.onMouseUp.happend && inside(events.onMouseUp.position)) {
+            onMouseUp(events.onMouseUp.position.x-left, events.onMouseUp.position.y-top);
         }
 
     }

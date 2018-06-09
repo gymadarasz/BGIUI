@@ -14,6 +14,10 @@
 
 // window
 #define GD_WIN_BGCOLOR      GD_BGCOLOR
+#define GD_WIN_DEFAULT_TOP 0
+#define GD_WIN_DEFAULT_LEFT 0
+#define GD_WIN_DEFAULT_WIDTH 800
+#define GD_WIN_DEFAULT_HEIGHT 600
 
 // canvas
 #define GD_CANVAS_BGCOLOR   BLACK

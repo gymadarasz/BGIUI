@@ -12,7 +12,7 @@ namespace GUI {
         virtual int calcWidth();
     public:
         Switch(
-            Graph* graph, int top, int left,
+            App* app, int top, int left,
             const char* labelOff = GD_SWITCH_OFF_TEXT, const char* labelOn = GD_SWITCH_ON_TEXT,
             int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_SWITCH_BGCOLOR, int txcolor = GD_SWITCH_TXCOLOR, int brcolor = GD_SWITCH_BRCOLOR);

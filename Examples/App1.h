@@ -7,11 +7,13 @@
 #include "../Button.h"
 #include "../Switch.h"
 #include "Button1.h"
-#include "../Group.h"
+#include "../Components/Group.h"
 
 using namespace GUI;
 
 class App1 : public App {
+protected:
+    virtual void init();
 public:
     static Canvas* canvas1;
     static Label* label1;
@@ -26,7 +28,6 @@ public:
     static Group* pinset;
     
     App1(const char* title);
-    virtual void init(Graph* graph);
 };
 
 #endif

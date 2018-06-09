@@ -3,10 +3,10 @@
 namespace GUI {
 
     Button::Button(
-        Graph* graph, int top, int left, const char* text,
+        App* app, int top, int left, const char* text,
         int width, int height,
         int bgcolor, int txcolor, int brcolor):
-            Label(graph, top, left, text, width, height, bgcolor, txcolor, brcolor) {
+            Label(app, top, left, text, width, height, bgcolor, txcolor, brcolor) {
 
     }
 

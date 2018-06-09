@@ -1,44 +1,9 @@
-#include "Graph.h"
-
-#include "Canvas.h"
+#include "Mouse.h"
 
 namespace GUI {
-
-    Graph::Graph(int top, int left, Canvas* canvas, const char* title, int bgcolor) {
-        
-        initwindow(canvas->getWidth(), canvas->getHeight());
-        HWND hWnd;
-        hWnd = FindWindow(NULL, "Windows BGI");
-        SetWindowPos(hWnd, NULL, top, left, canvas->getWidth(), canvas->getHeight(), SWP_SHOWWINDOW);
-        SetWindowText(hWnd, title);
-
-        canvas->setBgColor(bgcolor);
-
-        // use in release mode only:
-        // ShowWindow(GetConsoleWindow(), SW_HIDE);
-
-        // use for debuging:
-        // ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
-
-        // clear
-        for (int i=0; i < CANVASES; i++) {
-            canvases[i] = NULL;
-        }
-
-        canvas->setGraph(this);
-        registry(canvas);
-    }
-
-    void Graph::registry(Canvas* canvas) {
-        for (int i=0; i < CANVASES; i++) {
-            if (NULL == canvases[i]) {
-                canvases[i] = canvas;
-                break;
-            }
-        }
-    }
-
-    void Graph::tick() {
+    
+    void Mouse::check() {
+        events.checks++;
         int x, y;
 
         // any mouse click event (or mouse down - same thing..)?
@@ -88,37 +53,12 @@ namespace GUI {
             lastMouseX = x;
             lastMouseY = y;
         }
-
-        // for each component..
-
-        for (int i=0; i < CANVASES; i++) {
-            if (NULL != canvases[i]) {
-
-                // tick
-                canvases[i]->tick();
-
-                // repaint if it's changed..
-                if (canvases[i]->isChanged()) {
-                    canvases[i]->draw();
-                }
-            }
-        }
-
-    }
-
-
-    void Graph::run() {
-        while(1) {
-            tick();
-            delay(1);
-        }
+        
     }
     
-    
-    Canvas* Graph::getCanvas() {
-        return canvases[0];
+    MouseEvents Mouse::getEvents() {
+        return events;
     }
 
 }
-
 

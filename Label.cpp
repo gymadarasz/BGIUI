@@ -1,14 +1,13 @@
 #include "Label.h"
 
-#include "Graph.h"
 #include "Painter.h"
 
 namespace GUI {
 
     Label::Label(
-        Graph* graph, int top, int left, const char* text, int width, int height,
+        App* app, int top, int left, const char* text, int width, int height,
         int bgcolor, int txcolor, int brcolor):
-            Canvas(graph, top, left, width, height, bgcolor, brcolor) {
+            Canvas(app, top, left, width, height, bgcolor, brcolor) {
         this->txcolor = txcolor;
         this->text = NULL;
         setText(text);
@@ -19,13 +18,15 @@ namespace GUI {
         Canvas::draw();
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        Painter::text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, txcolor, getBgColor(), getText());
+        app->getPainter().text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
+            txcolor, getBgColor(), getText());
     }
 
     void Label::clearText() {
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        Painter::text(top + (getHeight()-h)/2, left + (getWidth()-w)/2, graph->getCanvas()->getBgColor(), graph->getCanvas()->getBgColor(), getText());
+        app->getPainter().text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
+            app->getCanvas()->getBgColor(), app->getCanvas()->getBgColor(), getText());
     }
     
     const char* Label::getText() {

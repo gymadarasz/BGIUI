@@ -3,16 +3,17 @@
 
 #include <graphics.h>
 #include "style.h"
+#include "App.h"
 
 namespace GUI {
     
-    class Graph;
+    class App;
 
     class Canvas {
         static int nxt;
     protected:
         int id;
-        Graph* graph;
+        App* app;
         int top;  // TODO: getter + setter for everything
         int left;
         int width;
@@ -26,7 +27,7 @@ namespace GUI {
         virtual int calcHeight();
     public:
         Canvas(
-            Graph* graph, int top, int left, int width = GD_AUTO, int height = GD_AUTO,
+            App* app, int top, int left, int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_CANVAS_BGCOLOR, int brcolor = GD_CANVAS_BRCOLOR);
             
         virtual bool isChanged();
@@ -35,7 +36,7 @@ namespace GUI {
         virtual bool inside(POINT point);
         virtual void tick();
         virtual RECT* getRect(RECT* rect);
-        virtual void setGraph(Graph* graph);
+        virtual void setApp(App* app);
         
         virtual int getWidth();
         virtual int getHeight();

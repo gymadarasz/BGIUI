@@ -18,21 +18,21 @@ Label* App1::msgLbl = NULL;
 
 Group* App1::pinset = NULL;
 
-void App1::init(Graph* graph) {
+void App1::init() {
 
     // test initialization
 
-    canvas1 = new Canvas(graph, 10, 10);
-    label1 = new Label(graph, 10, 300, "It is only a test app.");
-    label2 = new Label(graph, 20, 300, "Override the App::init(Graph* graph) function.");
-    label3 = new Label(graph, 30, 300, "See more in the Example folder...");
-    button1 = new Button(graph, 10, 150);
-    switch1 = new Switch(graph, 40, 150);
+    canvas1 = new Canvas(this, 10, 10);
+    label1 = new Label(this, 10, 300, "It is only a test app.");
+    label2 = new Label(this, 20, 300, "Override the App::init(Graph* graph) function.");
+    label3 = new Label(this, 30, 300, "See more in the Example folder...");
+    button1 = new Button(this, 10, 150);
+    switch1 = new Switch(this, 40, 150);
     
-    clickBtn = new Button1(graph, 100, 150, "Click here!");
-    msgLbl = new Label(graph, 100, 300, "<- click on it");
+    clickBtn = new Button1(this, 100, 150, "Click here!");
+    msgLbl = new Label(this, 100, 300, "<- click on it");
     
-    //pinset = new Group(graph, 30, 30);
+    //pinset = new Group(this, 30, 30);
     //pinset->add(canvas)
 
 }
