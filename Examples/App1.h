@@ -7,15 +7,13 @@
 #include "../Button.h"
 #include "../Switch.h"
 #include "Button1.h"
-#include "../Components/Group.h"
+#include "../Container.h"
 
 using namespace GUI;
 
 class App1 : public App {
-protected:
-    virtual void init();
 public:
-    static Canvas* canvas1;
+    static Canvas canvas1;
     static Label* label1;
     static Label* label2;
     static Label* label3;
@@ -25,8 +23,10 @@ public:
     static Button1* clickBtn;
     static Label* msgLbl;
     
+    static Container* cntr1;
     
-    App1(const char* title);
+    using App::App;
+    virtual void init();
 };
 
 #endif

@@ -1,7 +1,18 @@
-#include "Examples/App1.h"
+//#include "Examples/App1.h"
+
+#include <graphics.h>
+#include "style.h"
+#include "Canvas.h"
+#include "App.h"
+
+
+using namespace GUI;
 
 int main(int argc, char** argv) {
-    App1 app1("Test App");
-    app1.run();
+    
+    App app("Test App");
+    app.init();
+    app.run();
+
 	return 0;
 }

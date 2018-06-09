@@ -5,14 +5,20 @@
 #include "style.h"
 
 namespace GUI {
-    
-    class App;
 
     class Canvas {
+    private:
         static int nxt;
+
+        int lastTop;
+        int lastLeft;
+        int lastWidth;
+        int lastHeight;
+        bool isChanged();
+        
     protected:
+        
         int id;
-        App* app;
         int top;  // TODO: getter + setter for everything
         int left;
         int width;
@@ -25,17 +31,17 @@ namespace GUI {
         virtual int calcWidth();
         virtual int calcHeight();
     public:
+        
         Canvas(
-            App* app, int top, int left, int width = GD_AUTO, int height = GD_AUTO,
+            int top, int left, int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_CANVAS_BGCOLOR, int brcolor = GD_CANVAS_BRCOLOR);
-            
-        virtual bool isChanged();
-        virtual void draw();
+        virtual void tick();
+        virtual bool draw();
         virtual void clear();
         virtual bool inside(POINT point);
-        virtual void tick();
         virtual RECT* getRect(RECT* rect);
-        virtual void setApp(App* app);
+//        virtual void setContainer(Container* container);
+//        Container* getContainer();
         
         virtual int getWidth();
         virtual int getHeight();

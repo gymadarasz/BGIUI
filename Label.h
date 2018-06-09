@@ -2,6 +2,7 @@
 #define LABEL_H
 
 #include "Canvas.h"
+#include "App.h"
 
 namespace GUI {
 
@@ -12,12 +13,11 @@ namespace GUI {
         virtual int calcWidth();
         virtual int calcHeight();
     public:
-        Label(
-            App* app, int top, int left, const char* text = GD_LBL_TEXT,
+        Label(int top, int left, const char* text = GD_LBL_TEXT,
             int width = GD_AUTO, int height = GD_AUTO,
             int bgcolor = GD_LBL_BGCOLOR, int txcolor = GD_LBL_TXCOLOR, int brcolor = GD_LBL_BRCOLOR);
-        virtual void draw();
-        virtual void clearText();
+        virtual bool draw();
+//        virtual void clearText();
         virtual const char* getText();
         virtual void setText(const char* text);
         virtual void onMouseOver(int x, int y);

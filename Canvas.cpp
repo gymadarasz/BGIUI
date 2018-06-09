@@ -7,13 +7,10 @@
 
 namespace GUI {
 
-    //class graph;
-
     int Canvas::nxt = 0;
 
-    Canvas::Canvas(App* app, int top, int left, int width, int height, int bgcolor, int brcolor) {
+    Canvas::Canvas(int top, int left, int width, int height, int bgcolor, int brcolor) {
         id = ++nxt;
-        setApp(app);
         this->top = top;
         this->left = left;
         setWidth(width);
@@ -24,25 +21,41 @@ namespace GUI {
         setPushed(false);
         changed = true;
     }
-
+    
     bool Canvas::isChanged() {
         bool ret = changed;
         changed = false;
         return ret;
     }
 
-    void Canvas::draw() {
-        int width = getWidth();
-        int height = getHeight();
-        app->getPainter().box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
-        app->getPainter().box(top, left, width, height, getBgColor());
+    bool Canvas::draw() {
+        if (isChanged()) {
+            if (
+                lastTop != top ||
+                lastLeft != left ||
+                lastWidth != width ||
+                lastHeight != height
+            ) {
+                clear();
+            }
+            int width = getWidth();
+            int height = getHeight();
+            App::painter.box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
+            App::painter.box(top, left, width, height, getBgColor());
+            lastTop = top;
+            lastLeft = left;
+            lastWidth = width;
+            lastHeight = height;
+            return true;
+        }
+        return false;
     }
     
     void Canvas::clear() {
         int width = getWidth();
         int height = getHeight();
-        app->getPainter().box(top-1, left-1, width+2, height+2, app->getCanvas()->getBgColor(), EMPTY_FILL);
-        app->getPainter().box(top, left, width, height, app->getCanvas()->getBgColor());
+        App::painter.box(top-1, left-1, width+2, height+2, GD_WIN_BGCOLOR, EMPTY_FILL);
+        App::painter.box(top, left, width, height, GD_WIN_BGCOLOR);
     }
 
     RECT* Canvas::getRect(RECT* rect) {
@@ -107,10 +120,14 @@ namespace GUI {
         changed = true;
     }
 
-    void Canvas::setApp(App* app) {
-        this->app = app;
-        this->app->registry(this);
-    }
+//    void Canvas::setContainer(Container* container) {
+//        this->container = container;
+//        this->container->add(this);
+//    }
+    
+//    Container* Canvas::getContainer() {
+//        return container;
+//    }
 
     bool Canvas::inside(POINT point) {
         RECT rect;
@@ -122,42 +139,42 @@ namespace GUI {
 
         onTick();
 
-        MouseEvents events = app->getMouse().getEvents();
-
-        if (events.onClick.happend && inside(events.onClick.position)) {
-            onClick(events.onClick.position.x-left, events.onClick.position.y-top);
+        if (App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
+            onClick(App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
         }
 
-        if (events.onDblClick.happend && inside(events.onDblClick.position)) {
-            onDblClick(events.onDblClick.position.x-left, events.onDblClick.position.y-top);
+        if (App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
+            onDblClick(App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
         }
 
-        if (events.onMouseMove.happend) {
-            if (inside(events.onMouseMove.current) && inside(events.onMouseMove.previous)) {
+        if (App::mouse.events.onMouseMove.happend) {
+            if (inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
                 onMouseMove(
-                    events.onMouseMove.current.x-left, events.onMouseMove.current.y-top,
-                    events.onMouseMove.previous.x-left, events.onMouseMove.previous.y-top
+                    App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top,
+                    App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
                 );
-            } else if (inside(events.onMouseMove.current)) {
-                onMouseOver(events.onMouseMove.current.x-left, events.onMouseMove.current.y-top);
-            } else if (inside(events.onMouseMove.previous)) {
-                onMouseLeave(events.onMouseMove.previous.x-left, events.onMouseMove.previous.y-top);
+            } else if (inside(App::mouse.events.onMouseMove.current)) {
+                onMouseOver(App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
+            } else if (inside(App::mouse.events.onMouseMove.previous)) {
+                onMouseLeave(App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
             }
         }
 
-        if (events.onMouseDown.happend && inside(events.onMouseDown.position)) {
-            onMouseDown(events.onMouseDown.position.x-left, events.onMouseDown.position.y-top);
+        if (App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
+            onMouseDown(App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
         }
 
-        if (events.onMouseUp.happend && inside(events.onMouseUp.position)) {
-            onMouseUp(events.onMouseUp.position.x-left, events.onMouseUp.position.y-top);
+        if (App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
+            onMouseUp(App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
         }
 
     }
 
     void Canvas::onTick() {}
 
-    void Canvas::onClick(int x, int y) {}
+    void Canvas::onClick(int x, int y) {
+        printf("Click on elem[%d]\n", id);
+    }
 
     void Canvas::onDblClick(int x, int y) {}
 

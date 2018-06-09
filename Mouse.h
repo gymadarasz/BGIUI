@@ -10,7 +10,7 @@ namespace GUI {
         POINT position;
     } MousePointEvent;
     
-    typedef struct {
+    typedef struct{
         bool happend;
         POINT current;
         POINT previous;
@@ -18,7 +18,6 @@ namespace GUI {
     
     
     typedef struct {
-        int checks = 0;
         MousePointEvent onClick;
         MousePointEvent onDblClick;
         MouseMoveEvent onMouseMove;
@@ -28,13 +27,11 @@ namespace GUI {
 
     class Mouse {
     private:
-    protected:
         int lastMouseX;
         int lastMouseY;
-        MouseEvents events;
     public:
+        MouseEvents events;
         void check();
-        MouseEvents getEvents();
     };
 
 }

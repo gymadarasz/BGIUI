@@ -2,11 +2,10 @@
 
 namespace GUI {
 
-    Switch::Switch(
-        App* app, int top, int left, const char* labelOff, const char* labelOn,
+    Switch::Switch(int top, int left, const char* labelOff, const char* labelOn,
         int width, int height,
         int bgcolor, int txcolor, int brcolor):
-            Button(app, top, left, labelOff, width, height, bgcolor, txcolor, brcolor) {
+            Button(top, left, labelOff, width, height, bgcolor, txcolor, brcolor) {
         this->labelOff = labelOff;
         this->labelOn = labelOn;
     }

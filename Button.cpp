@@ -2,11 +2,10 @@
 
 namespace GUI {
 
-    Button::Button(
-        App* app, int top, int left, const char* text,
+    Button::Button(int top, int left, const char* text,
         int width, int height,
         int bgcolor, int txcolor, int brcolor):
-            Label(app, top, left, text, width, height, bgcolor, txcolor, brcolor) {
+            Label(top, left, text, width, height, bgcolor, txcolor, brcolor) {
 
     }
 

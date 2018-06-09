@@ -3,8 +3,9 @@
 namespace GUI {
     
     void Mouse::check() {
-        events.checks++;
         int x, y;
+
+        //MouseEvents mouseEvents = Mouse::events;
 
         // any mouse click event (or mouse down - same thing..)?
         events.onMouseDown.happend = false;
@@ -54,10 +55,6 @@ namespace GUI {
             lastMouseY = y;
         }
         
-    }
-    
-    MouseEvents Mouse::getEvents() {
-        return events;
     }
 
 }

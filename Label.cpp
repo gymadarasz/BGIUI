@@ -5,29 +5,32 @@
 namespace GUI {
 
     Label::Label(
-        App* app, int top, int left, const char* text, int width, int height,
+        int top, int left, const char* text, int width, int height,
         int bgcolor, int txcolor, int brcolor):
-            Canvas(app, top, left, width, height, bgcolor, brcolor) {
+            Canvas(top, left, width, height, bgcolor, brcolor) {
         this->txcolor = txcolor;
         this->text = NULL;
         setText(text);
         changed = true;
     }
 
-    void Label::draw() {
-        Canvas::draw();
-        int w = textwidth((char*)getText());
-        int h = textheight((char*)getText());
-        app->getPainter().text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
-            txcolor, getBgColor(), getText());
+    bool Label::draw() {
+        if(Canvas::draw()) {
+            int w = textwidth((char*)getText());
+            int h = textheight((char*)getText());
+            App::painter.text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
+                txcolor, getBgColor(), getText());
+            return true;
+        }
+        return false;
     }
 
-    void Label::clearText() {
-        int w = textwidth((char*)getText());
-        int h = textheight((char*)getText());
-        app->getPainter().text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
-            app->getCanvas()->getBgColor(), app->getCanvas()->getBgColor(), getText());
-    }
+//    void Label::clearText() {
+//        int w = textwidth((char*)getText());
+//        int h = textheight((char*)getText());
+//        App::painter.text(top + (getHeight()-h)/2, left + (getWidth()-w)/2,
+//            container->getBgColor(), container->getBgColor(), getText());
+//    }
     
     const char* Label::getText() {
         return text;
@@ -36,10 +39,10 @@ namespace GUI {
     void Label::setText(const char* text) {
         // clear first if text already set because maybe text changes the size
         if (NULL != getText()) {
-            clearText();
-            if (width == GD_AUTO || height == GD_AUTO) {
+//            clearText();
+//            if (width == GD_AUTO || height == GD_AUTO) {
                 clear();
-            }
+//            }
         }
         this->text = text;
         changed = true;

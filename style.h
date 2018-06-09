@@ -13,11 +13,17 @@
 #define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
 
 // window
-#define GD_WIN_BGCOLOR      GD_BGCOLOR
-#define GD_WIN_DEFAULT_TOP 0
-#define GD_WIN_DEFAULT_LEFT 0
-#define GD_WIN_DEFAULT_WIDTH 800
-#define GD_WIN_DEFAULT_HEIGHT 600
+#define GD_WIN_BGCOLOR          GD_BGCOLOR
+#define GD_WIN_DEFAULT_TOP      0
+#define GD_WIN_DEFAULT_LEFT     0
+#define GD_WIN_DEFAULT_WIDTH    800
+#define GD_WIN_DEFAULT_HEIGHT   600
+
+// containers
+#define GD_CNTR_BGCOLOR     BLUE //GD_WIN_BGCOLOR
+#define GD_CNTR_TXCOLOR     GD_TXCOLOR
+#define GD_CNTR_BRCOLOR     GD_WIN_BGCOLOR
+#define GD_CNTR_TEXT        ""
 
 // canvas
 #define GD_CANVAS_BGCOLOR   BLACK
