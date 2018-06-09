@@ -4,7 +4,7 @@
 // --------- STYLE DEFINITIONS DEFAULTS --------------
 
 // common
-#define GD_AUTO             -1
+#define GD_AUTOSIZE         -1
 #define GD_WPADDING         10
 #define GD_HPADDING         5
 #define GD_BGCOLOR          DARKGRAY
@@ -26,6 +26,8 @@
 #define GD_CNTR_TEXT        ""
 
 // canvas
+#define GD_CANVAS_WIDTH     128
+#define GD_CANVAS_HEIGHT    160
 #define GD_CANVAS_BGCOLOR   BLACK
 #define GD_CANVAS_BRCOLOR   DARKGRAY
 
@@ -35,7 +37,7 @@
 #define GD_LBL_TXCOLOR      GD_TXCOLOR
 #define GD_LBL_BRCOLOR      GD_WIN_BGCOLOR
 #define GD_LBL_TEXT         "Label"
-#define GD_LBL_WPADDING     0
+#define GD_LBL_WPADDING     1
 #define GD_LBL_HPADDING     0
 
 // buttons

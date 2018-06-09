@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o Label.o Mouse.o Button.o Canvas.o Painter.o Switch.o Window.o App.o
-LINKOBJ  = main.o Label.o Mouse.o Button.o Canvas.o Painter.o Switch.o Window.o App.o
+OBJ      = main.o Mouse.o Canvas.o Painter.o Window.o App.o Container.o Counted.o Label.o
+LINKOBJ  = main.o Mouse.o Canvas.o Painter.o Window.o App.o Container.o Counted.o Label.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -L"bgi" -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 -m32 -g3
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"bgi"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"bgi"
@@ -27,14 +27,8 @@ $(BIN): $(OBJ)
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
-Label.o: Label.cpp
-	$(CPP) -c Label.cpp -o Label.o $(CXXFLAGS)
-
 Mouse.o: Mouse.cpp
 	$(CPP) -c Mouse.cpp -o Mouse.o $(CXXFLAGS)
-
-Button.o: Button.cpp
-	$(CPP) -c Button.cpp -o Button.o $(CXXFLAGS)
 
 Canvas.o: Canvas.cpp
 	$(CPP) -c Canvas.cpp -o Canvas.o $(CXXFLAGS)
@@ -42,11 +36,17 @@ Canvas.o: Canvas.cpp
 Painter.o: Painter.cpp
 	$(CPP) -c Painter.cpp -o Painter.o $(CXXFLAGS)
 
-Switch.o: Switch.cpp
-	$(CPP) -c Switch.cpp -o Switch.o $(CXXFLAGS)
-
 Window.o: Window.cpp
 	$(CPP) -c Window.cpp -o Window.o $(CXXFLAGS)
 
 App.o: App.cpp
 	$(CPP) -c App.cpp -o App.o $(CXXFLAGS)
+
+Container.o: Container.cpp
+	$(CPP) -c Container.cpp -o Container.o $(CXXFLAGS)
+
+Counted.o: Counted.cpp
+	$(CPP) -c Counted.cpp -o Counted.o $(CXXFLAGS)
+
+Label.o: Label.cpp
+	$(CPP) -c Label.cpp -o Label.o $(CXXFLAGS)

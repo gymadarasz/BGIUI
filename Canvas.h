@@ -3,46 +3,62 @@
 
 #include <graphics.h>
 #include "style.h"
+#include "Counted.h"
+#include "Container.h"
 
 namespace GUI {
 
-    class Canvas {
+    class Container;
+
+    class Canvas: public Counted {
     private:
-        static int nxt;
 
         int lastTop;
         int lastLeft;
         int lastWidth;
         int lastHeight;
+        
+
+        int top;  // TODO: getter + setter for everything
+        int left;
+        
         bool isChanged();
         
     protected:
         
-        int id;
-        int top;  // TODO: getter + setter for everything
-        int left;
         int width;
         int height;
         int bgcolor;
         int brcolor;
+        // todo: bool highlightable;
         bool highlighted;
         bool pushed;
         bool changed;
+        
         virtual int calcWidth();
         virtual int calcHeight();
-    public:
         
-        Canvas(
-            int top, int left, int width = GD_AUTO, int height = GD_AUTO,
-            int bgcolor = GD_CANVAS_BGCOLOR, int brcolor = GD_CANVAS_BRCOLOR);
+    public:
+
+        Container* container = {NULL};
+        
+//        Canvas();
+        virtual Canvas* setup(
+            int top = 0, int left = 0,
+            int width = GD_CANVAS_WIDTH,
+            int height = GD_CANVAS_HEIGHT,
+            int bgcolor = GD_CANVAS_BGCOLOR,
+            int brcolor = GD_CANVAS_BRCOLOR
+        );
+//        void join(Container* container);
         virtual void tick();
         virtual bool draw();
         virtual void clear();
         virtual bool inside(POINT point);
         virtual RECT* getRect(RECT* rect);
-//        virtual void setContainer(Container* container);
-//        Container* getContainer();
         
+        virtual int getTop();
+        virtual int getLeft();
         virtual int getWidth();
         virtual int getHeight();
         virtual int getBgColor();

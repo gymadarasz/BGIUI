@@ -6,11 +6,12 @@
 #define CANVAS_DEFAULT_HEIGHT 160
 
 namespace GUI {
-
-    int Canvas::nxt = 0;
-
-    Canvas::Canvas(int top, int left, int width, int height, int bgcolor, int brcolor) {
-        id = ++nxt;
+    
+//    Canvas::Canvas(): Counted() {
+//        
+//    }
+    
+    Canvas* Canvas::setup(int top, int left, int width, int height, int bgcolor, int brcolor) {
         this->top = top;
         this->left = left;
         setWidth(width);
@@ -20,6 +21,7 @@ namespace GUI {
         setHighlighted(false);
         setPushed(false);
         changed = true;
+        return this;
     }
     
     bool Canvas::isChanged() {
@@ -30,6 +32,8 @@ namespace GUI {
 
     bool Canvas::draw() {
         if (isChanged()) {
+            int top = getTop();
+            int left = getLeft();
             if (
                 lastTop != top ||
                 lastLeft != left ||
@@ -52,6 +56,8 @@ namespace GUI {
     }
     
     void Canvas::clear() {
+        int top = getTop();
+        int left = getLeft();
         int width = getWidth();
         int height = getHeight();
         App::painter.box(top-1, left-1, width+2, height+2, GD_WIN_BGCOLOR, EMPTY_FILL);
@@ -59,19 +65,29 @@ namespace GUI {
     }
 
     RECT* Canvas::getRect(RECT* rect) {
+        int top = getTop();
+        int left = getLeft();
         rect->top = top;
         rect->left = left;
         rect->right = left + getWidth();
         rect->bottom = top + getHeight();
         return rect;
     }
+    
+    int Canvas::getTop() {
+        return top + container->offset.y;
+    }
+    
+    int Canvas::getLeft() {
+        return left + container->offset.x;
+    }
 
     int Canvas::getWidth() {
-        return width != GD_AUTO ? width : calcWidth();
+        return width == GD_AUTOSIZE ? calcWidth() : width;
     }
 
     int Canvas::getHeight() {
-        return height != GD_AUTO ? height : calcHeight();
+        return height == GD_AUTOSIZE ? calcHeight() : height;
     }
 
     int Canvas::getBgColor() {
@@ -134,8 +150,14 @@ namespace GUI {
         getRect(&rect);
         return point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom;
     }
+    
+//    void Canvas::join(Container* container) {
+//        this->container = container;
+//    }
 
     void Canvas::tick() {
+        int top = getTop();
+        int left = getLeft();
 
         onTick();
 
@@ -192,14 +214,16 @@ namespace GUI {
 
     void Canvas::onMouseUp(int x, int y) {}
 
-    // --- private
+
+
+    // ---- protected
 
     int Canvas::calcWidth() {
-        return CANVAS_DEFAULT_WIDTH;
+        return GD_CANVAS_WIDTH;
     }
 
     int Canvas::calcHeight() {
-        return CANVAS_DEFAULT_HEIGHT;
+        return GD_CANVAS_HEIGHT;
     }
 
 }

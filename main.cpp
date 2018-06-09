@@ -3,6 +3,7 @@
 #include <graphics.h>
 #include "style.h"
 #include "Canvas.h"
+#include "Label.h"
 #include "App.h"
 
 

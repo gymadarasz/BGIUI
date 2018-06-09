@@ -50,18 +50,8 @@ ProductVersion=1.0.0.0
 AutoIncBuildNr=0
 SyncProduct=1
 
-[Unit11]
-FileName=style.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit12]
-FileName=Switch.h
+FileName=Window.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -71,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=App.h
+FileName=Label.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -81,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=App.cpp
+FileName=Label.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -121,7 +111,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=Container.h
+FileName=Counted.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -131,7 +121,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit24]
-FileName=Container.cpp
+FileName=Counted.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -141,7 +131,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=Switch.cpp
+FileName=Counted.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -151,7 +141,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=Window.cpp
+FileName=Counted.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -200,28 +190,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit13]
-FileName=Window.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit14]
-FileName=Button.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=Label.cpp
+FileName=App.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -231,36 +201,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=Mouse.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit8]
-FileName=Button.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit9]
-FileName=Canvas.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit10]
 FileName=Painter.h
 CompileCpp=1
 Folder=
@@ -270,7 +210,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit15]
+[Unit8]
+FileName=style.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
 FileName=Canvas.cpp
 CompileCpp=1
 Folder=
@@ -280,8 +230,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit15]
+FileName=Container.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit16]
-FileName=Painter.cpp
+FileName=Container.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -291,7 +251,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=Mouse.h
+FileName=Mouse.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -301,7 +261,17 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit22]
-FileName=HelloApp.cpp
+FileName=Counted.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit21]
+FileName=Counted.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -311,7 +281,47 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=Label.h
+FileName=Mouse.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit6]
+FileName=Canvas.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=Window.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=Painter.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit13]
+FileName=App.h
 CompileCpp=1
 Folder=
 Compile=1

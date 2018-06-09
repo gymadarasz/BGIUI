@@ -1,25 +1,24 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include "Label.h"
+#include "Canvas.h"
 
 #define CANVASES 100
 
 namespace GUI {
     
-    class Label;
+    class Canvas;
     
-    class Container: public Label {
+    class Container {
     protected:
-        Canvas* canvases[CANVASES];
     public:
-        Container(int top, int left, const char* text = GD_CNTR_TEXT,
-            int width = GD_AUTO, int height = GD_AUTO,
-            int bgcolor = GD_CNTR_BGCOLOR, int txcolor = GD_CNTR_TXCOLOR, int brcolor = GD_CNTR_BRCOLOR);
-        virtual void cleanup();
-        void add(Canvas* canvas);
-        virtual void tick();
-        virtual bool draw();
+        POINT offset;
+        Canvas* canvases[CANVASES] = {NULL};
+        
+        Container(int top = 0, int left = 0);
+        bool add(Canvas* canvas);
+        virtual void ticks();
+        virtual bool draws();
     };
 
 }

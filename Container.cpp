@@ -2,32 +2,24 @@
 
 namespace GUI {
     
-    Container::Container(int top, int left, const char* text, int width, int height,
-        int bgcolor, int txcolor, int brcolor):
-            Label(top, left, text, width, height, bgcolor, txcolor, brcolor) {
-        cleanup();
-    }
-
-    void Container::cleanup() {
-        // clean canvases
-        for (int i=0; i < CANVASES; i++) {
-            canvases[i] = NULL;
-        }
-        changed = true;
+    Container::Container(int top, int left) {
+        offset.y = top;
+        offset.x = left;
     }
 
 
-    void Container::add(Canvas* canvas) {
+    bool Container::add(Canvas* canvas) {
         for (int i=0; i < CANVASES; i++) {
             if (NULL == canvases[i]) {
                 canvases[i] = canvas;
-                break;
+                canvas->container = this; // join canvas into this container
+                return true;
             }
         }
+        return false;
     }
-
-    void Container::tick() {
-        Canvas::tick();
+    
+    void Container::ticks() {
         // for each canvases..
         for (int i=0; i < CANVASES; i++) {
             if (NULL != canvases[i]) {
@@ -35,17 +27,13 @@ namespace GUI {
             }
         }
     }
-    
-    bool Container::draw() {
-        if(Label::draw()) {
-            // for each canvases..
-            for (int i=0; i < CANVASES; i++) {
-                if (NULL != canvases[i]) {
-                    canvases[i]->draw();
-                }
+
+    bool Container::draws() {
+        // for each canvases..
+        for (int i=0; i < CANVASES; i++) {
+            if (NULL != canvases[i]) {
+                canvases[i]->draw();
             }
-            return true;
         }
-        return false;
     }
 }
