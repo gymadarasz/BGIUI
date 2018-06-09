@@ -25,7 +25,6 @@ public:
     static Button1* clickBtn;
     static Label* msgLbl;
     
-    static Group* pinset;
     
     App1(const char* title);
 };
