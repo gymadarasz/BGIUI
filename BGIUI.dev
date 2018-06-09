@@ -131,7 +131,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=BGIPainter.h
+FileName=Painter.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -141,7 +141,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=BGIPainter.cpp
+FileName=Painter.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -221,7 +221,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=BGIMouse.h
+FileName=Mouse.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -241,7 +241,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit24]
-FileName=BGIMouse.cpp
+FileName=Mouse.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -271,7 +271,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit25]
-FileName=BGIWindow.h
+FileName=Window.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -281,7 +281,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=BGIWindow.cpp
+FileName=Window.cpp
 CompileCpp=1
 Folder=
 Compile=1

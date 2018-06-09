@@ -1,6 +1,6 @@
 #include "Label.h"
 
-#include "Painter.h"
+#include "App.h"
 
 namespace GUI {
 

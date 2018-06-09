@@ -1,6 +1,6 @@
 #include "Canvas.h"
 
-#include "Painter.h"
+#include "App.h"
 
 #define CANVAS_DEFAULT_WIDTH 128
 #define CANVAS_DEFAULT_HEIGHT 160

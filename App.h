@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "Mouse.h"
 #include "Painter.h"
-#include "Canvas.h"
+#include "style.h"
 
 #define APP_CANVASES 100
 

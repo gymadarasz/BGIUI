@@ -1,6 +1,5 @@
 #include "App.h"
 
-#include "Window.h"
 #include "Canvas.h"
 
 namespace GUI {

@@ -1,7 +1,5 @@
 #include "Window.h"
 
-//#include <graphics.h>
-
 namespace GUI {
     
     void Window::init(const char* title, int top, int left, int width, int height) {

@@ -3,7 +3,6 @@
 
 #include <graphics.h>
 #include "style.h"
-#include "App.h"
 
 namespace GUI {
     
