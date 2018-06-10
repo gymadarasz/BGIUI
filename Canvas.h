@@ -12,6 +12,7 @@ namespace GUI {
 
     class Canvas: public Counted {
     private:
+        //friend Container;
 
         int lastTop;
         int lastLeft;
@@ -22,12 +23,14 @@ namespace GUI {
         int top;  // TODO: getter + setter for everything
         int left;
         
-        bool isChanged();
-        
     protected:
+
+        Container* container = {NULL};
         
         int width;
         int height;
+        RECT margin;
+        RECT padding;
         int bgcolor;
         int brcolor;
         // todo: bool highlightable;
@@ -37,37 +40,59 @@ namespace GUI {
         
         virtual int calcWidth();
         virtual int calcHeight();
+
+        bool isChanged();
         
     public:
-
-        Container* container = {NULL};
         
-//        Canvas();
+        Canvas(Container* container = NULL);
+        Canvas* setContainer(Container* container);
+        Container* getContainer();
         virtual Canvas* setup(
-            int top = 0, int left = 0,
+            int top = GD_AUTOPOSITION,
+            int left = GD_AUTOPOSITION,
             int width = GD_CANVAS_WIDTH,
             int height = GD_CANVAS_HEIGHT,
+            RECT margin = {
+                GD_CANVAS_LMARGIN,
+                GD_CANVAS_RMARGIN,
+                GD_CANVAS_TMARGIN,
+                GD_CANVAS_BMARGIN
+            },
+            RECT padding = {
+                GD_CANVAS_LPADDING,
+                GD_CANVAS_RPADDING,
+                GD_CANVAS_TPADDING,
+                GD_CANVAS_BPADDING
+            },
             int bgcolor = GD_CANVAS_BGCOLOR,
             int brcolor = GD_CANVAS_BRCOLOR
         );
-//        void join(Container* container);
         virtual void tick();
         virtual bool draw();
         virtual void clear();
         virtual bool inside(POINT point);
         virtual RECT* getRect(RECT* rect);
+        virtual int getFullWidth();
+        virtual int getFullHeight();
         
         virtual int getTop();
         virtual int getLeft();
         virtual int getWidth();
         virtual int getHeight();
+        virtual RECT getMargin();
+        virtual RECT getPadding();
         virtual int getBgColor();
         virtual int getBrColor();
         virtual bool getHighlighted();
         virtual bool getPushed();
-        
+
+        virtual void setTop(int top);
+        virtual void setLeft(int left);
         virtual void setWidth(int width);
         virtual void setHeight(int height);
+        virtual void setMargin(RECT margin);
+        virtual void setPadding(RECT padding);
         virtual void setBgColor(int bgcolor);
         virtual void setBrColor(int brcolor);
         virtual void setHighlighted(bool highlighted);
@@ -81,6 +106,9 @@ namespace GUI {
         virtual void onMouseLeave(int x, int y);
         virtual void onMouseDown(int x, int y);
         virtual void onMouseUp(int x, int y);
+
+        // cursor
+        virtual bool isAutoPositioned();
     };
 
 }

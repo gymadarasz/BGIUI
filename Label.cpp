@@ -3,18 +3,27 @@
 #include "App.h"
 
 namespace GUI {
+    
+    Label::Label(Container* container): Canvas(container) {
+        this->text = NULL;
+        setup();
+    }
 
     Label* Label::setup(
-        int top, int left,
         const char* text,
-        int width, int height,
-        int bgcolor, int txcolor, int brcolor
+        int top,
+        int left,
+        int width,
+        int height,
+        RECT margin,
+        RECT padding,
+        int bgcolor,
+        int txcolor,
+        int brcolor
     ) {
-        Canvas::setup(top, left, width, height, bgcolor, brcolor);
-        this->txcolor = txcolor;
-        this->text = NULL;
+        Canvas::setup(top, left, width, height, margin, padding, bgcolor, brcolor);
         setText(text);
-        changed = true;
+        setTxColor(txcolor);
         return this;
     }
 
@@ -52,6 +61,11 @@ namespace GUI {
         this->text = text;
         changed = true;
     }
+    
+    void Label::setTxColor(int txcolor) {
+        this->txcolor = txcolor;
+        changed = true;
+    }
 
 //    void Label::onMouseOver(int x, int y) {}
 
@@ -60,11 +74,11 @@ namespace GUI {
     // ---- protected
 
     int Label::calcWidth() {
-        return textwidth((char*)getText()) + GD_LBL_WPADDING*2;  // todo: use class variable instead constants for paddings (here and buttons also!)
+        return textwidth((char*)getText()) + padding.left + padding.right;
     }
 
     int Label::calcHeight() {
-        return textheight((char*)getText()) + GD_LBL_HPADDING*2;
+        return textheight((char*)getText()) + padding.left + padding.right;
     }
     
 }

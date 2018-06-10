@@ -6,10 +6,10 @@ namespace GUI {
     class Counted {
     private:
         static int nxt;
-    protected:
         int id;
     public:
         Counted();
+        int getId();
     };
 
 }

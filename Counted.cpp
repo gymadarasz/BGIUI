@@ -8,4 +8,8 @@ namespace GUI {
         id = nxt++;
     }
     
+    int Counted::getId() {
+        return id;
+    }
+    
 }

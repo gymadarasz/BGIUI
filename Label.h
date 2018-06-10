@@ -15,18 +15,34 @@ namespace GUI {
         virtual int calcHeight();
         
     public:
+        Label(Container* container = NULL);
         virtual Label* setup(
-            int top = 0, int left = 0,
-            const char* text = GD_LBL_TEXT,
+            const char* text = "Label",
+            int top = GD_AUTOPOSITION,
+            int left = GD_AUTOPOSITION,
             int width = GD_AUTOSIZE,
             int height = GD_AUTOSIZE,
+            RECT margin = {
+                GD_LBL_LMARGIN,
+                GD_LBL_RMARGIN,
+                GD_LBL_TMARGIN,
+                GD_LBL_BMARGIN
+            },
+            RECT padding = {
+                GD_LBL_LPADDING,
+                GD_LBL_RPADDING,
+                GD_LBL_TPADDING,
+                GD_LBL_BPADDING
+            },
             int bgcolor = GD_LBL_BGCOLOR,
             int txcolor = GD_LBL_TXCOLOR,
-            int brcolor = GD_LBL_BRCOLOR);
+            int brcolor = GD_LBL_BRCOLOR
+        );
         virtual bool draw();
         virtual void clearText();
         virtual const char* getText();
         virtual void setText(const char* text);
+        virtual void setTxColor(int txcolor);
 //        virtual void onMouseOver(int x, int y);
 //        virtual void onMouseLeave(int x, int y);
     };

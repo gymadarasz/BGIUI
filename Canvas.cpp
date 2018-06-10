@@ -7,21 +7,45 @@
 
 namespace GUI {
     
-//    Canvas::Canvas(): Counted() {
-//        
-//    }
+    Canvas::Canvas(Container* container): Counted() {
+        setup();
+        setContainer(container);
+    }
     
-    Canvas* Canvas::setup(int top, int left, int width, int height, int bgcolor, int brcolor) {
-        this->top = top;
-        this->left = left;
+    Canvas* Canvas::setup(
+        int top,
+        int left,
+        int width,
+        int height,
+        RECT margin,
+        RECT padding,
+        int bgcolor,
+        int brcolor
+    ) {
+        setTop(top);
+        setLeft(left);
         setWidth(width);
         setHeight(height);
+        setMargin(margin);
+        setPadding(padding);
         setBgColor(bgcolor);
         setBrColor(brcolor);
         setHighlighted(false);
         setPushed(false);
+        return this;
+    }
+    
+    Canvas* Canvas::setContainer(Container* container) {
+        if (NULL != container && this->container != container) {
+            this->container = container;
+            container->add(this);
+        }
         changed = true;
         return this;
+    }
+    
+    Container* Canvas::getContainer() {
+        return container;
     }
     
     bool Canvas::isChanged() {
@@ -30,20 +54,63 @@ namespace GUI {
         return ret;
     }
 
+    void Canvas::tick() {
+        
+        int top = getTop();
+        int left = getLeft();
+
+        onTick();
+
+        // click?
+        if (App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
+            onClick(App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
+        }
+
+        // dblclick?
+        if (App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
+            onDblClick(App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
+        }
+
+        // mouse move, over, leave?
+        if (App::mouse.events.onMouseMove.happend) {
+            if (inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
+                onMouseMove(
+                    App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top,
+                    App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
+                );
+            } else if (inside(App::mouse.events.onMouseMove.current)) {
+                onMouseOver(App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
+            } else if (inside(App::mouse.events.onMouseMove.previous)) {
+                onMouseLeave(App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
+            }
+        }
+
+        // mouse down?
+        if (App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
+            onMouseDown(App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
+        }
+
+        // mouse up?
+        if (App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
+            onMouseUp(App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
+        }
+
+    }
+    
     bool Canvas::draw() {
         if (isChanged()) {
             int top = getTop();
             int left = getLeft();
+            int width = getWidth();
+            int height = getHeight();
             if (
                 lastTop != top ||
                 lastLeft != left ||
                 lastWidth != width ||
                 lastHeight != height
             ) {
-                clear();
+                clear(/*lasts*/);
             }
-            int width = getWidth();
-            int height = getHeight();
             App::painter.box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
             App::painter.box(top, left, width, height, getBgColor());
             lastTop = top;
@@ -74,12 +141,24 @@ namespace GUI {
         return rect;
     }
     
+    int Canvas::getFullWidth() {
+        return getWidth() + margin.left + margin.right;
+    }
+    
+    int Canvas::getFullHeight() {
+        return getHeight() + margin.top + margin.bottom;
+    }
+    
     int Canvas::getTop() {
-        return top + container->offset.y;
+        int ret = container->offset.y;
+        ret += top == GD_AUTOPOSITION ? container->cursor.previous.y : top;
+        return ret;
     }
     
     int Canvas::getLeft() {
-        return left + container->offset.x;
+        int ret = container->offset.x;
+        ret += left == GD_AUTOPOSITION ? container->cursor.previous.x : left;
+        return ret;
     }
 
     int Canvas::getWidth() {
@@ -88,6 +167,14 @@ namespace GUI {
 
     int Canvas::getHeight() {
         return height == GD_AUTOSIZE ? calcHeight() : height;
+    }
+
+    RECT Canvas::getMargin() {
+        return margin;
+    }
+    
+    RECT Canvas::getPadding() {
+        return padding;
     }
 
     int Canvas::getBgColor() {
@@ -106,6 +193,16 @@ namespace GUI {
         return pushed;
     }
 
+    void Canvas::setTop(int top) {
+        this->top = top;
+        changed = true;
+    }
+
+    void Canvas::setLeft(int left) {
+        this->left = left;
+        changed = true;
+    }
+
     void Canvas::setWidth(int width) {
         this->width = width;
         changed = true;
@@ -113,6 +210,16 @@ namespace GUI {
 
     void Canvas::setHeight(int height) {
         this->height = height;
+        changed = true;
+    }
+    
+    void Canvas::setMargin(RECT margin) {
+        this->margin = margin;
+        changed = true;
+    }
+
+    void Canvas::setPadding(RECT padding) {
+        this->padding = padding;
         changed = true;
     }
 
@@ -155,47 +262,11 @@ namespace GUI {
 //        this->container = container;
 //    }
 
-    void Canvas::tick() {
-        int top = getTop();
-        int left = getLeft();
-
-        onTick();
-
-        if (App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
-            onClick(App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
-        }
-
-        if (App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
-            onDblClick(App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
-        }
-
-        if (App::mouse.events.onMouseMove.happend) {
-            if (inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
-                onMouseMove(
-                    App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top,
-                    App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
-                );
-            } else if (inside(App::mouse.events.onMouseMove.current)) {
-                onMouseOver(App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
-            } else if (inside(App::mouse.events.onMouseMove.previous)) {
-                onMouseLeave(App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
-            }
-        }
-
-        if (App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
-            onMouseDown(App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
-        }
-
-        if (App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
-            onMouseUp(App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
-        }
-
-    }
 
     void Canvas::onTick() {}
 
     void Canvas::onClick(int x, int y) {
-        printf("Click on elem[%d]\n", id);
+        printf("Click on elem[%d]\n", getId());
     }
 
     void Canvas::onDblClick(int x, int y) {}
@@ -217,6 +288,10 @@ namespace GUI {
 
 
     // ---- protected
+    
+    bool Canvas::isAutoPositioned() {
+        return top == GD_AUTOPOSITION || left == GD_AUTOPOSITION;
+    }
 
     int Canvas::calcWidth() {
         return GD_CANVAS_WIDTH;
