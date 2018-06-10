@@ -3,6 +3,7 @@
 namespace GUI {
     
     Container::Container(int top, int left, int width, int height) {
+        (new Canvas(this))->setup(0, 0, width, height, GD_NOMARGIN, GD_NOPADDING, GD_NOCOLOR);
         offset.y = top;
         offset.x = left;
         size.x = width;

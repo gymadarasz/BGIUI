@@ -10,7 +10,7 @@ namespace GUI {
 //        virtual int calcWidth();
 //        virtual int calcHeight();
     public:
-        using Label::Label;
+        Button(Container* container = NULL);
         Button* setup(
             const char* text = "Button",
             int top = GD_AUTOPOSITION,

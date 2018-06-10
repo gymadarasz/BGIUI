@@ -27,7 +27,7 @@ namespace GUI {
         // cursor
         ContainerCursor cursor;
         
-        Container(int top = 0, int left = 0, int width = 0, int heigth = 0);
+        Container(int top, int left, int width, int heigth);
         bool add(Canvas* canvas);
         virtual void ticks();
         virtual bool draws();

@@ -11,10 +11,11 @@
 #define GD_FILL             true
 #define GD_NOFILL           false
 #define GD_BRSIZE           1
-#define GD_WMARGIN          GD_BRSIZE * 2
-#define GD_HMARGIN          GD_BRSIZE * 2
+#define GD_WMARGIN          GD_BRSIZE
+#define GD_HMARGIN          GD_BRSIZE
 #define GD_WPADDING         10
 #define GD_HPADDING         5
+#define GD_NOCOLOR          -1
 #define GD_BGCOLOR          DARKGRAY
 #define GD_TXCOLOR          BLACK
 #define GD_HLBRCOLOR        WHITE       // highlighted border color on mouse over

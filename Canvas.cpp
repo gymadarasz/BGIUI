@@ -79,8 +79,10 @@ namespace GUI {
                     App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
                 );
             } else if (inside(App::mouse.events.onMouseMove.current)) {
+                setHighlighted(true);
                 onMouseOver(App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
             } else if (inside(App::mouse.events.onMouseMove.previous)) {
+                setHighlighted(false);
                 onMouseLeave(App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
             }
         }
@@ -112,7 +114,7 @@ namespace GUI {
                 clear(/*lasts*/);
             }
             // todo: use class variable instead GD_BRSIZE
-            App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, getBrColor(), GD_NOFILL);
+            App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE, height+GD_BRSIZE, getBrColor(), GD_NOFILL);
             App::painter.box(top, left, width, height, getBgColor(), GD_FILL);
             lastTop = top;
             lastLeft = left;
@@ -274,13 +276,9 @@ namespace GUI {
 
     void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {}
 
-    void Canvas::onMouseOver(int x, int y) {
-        setHighlighted(true);
-    }
+    void Canvas::onMouseOver(int x, int y) {}
 
-    void Canvas::onMouseLeave(int x, int y) {
-        setHighlighted(false);
-    }
+    void Canvas::onMouseLeave(int x, int y) {}
 
     void Canvas::onMouseDown(int x, int y) {}
 

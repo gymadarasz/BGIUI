@@ -2,9 +2,9 @@
 
 namespace GUI {
 
-//    Button::Button(): Label() {
-//        setup();
-//    }
+    Button::Button(Container* container): Label(container) {
+        setup();
+    }
     
     Button* Button::setup(
         const char* text,

@@ -46,9 +46,10 @@ namespace GUI {
         (new Label(this))->setup("Three");
         (new Label(this))->setup("Four");
         
-//        Container* cntr = addContainer(new Container(30, 30));
-//        cntr->add((new Label(cntr))->setup("Hello from container!", 10, 10));
-//        cntr->add(new Button(cntr));
+        Container* cntr = addContainer(new Container(40, 40, 200, 100));
+        
+        (new Label(cntr))->setup("Hello from container!");
+        new Button(cntr);
         
     }
 
