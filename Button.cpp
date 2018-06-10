@@ -19,6 +19,7 @@ namespace GUI {
         int brcolor
     ) {
         Label::setup(text, top, left, width, height, margin, padding, bgcolor, txcolor, brcolor);
+        setDisabled(false);
         return this;
     }
 

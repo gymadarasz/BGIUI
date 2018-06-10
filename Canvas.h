@@ -33,7 +33,7 @@ namespace GUI {
         RECT padding;
         int bgcolor;
         int brcolor;
-        // todo: bool highlightable;
+        bool disabled;
         bool highlighted;
         bool pushed;
         bool changed;
@@ -84,6 +84,7 @@ namespace GUI {
         virtual RECT getPadding();
         virtual int getBgColor();
         virtual int getBrColor();
+        virtual bool getDisabled();
         virtual bool getHighlighted();
         virtual bool getPushed();
 
@@ -95,6 +96,7 @@ namespace GUI {
         virtual void setPadding(RECT padding);
         virtual void setBgColor(int bgcolor);
         virtual void setBrColor(int brcolor);
+        virtual void setDisabled(bool disabled);
         virtual void setHighlighted(bool highlighted);
         virtual void setPushed(bool pushed);
         

@@ -32,6 +32,7 @@ namespace GUI {
         setBrColor(brcolor);
         setHighlighted(false);
         setPushed(false);
+        setDisabled(true);
         return this;
     }
     
@@ -56,11 +57,16 @@ namespace GUI {
 
     void Canvas::tick() {
         
-        int top = getTop();
-        int left = getLeft();
 
         onTick();
 
+        if (getDisabled()) {
+            return ;
+        }
+
+        int top = getTop();
+        int left = getLeft();
+        
         // click?
         if (App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
             onClick(App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
@@ -187,13 +193,17 @@ namespace GUI {
     int Canvas::getBrColor() {
         return getHighlighted() ? GD_HLBRCOLOR : brcolor;
     }
+    
+    bool Canvas::getDisabled() {
+        return disabled;
+    }
 
     bool Canvas::getHighlighted() {
-        return highlighted;
+        return getDisabled() ? false : highlighted;
     }
 
     bool Canvas::getPushed() {
-        return pushed;
+        return getDisabled() ? false : pushed;
     }
 
     void Canvas::setTop(int top) {
@@ -235,14 +245,19 @@ namespace GUI {
         this->brcolor = brcolor;
         changed = true;
     }
+    
+    void Canvas::setDisabled(bool disabled) {
+        this->disabled = disabled;
+        changed = true;
+    }
 
     void Canvas::setHighlighted(bool highlighted) {
-        this->highlighted = highlighted;
+        this->highlighted = getDisabled() ? false : highlighted;
         changed = true;
     }
 
     void Canvas::setPushed(bool pushed) {
-        this->pushed = pushed;
+        this->pushed = getDisabled() ? false : pushed;
         changed = true;
     }
 

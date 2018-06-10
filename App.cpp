@@ -48,8 +48,9 @@ namespace GUI {
         
         Container* cntr = addContainer(new Container(40, 40, 200, 100));
         
-        (new Label(cntr))->setup("Hello from container!");
         new Button(cntr);
+        (new Label(cntr))->setup("In container!");
+        (new Label(cntr))->setup("Hello!");
         
     }
 
@@ -66,7 +67,7 @@ namespace GUI {
                 }
             }
             
-            delay(1);
+            delay(0);
         }
     }
     

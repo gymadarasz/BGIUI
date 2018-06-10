@@ -74,10 +74,10 @@ namespace GUI {
     
     // carriage return and start a new line
     void Container::breakCursor(int minheight) {
-        cursor.previous.x = cursor.position.x;
-        cursor.previous.y = cursor.position.y;
         cursor.position.x = 0;
         cursor.position.y += cursor.floatMax > minheight ? cursor.floatMax : minheight;
+        cursor.previous.x = cursor.position.x;
+        cursor.previous.y = cursor.position.y;
         cursor.floatMax = 0;
     }
     
