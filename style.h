@@ -8,9 +8,11 @@
 #define GD_AUTOPOSITION     -1
 #define GD_NOMARGIN         {0, 0, 0, 0}
 #define GD_NOPADDING        {0, 0, 0, 0}
-
-#define GD_WMARGIN          0
-#define GD_HMARGIN          0
+#define GD_FILL             true
+#define GD_NOFILL           false
+#define GD_BRSIZE           1
+#define GD_WMARGIN          GD_BRSIZE * 2
+#define GD_HMARGIN          GD_BRSIZE * 2
 #define GD_WPADDING         10
 #define GD_HPADDING         5
 #define GD_BGCOLOR          DARKGRAY

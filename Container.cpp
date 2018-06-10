@@ -11,17 +11,17 @@ namespace GUI {
     }
 
 
-    int Container::add(Canvas* canvas) {
+    bool Container::add(Canvas* canvas) {
         for (int i=0; i < CANVASES; i++) {
             if (NULL == canvases[i]) {
                 canvases[i] = canvas;
                 //floatCanvas(canvas);
                 canvas->setContainer(this); // join canvas into this container
-                return 0;
+                return true;
             }
         }
         printf("container is full\n");
-        return 1;
+        return false;
     }
     
     void Container::ticks() {

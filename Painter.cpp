@@ -1,25 +1,24 @@
 #include "Painter.h"
 
+#include "App.h"
+
 namespace GUI {
 
-    void Painter::box(int top, int left, int width, int height, int color, int fillpattern) {
-
-        int right = left + width;
-        int bottom = top + height;
-
-        fillsettingstype fillinfo;
-        getfillsettings(&fillinfo);
+    void Painter::box(int top, int left, int width, int height, int color, bool fill) {
+        int bottom = top+height;
+        int right = left+width;
         int c = getcolor();
-
-        setfillstyle(fillpattern, color);
         setcolor(color);
-
-        rectangle(left, top, right, bottom);
-        if (left < right && top < bottom) {
-            floodfill(left+1, top+1, color);
+        if (fill) {
+            for (int y=top; y<bottom; y++) {
+                line(left, y, right, y);
+            }
+        } else {
+            line(left, top, left, bottom);
+            line(left, top, right, top);
+            line(right, top, right, bottom);
+            line(left, bottom, right, bottom);
         }
-
-        setfillstyle(fillinfo.pattern, fillinfo.color);
         setcolor(c);
     }
 

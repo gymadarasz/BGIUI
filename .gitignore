@@ -3,3 +3,4 @@ _safe/
 *.exe
 *.gch
 gmon.out
+BGIUI.layout

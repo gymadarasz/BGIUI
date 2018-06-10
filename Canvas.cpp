@@ -111,8 +111,9 @@ namespace GUI {
             ) {
                 clear(/*lasts*/);
             }
-            App::painter.box(top-1, left-1, width+2, height+2, getBrColor(), EMPTY_FILL);
-            App::painter.box(top, left, width, height, getBgColor());
+            // todo: use class variable instead GD_BRSIZE
+            App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, getBrColor(), GD_NOFILL);
+            App::painter.box(top, left, width, height, getBgColor(), GD_FILL);
             lastTop = top;
             lastLeft = left;
             lastWidth = width;
@@ -127,8 +128,8 @@ namespace GUI {
         int left = getLeft();
         int width = getWidth();
         int height = getHeight();
-        App::painter.box(top-1, left-1, width+2, height+2, GD_WIN_BGCOLOR, EMPTY_FILL);
-        App::painter.box(top, left, width, height, GD_WIN_BGCOLOR);
+        //App::painter.box(top-1, left-1, width+2, height+2, App::rootCanvas.getBgColor(), EMPTY_FILL);
+        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, App::rootCanvas.getBgColor(), GD_FILL);
     }
 
     RECT* Canvas::getRect(RECT* rect) {
