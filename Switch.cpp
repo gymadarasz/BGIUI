@@ -1,13 +1,27 @@
 #include "Switch.h"
 
 namespace GUI {
+    
+    Switch::Switch(Container* container): Button(container) {
+        setup();
+    }
 
-    Switch::Switch(int top, int left, const char* labelOff, const char* labelOn,
-        int width, int height,
-        int bgcolor, int txcolor, int brcolor):
-            Button(top, left, labelOff, width, height, bgcolor, txcolor, brcolor) {
+    Switch* Switch::setup(
+        const char* labelOff,
+        const char* labelOn,
+        int top,
+        int left,
+        int width,
+        int height,
+        RECT margin,
+        RECT padding,
+        int bgcolor,
+        int txcolor,
+        int brcolor
+    ) {
         this->labelOff = labelOff;
         this->labelOn = labelOn;
+        Button::setup(labelOff, top, left, width, height, margin, padding, bgcolor, txcolor, brcolor);
     }
 
     void Switch::onMouseOver(int x, int y) {
@@ -32,7 +46,7 @@ namespace GUI {
         int wOn = textwidth((char*)labelOn);
         int max = wOff > wOn ? wOff : wOn;
 
-        return max + GD_BTN_WPADDING*2;
+        return max + padding.left + padding.right;
     }
     
 }

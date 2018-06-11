@@ -1,8 +1,10 @@
 #include "App.h"
 
-#include "Break.h"
+#include "Canvas.h"
 #include "Label.h"
+#include "Break.h"
 #include "Button.h"
+#include "Switch.h"
 
 
 namespace GUI {
@@ -47,10 +49,21 @@ namespace GUI {
         (new Label(this))->setup("Four");
         
         Container* cntr = addContainer(new Container(40, 40, 200, 100));
-        
         new Button(cntr);
         (new Label(cntr))->setup("In container!");
-        (new Label(cntr))->setup("Hello!");
+        (new Label(cntr))->setup("Hello!...");
+        (new Label(cntr))->setup("Hello!...");
+        (new Label(cntr))->setup("Hello!...");
+        new Switch(cntr);
+        
+
+        Container* cntr2 = addContainer(new Container(150, 300, 50, 50));
+        (new Canvas(cntr2))->setup(0, 0, 50, 50, GD_NOMARGIN, GD_NOPADDING, 2, 3);
+        (new Label(cntr2))->setup("AAaaa");
+        (new Label(cntr2))->setup("BBbbb");
+        (new Label(cntr2))->setup("CCccc");
+        (new Label(cntr2))->setup("DDddd");
+        (new Label(cntr2))->setup("DDddd");
         
     }
 

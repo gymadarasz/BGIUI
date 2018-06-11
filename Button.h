@@ -11,7 +11,7 @@ namespace GUI {
 //        virtual int calcHeight();
     public:
         Button(Container* container = NULL);
-        Button* setup(
+        virtual Button* setup(
             const char* text = "Button",
             int top = GD_AUTOPOSITION,
             int left = GD_AUTOPOSITION,

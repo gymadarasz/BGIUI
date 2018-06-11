@@ -160,13 +160,13 @@ namespace GUI {
     
     int Canvas::getTop() {
         int ret = container->offset.y;
-        ret += top == GD_AUTOPOSITION ? container->cursor.previous.y : top;
+        ret += top == GD_AUTOPOSITION ? container->cursor.gety() : top;
         return ret;
     }
     
     int Canvas::getLeft() {
         int ret = container->offset.x;
-        ret += left == GD_AUTOPOSITION ? container->cursor.previous.x : left;
+        ret += left == GD_AUTOPOSITION ? container->cursor.getx() : left;
         return ret;
     }
 

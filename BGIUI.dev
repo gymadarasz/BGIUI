@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=3
 CompilerSettings=00000001c0000000001000000
-UnitCount=24
+UnitCount=28
 
 [VersionInfo]
 Major=1
@@ -151,7 +151,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit25]
-FileName=App.h
+FileName=Switch.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -161,7 +161,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=App.cpp
+FileName=Switch.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -171,7 +171,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=BGIWindow.h
+FileName=Cursor.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -181,7 +181,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit28]
-FileName=BGIWindow.cpp
+FileName=Cursor.cpp
 CompileCpp=1
 Folder=
 Compile=1

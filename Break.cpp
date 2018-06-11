@@ -18,12 +18,12 @@ namespace GUI {
     }
     
     void Break::tick() {
-        container->breakCursor(height);
+        container->cursor.nl(height);
     }
     
     bool Break::draw() {
         
-        container->breakCursor(height);
+        container->cursor.nl(height);
         return true;
     }
     
