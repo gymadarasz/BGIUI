@@ -10,7 +10,7 @@ namespace GUI {
 //        virtual int calcWidth();
 //        virtual int calcHeight();
     public:
-        Button(Container* container = NULL);
+        Button(Canvas* parent = NULL);
         virtual Button* setup(
             const char* text = "Button",
             int top = GD_AUTOPOSITION,

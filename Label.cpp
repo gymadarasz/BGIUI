@@ -4,7 +4,7 @@
 
 namespace GUI {
     
-    Label::Label(Container* container): Canvas(container) {
+    Label::Label(Canvas* parent): Canvas(parent) {
         this->text = NULL;
         setup();
     }
@@ -41,7 +41,7 @@ namespace GUI {
     void Label::clearText() {
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        int bgcolor = App::rootCanvas.getBgColor();
+        int bgcolor = App::canvas->getBgColor();
         App::painter.text(getTop() + (getHeight()-h)/2, getLeft() + (getWidth()-w)/2,
             bgcolor, bgcolor, getText());
     }

@@ -11,7 +11,7 @@ namespace GUI {
         const char* labelOn;
         virtual int calcWidth();
     public:
-        Switch(Container* container = NULL);
+        Switch(Canvas* parent = NULL);
         virtual Switch* setup(
             const char* labelOff = "Off",
             const char* labelOn = "On",

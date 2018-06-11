@@ -6,19 +6,21 @@
 #include "Mouse.h"
 #include "Painter.h"
 
-#include "Container.h"
+#include "Canvas.h"
 
 #define CONTAINERS 100
 
 namespace GUI {
+    
+    class Container;
 
-    class App: Container {
+    class App {
     public:
         static Window window;
         static Mouse mouse;
         static Painter painter;
-        static Canvas rootCanvas;
-        Container* containers[CONTAINERS] = {NULL};
+//        static Container rootContainer;
+        static Canvas* canvas;
         App(
             const char* title,
             int top = GD_WIN_DEFAULT_TOP,
@@ -27,7 +29,6 @@ namespace GUI {
             int height = GD_WIN_DEFAULT_HEIGHT,
             int bgcolor = GD_WIN_BGCOLOR
         );
-        Container* addContainer(Container* container);
         virtual void init();
         void run();
     };

@@ -4,12 +4,13 @@
 
 namespace GUI {
     
-    Break::Break(Container* container): Canvas(container) {
+    Break::Break(Canvas* parent): Canvas(parent) {
         setup();
     }
     
     Break* Break::setup(int height) {
-        Canvas::setup(GD_AUTOPOSITION, GD_AUTOPOSITION, 0, height, GD_NOMARGIN, GD_NOPADDING, App::rootCanvas.getBgColor(), App::rootCanvas.getBgColor());
+        int bgcolor = App::canvas->getBgColor();
+        Canvas::setup(GD_AUTOPOSITION, GD_AUTOPOSITION, 0, height, GD_NOMARGIN, GD_NOPADDING, bgcolor, bgcolor);
         return this;
     }
     
@@ -18,12 +19,12 @@ namespace GUI {
     }
     
     void Break::tick() {
-        container->cursor.nl(height);
+        parent->cursor.nl(height);
     }
     
     bool Break::draw() {
         
-        container->cursor.nl(height);
+        parent->cursor.nl(height);
         return true;
     }
     

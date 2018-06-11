@@ -2,9 +2,9 @@
 #define LABEL_H
 
 #include "Canvas.h"
-#include "App.h"
 
 namespace GUI {
+
 
     class Label: public Canvas {
     protected:
@@ -15,7 +15,7 @@ namespace GUI {
         virtual int calcHeight();
         
     public:
-        Label(Container* container = NULL);
+        Label(Canvas* parent = NULL);
         virtual Label* setup(
             const char* text = "Label",
             int top = GD_AUTOPOSITION,

@@ -2,7 +2,7 @@
 
 namespace GUI {
     
-    Switch::Switch(Container* container): Button(container) {
+    Switch::Switch(Canvas* parent): Button(parent) {
         setup();
     }
 

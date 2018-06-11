@@ -4,28 +4,29 @@
 #include <graphics.h>
 #include "style.h"
 #include "Counted.h"
-#include "Container.h"
+#include "Cursor.h"
+
+#define CANVASES 40
 
 namespace GUI {
 
-    class Container;
 
     class Canvas: public Counted {
     private:
-        //friend Container;
 
         int lastTop;
         int lastLeft;
         int lastWidth;
         int lastHeight;
         
-
         int top;  // TODO: getter + setter for everything
         int left;
         
+        void findNextWidthAndStepCursor(int current);
+        
     protected:
 
-        Container* container = {NULL};
+        Canvas* parent = {NULL};
         
         int width;
         int height;
@@ -45,9 +46,13 @@ namespace GUI {
         
     public:
         
-        Canvas(Container* container = NULL);
-        Canvas* setContainer(Container* container);
-        Container* getContainer();
+//        POINT offset;
+        Canvas* canvases[CANVASES] = {NULL};
+        Cursor cursor;
+        
+        Canvas(Canvas* parent = NULL);
+        Canvas* setParent(Canvas* canvas);
+        Canvas* getParent();
         virtual Canvas* setup(
             int top = GD_AUTOPOSITION,
             int left = GD_AUTOPOSITION,
@@ -68,6 +73,12 @@ namespace GUI {
             int bgcolor = GD_CANVAS_BGCOLOR,
             int brcolor = GD_CANVAS_BRCOLOR
         );
+
+        Canvas* add(Canvas* canvas);
+        virtual void process();
+//        virtual void ticks();
+//        virtual bool draws();
+        
         virtual void tick();
         virtual bool draw();
         virtual void clear();

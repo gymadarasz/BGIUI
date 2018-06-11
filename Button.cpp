@@ -2,7 +2,7 @@
 
 namespace GUI {
 
-    Button::Button(Container* container): Label(container) {
+    Button::Button(Canvas* parent): Label(parent) {
         setup();
     }
     

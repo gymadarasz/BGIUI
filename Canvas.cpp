@@ -2,14 +2,14 @@
 
 #include "App.h"
 
-#define CANVAS_DEFAULT_WIDTH 128
-#define CANVAS_DEFAULT_HEIGHT 160
+//#define CANVAS_DEFAULT_WIDTH 128
+//#define CANVAS_DEFAULT_HEIGHT 160
 
 namespace GUI {
     
-    Canvas::Canvas(Container* container): Counted() {
+    Canvas::Canvas(Canvas* parent): Counted() {
         setup();
-        setContainer(container);
+        setParent(parent);
     }
     
     Canvas* Canvas::setup(
@@ -36,17 +36,17 @@ namespace GUI {
         return this;
     }
     
-    Canvas* Canvas::setContainer(Container* container) {
-        if (NULL != container && this->container != container) {
-            this->container = container;
-            container->add(this);
+    Canvas* Canvas::setParent(Canvas* parent) {
+        if (NULL != parent && this->parent != parent) {
+            this->parent = parent;
+            parent->add(this);
         }
         changed = true;
         return this;
     }
     
-    Container* Canvas::getContainer() {
-        return container;
+    Canvas* Canvas::getParent() {
+        return parent;
     }
     
     bool Canvas::isChanged() {
@@ -54,6 +54,68 @@ namespace GUI {
         changed = false;
         return ret;
     }
+    
+    
+    
+
+    Canvas* Canvas::add(Canvas* canvas) {
+        for (int i=0; i < CANVASES; i++) {
+            if (NULL == canvases[i]) {
+                canvases[i] = canvas;
+                //floatCanvas(canvas);
+                canvas->setParent(this); // join canvas into this container
+                return canvas;
+            }
+        }
+        printf("container is full of canvases\n");
+        return NULL;
+    }
+
+    void Canvas::findNextWidthAndStepCursor(int current) {
+        if (canvases[current]->isAutoPositioned()) {
+            Canvas* _c = NULL;
+            int fullWidth = canvases[current]->getFullWidth();
+            int fullHeight = canvases[current]->getFullHeight();
+            _c = NULL;
+            for (int j=current+1; j < CANVASES; j++) {
+                if (NULL != canvases[j] && canvases[j]->isAutoPositioned()) {
+                    _c = canvases[j];
+                    break;
+                }
+            }
+            int nxtw = _c?_c->getFullWidth():0;
+            cursor.step(fullWidth, fullHeight, nxtw);
+        }
+    }
+
+    void Canvas::process() {
+        tick();
+        draw();
+        cursor.reset(width);
+        // for each canvases..
+        for (int i=0; i < CANVASES; i++) {
+            if (NULL != canvases[i]) {
+                findNextWidthAndStepCursor(i);
+                canvases[i]->process();
+//                canvases[i]->tick();
+//                canvases[i]->draw();
+            }
+        }
+    }
+//
+//    bool Canvas::draws() {
+//        cursor.reset(width);
+//        // for each canvases..
+//        for (int i=0; i < CANVASES; i++) {
+//            if (NULL != canvases[i]) {
+//                findNextWidthAndStepCursor(i);
+//                
+//            }
+//        }
+//    }
+//    
+    
+    
 
     void Canvas::tick() {
         
@@ -137,7 +199,7 @@ namespace GUI {
         int width = getWidth();
         int height = getHeight();
         //App::painter.box(top-1, left-1, width+2, height+2, App::rootCanvas.getBgColor(), EMPTY_FILL);
-        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, App::rootCanvas.getBgColor(), GD_FILL);
+        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, App::canvas->getBgColor(), GD_FILL);
     }
 
     RECT* Canvas::getRect(RECT* rect) {
@@ -159,14 +221,14 @@ namespace GUI {
     }
     
     int Canvas::getTop() {
-        int ret = container->offset.y;
-        ret += top == GD_AUTOPOSITION ? container->cursor.gety() : top;
+        int ret = NULL == parent ? top : parent->top; //parent->offset.y;
+        ret += top == GD_AUTOPOSITION ? parent->cursor.gety() : top;
         return ret;
     }
     
     int Canvas::getLeft() {
-        int ret = container->offset.x;
-        ret += left == GD_AUTOPOSITION ? container->cursor.getx() : left;
+        int ret = NULL == parent ? left : parent->left;  // container->offset.x;
+        ret += left == GD_AUTOPOSITION ? parent->cursor.getx() : left;
         return ret;
     }
 
