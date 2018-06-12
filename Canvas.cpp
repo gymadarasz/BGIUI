@@ -33,6 +33,7 @@ namespace GUI {
         setHighlighted(false);
         setPushed(false);
         setDisabled(true);
+        setBreak(false);
         return this;
     }
     
@@ -76,6 +77,7 @@ namespace GUI {
             Canvas* _c = NULL;
             int fullWidth = canvases[current]->getFullWidth();
             int fullHeight = canvases[current]->getFullHeight();
+            
             _c = NULL;
             for (int j=current+1; j < CANVASES; j++) {
                 if (NULL != canvases[j] && canvases[j]->isAutoPositioned()) {
@@ -84,19 +86,24 @@ namespace GUI {
                 }
             }
             int nxtw = _c?_c->getFullWidth():0;
-            cursor.step(fullWidth, fullHeight, nxtw);
+            cursor.step(fullWidth, fullHeight, nxtw, canvases[current]->br);
         }
     }
 
-    void Canvas::process() {
-        tick();
-        draw();
+    void Canvas::process(int getsizeonly) {
+        if (!getsizeonly) {
+            process(true);
+            tick();
+            draw();
+        }
         cursor.reset(width);
+
         // for each canvases..
         for (int i=0; i < CANVASES; i++) {
             if (NULL != canvases[i]) {
                 findNextWidthAndStepCursor(i);
-                canvases[i]->process();
+                canvases[i]->process(getsizeonly);
+
 //                canvases[i]->tick();
 //                canvases[i]->draw();
             }
@@ -221,14 +228,14 @@ namespace GUI {
     }
     
     int Canvas::getTop() {
-        int ret = NULL == parent ? top : parent->top; //parent->offset.y;
-        ret += top == GD_AUTOPOSITION ? parent->cursor.gety() : top;
+        int ret = NULL == parent ? top : parent->getTop(); //parent->offset.y;
+        ret += top == GD_AUTOPOSITION ? parent->cursor.getpositiony() : top;
         return ret;
     }
     
     int Canvas::getLeft() {
-        int ret = NULL == parent ? left : parent->left;  // container->offset.x;
-        ret += left == GD_AUTOPOSITION ? parent->cursor.getx() : left;
+        int ret = NULL == parent ? left : parent->getLeft();  // container->offset.x;
+        ret += left == GD_AUTOPOSITION ? parent->cursor.getpositionx() : left;
         return ret;
     }
 
@@ -323,6 +330,11 @@ namespace GUI {
         changed = true;
     }
 
+    void Canvas::setBreak(bool br) {
+        this->br = br;
+        changed = true;
+    }
+
 //    void Canvas::setContainer(Container* container) {
 //        this->container = container;
 //        this->container->add(this);
@@ -370,11 +382,21 @@ namespace GUI {
     }
 
     int Canvas::calcWidth() {
-        return GD_CANVAS_WIDTH;
+        int w = cursor.getwidth();
+        if (w == GD_AUTOSIZE) {
+            process(true);
+            w = cursor.getwidth();
+        }
+        return w;
     }
 
     int Canvas::calcHeight() {
-        return GD_CANVAS_HEIGHT;
+        int h = cursor.getheight();
+        if (h == GD_AUTOSIZE) {
+            process(true);
+            h = cursor.getwidth();
+        }
+        return h;
     }
 
 }

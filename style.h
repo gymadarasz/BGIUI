@@ -4,8 +4,8 @@
 // --------- STYLE DEFINITIONS DEFAULTS --------------
 
 // common
-#define GD_AUTOSIZE         -1
 #define GD_AUTOPOSITION     -1
+#define GD_AUTOSIZE         -1
 #define GD_NOMARGIN         {0, 0, 0, 0}
 #define GD_NOPADDING        {0, 0, 0, 0}
 #define GD_FILL             true
@@ -22,24 +22,18 @@
 #define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
 
 // window
-#define GD_WIN_BGCOLOR          GD_BGCOLOR
 #define GD_WIN_DEFAULT_TOP      0
 #define GD_WIN_DEFAULT_LEFT     0
 #define GD_WIN_DEFAULT_WIDTH    800
 #define GD_WIN_DEFAULT_HEIGHT   600
-
-// containers
-#define GD_CNTR_BGCOLOR     BLUE //GD_WIN_BGCOLOR
-#define GD_CNTR_TXCOLOR     GD_TXCOLOR
-#define GD_CNTR_BRCOLOR     GD_WIN_BGCOLOR
-#define GD_CNTR_TEXT        ""
+#define GD_WIN_BGCOLOR          GD_BGCOLOR
 
 // break
 #define GD_BREAK_HEIGHT     0   // min line height
 
 // canvas
-#define GD_CANVAS_WIDTH     128
-#define GD_CANVAS_HEIGHT    160
+//#define GD_CANVAS_WIDTH     128
+//#define GD_CANVAS_HEIGHT    160
 #define GD_CANVAS_LMARGIN   GD_WMARGIN
 #define GD_CANVAS_RMARGIN   GD_WMARGIN
 #define GD_CANVAS_TMARGIN   GD_HMARGIN
@@ -88,14 +82,14 @@
 
 // switch
 
-#define GD_SWITCH_LMARGIN   GD_WMARGIN
-#define GD_SWITCH_RMARGIN   GD_WMARGIN
-#define GD_SWITCH_TMARGIN   GD_HMARGIN
-#define GD_SWITCH_BMARGIN   GD_HMARGIN
-#define GD_SWITCH_LPADDING  GD_WPADDING
-#define GD_SWITCH_RPADDING  GD_WPADDING
-#define GD_SWITCH_TPADDING  GD_HPADDING
-#define GD_SWITCH_BPADDING  GD_HPADDING
+#define GD_SWITCH_LMARGIN   GD_BTN_LMARGIN
+#define GD_SWITCH_RMARGIN   GD_BTN_RMARGIN
+#define GD_SWITCH_TMARGIN   GD_BTN_TMARGIN
+#define GD_SWITCH_BMARGIN   GD_BTN_BMARGIN
+#define GD_SWITCH_LPADDING  GD_BTN_LPADDING
+#define GD_SWITCH_RPADDING  GD_BTN_RPADDING
+#define GD_SWITCH_TPADDING  GD_BTN_TPADDING
+#define GD_SWITCH_BPADDING  GD_BTN_BPADDING
 #define GD_SWITCH_BGCOLOR   GD_BTN_BGCOLOR
 #define GD_SWITCH_TXCOLOR   GD_BTN_TXCOLOR
 #define GD_SWITCH_BRCOLOR   GD_BTN_BRCOLOR

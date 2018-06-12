@@ -34,6 +34,7 @@ namespace GUI {
         RECT padding;
         int bgcolor;
         int brcolor;
+        bool br;
         bool disabled;
         bool highlighted;
         bool pushed;
@@ -56,8 +57,8 @@ namespace GUI {
         virtual Canvas* setup(
             int top = GD_AUTOPOSITION,
             int left = GD_AUTOPOSITION,
-            int width = GD_CANVAS_WIDTH,
-            int height = GD_CANVAS_HEIGHT,
+            int width = GD_AUTOSIZE,
+            int height = GD_AUTOSIZE,
             RECT margin = {
                 GD_CANVAS_LMARGIN,
                 GD_CANVAS_RMARGIN,
@@ -75,7 +76,7 @@ namespace GUI {
         );
 
         Canvas* add(Canvas* canvas);
-        virtual void process();
+        virtual void process(int getsizeonly = false);
 //        virtual void ticks();
 //        virtual bool draws();
         
@@ -110,6 +111,8 @@ namespace GUI {
         virtual void setDisabled(bool disabled);
         virtual void setHighlighted(bool highlighted);
         virtual void setPushed(bool pushed);
+        
+        virtual void setBreak(bool br = true);
         
         virtual void onTick();
         virtual void onClick(int x, int y);

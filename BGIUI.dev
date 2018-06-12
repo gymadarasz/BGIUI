@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=3
 CompilerSettings=00000001c0000000001000000
-UnitCount=28
+UnitCount=26
 
 [VersionInfo]
 Major=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=Label.h
+FileName=Button.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -71,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=Label.cpp
+FileName=Button.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -111,46 +111,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=Break.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit24]
-FileName=Break.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit17]
-FileName=Counted.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit18]
-FileName=Counted.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit25]
 FileName=Switch.h
 CompileCpp=1
 Folder=
@@ -160,8 +120,48 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit26]
+[Unit24]
 FileName=Switch.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit17]
+FileName=Label.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=Label.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=Cursor.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit26]
+FileName=Cursor.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -230,18 +230,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit15]
-FileName=Container.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit16]
-FileName=Container.h
+FileName=Counted.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -261,7 +251,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit22]
-FileName=Button.cpp
+FileName=Break.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -271,7 +261,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit21]
-FileName=Button.h
+FileName=Break.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -322,6 +312,16 @@ BuildCmd=
 
 [Unit13]
 FileName=App.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit15]
+FileName=Counted.h
 CompileCpp=1
 Folder=
 Compile=1
