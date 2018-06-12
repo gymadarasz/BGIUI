@@ -39,11 +39,14 @@ namespace GUI {
         bool highlighted;
         bool pushed;
         bool changed;
+        bool hlbrchanged;
         
         virtual int calcWidth();
         virtual int calcHeight();
 
         bool isChanged();
+        bool isHlBrChanged();
+        bool RectEqu(RECT r1, RECT r2);
         
     public:
         
@@ -81,7 +84,7 @@ namespace GUI {
 //        virtual bool draws();
         
         virtual void tick();
-        virtual bool draw();
+        virtual void draw();
         virtual void clear();
         virtual bool inside(POINT point);
         virtual RECT* getRect(RECT* rect);

@@ -16,6 +16,7 @@ namespace GUI {
         setcolor(color);
         line(x, y1, x, y2);
         setcolor(c);
+//        delay(1);
     }
     
     void Painter::vline(int x1, int y, int x2, int color) {
@@ -30,6 +31,7 @@ namespace GUI {
         setcolor(color);
         line(x1, y, x2, y);
         setcolor(c);
+//        delay(1);
     }
 
     void Painter::box(int top, int left, int width, int height, int color, bool fill) {

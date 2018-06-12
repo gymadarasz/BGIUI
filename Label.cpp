@@ -41,7 +41,7 @@ namespace GUI {
     void Label::clearText() {
         int w = textwidth((char*)getText());
         int h = textheight((char*)getText());
-        int bgcolor = App::canvas->getBgColor();
+        int bgcolor = getBgColor();
         App::painter.text(getTop() + (getHeight()-h)/2, getLeft() + (getWidth()-w)/2,
             bgcolor, bgcolor, getText());
     }
@@ -51,13 +51,13 @@ namespace GUI {
     }
 
     void Label::setText(const char* text) {
-        // clear first if text already set because maybe text changes the size
-        if (NULL != getText()) {
-            clearText();
-            if (width == GD_AUTOSIZE || height == GD_AUTOSIZE) {
-                clear();
-            }
-        }
+//        // clear first if text already set because maybe text changes the size
+//        if (NULL != getText()) {
+//            clearText();
+//            if (width == GD_AUTOSIZE || height == GD_AUTOSIZE) {
+//                clear();
+//            }
+//        }
         this->text = text;
         changed = true;
     }

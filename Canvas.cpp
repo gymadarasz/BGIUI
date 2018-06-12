@@ -41,21 +41,27 @@ namespace GUI {
         if (NULL != parent && this->parent != parent) {
             this->parent = parent;
             parent->add(this);
+            changed = true;
         }
-        changed = true;
         return this;
     }
     
     Canvas* Canvas::getParent() {
         return parent;
     }
-    
+
     bool Canvas::isChanged() {
         bool ret = changed;
         changed = false;
         return ret;
     }
-    
+
+    bool Canvas::isHlBrChanged() {
+        bool ret = hlbrchanged;
+        hlbrchanged = false;
+        return ret;
+    }
+
     
     
 
@@ -174,8 +180,10 @@ namespace GUI {
 
     }
     
-    bool Canvas::draw() {
-        if (isChanged()) {
+    void Canvas::draw() {
+        bool chg = isChanged();
+        bool hlchg = isHlBrChanged();
+        if (chg || hlchg) {
             int top = getTop();
             int left = getLeft();
             int width = getWidth();
@@ -188,25 +196,28 @@ namespace GUI {
             ) {
                 clear(/*lasts*/);
             }
-            // todo: use class variable instead GD_BRSIZE
-            App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE, height+GD_BRSIZE, getBrColor(), GD_NOFILL);
-            App::painter.box(top, left, width, height, getBgColor(), GD_FILL);
+            if (hlchg) {
+                // todo: use class variable instead GD_BRSIZE
+                App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE, height+GD_BRSIZE, getBrColor(), GD_NOFILL);
+            }
+            if (chg) {
+                App::painter.box(top, left, width, height, getBgColor(), GD_FILL);
+            }
             lastTop = top;
             lastLeft = left;
             lastWidth = width;
             lastHeight = height;
-            return true;
         }
-        return false;
     }
     
     void Canvas::clear() {
-        int top = getTop();
-        int left = getLeft();
-        int width = getWidth();
-        int height = getHeight();
+        int top = lastTop; //getTop();
+        int left = lastLeft; //getLeft();
+        int width = lastWidth; //getWidth();
+        int height = lastHeight; //getHeight();
         //App::painter.box(top-1, left-1, width+2, height+2, App::rootCanvas.getBgColor(), EMPTY_FILL);
-        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, App::canvas->getBgColor(), GD_FILL);
+        int bgcolor = getBgColor();
+        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, bgcolor, GD_FILL);
     }
 
     RECT* Canvas::getRect(RECT* rect) {
@@ -256,7 +267,7 @@ namespace GUI {
     }
 
     int Canvas::getBgColor() {
-        return getPushed() ? GD_PSBGCOLOR : bgcolor;
+        return getPushed() ? GD_PSBGCOLOR : (bgcolor == GD_NOCOLOR ? (parent ? parent->getBgColor() : bgcolor) : bgcolor);
     }
 
     int Canvas::getBrColor() {
@@ -276,63 +287,100 @@ namespace GUI {
     }
 
     void Canvas::setTop(int top) {
-        this->top = top;
-        changed = true;
+        if (this->top != top) {
+            this->top = top;
+            changed = true;
+        }
     }
 
     void Canvas::setLeft(int left) {
-        this->left = left;
-        changed = true;
+        if (this->left != left) {
+           this->left = left;
+           changed = true;
+        }
     }
 
     void Canvas::setWidth(int width) {
-        this->width = width;
-        changed = true;
+        if (this->width != width) {
+            this->width = width;
+            changed = true;
+        }
     }
 
     void Canvas::setHeight(int height) {
-        this->height = height;
-        changed = true;
+        if (this->height != height) {
+            this->height = height;
+            changed = true;
+        }
+    }
+    
+    bool Canvas::RectEqu(RECT r1, RECT r2) {
+        return
+            r1.top == r2.top &&
+            r1.left == r2.left &&
+            r1.bottom == r2.bottom &&
+            r1.right == r2.right;
     }
     
     void Canvas::setMargin(RECT margin) {
-        this->margin = margin;
-        changed = true;
+        if (!RectEqu(this->margin, margin)) {
+            this->margin = margin;
+            changed = true;
+        }
     }
 
     void Canvas::setPadding(RECT padding) {
-        this->padding = padding;
-        changed = true;
+        if (!RectEqu(this->padding, padding)) {
+            this->padding = padding;
+            changed = true;
+        }
     }
 
     void Canvas::setBgColor(int bgcolor) {
-        this->bgcolor = bgcolor;
-        changed = true;
+        if (this->bgcolor != bgcolor) {
+            this->bgcolor = bgcolor;
+            changed = true;
+        }
     }
 
     void Canvas::setBrColor(int brcolor) {
-        this->brcolor = brcolor;
-        changed = true;
+        if (this->brcolor != brcolor) {
+            this->brcolor = brcolor;
+            hlbrchanged = true;
+        }
     }
     
     void Canvas::setDisabled(bool disabled) {
-        this->disabled = disabled;
-        changed = true;
+        if (this->disabled != disabled) {
+            this->disabled = disabled;
+            changed = true;
+        }
     }
 
     void Canvas::setHighlighted(bool highlighted) {
-        this->highlighted = getDisabled() ? false : highlighted;
-        changed = true;
+        //printf("highlihgt to [%d]\n", highlighted);
+        bool newhl = getDisabled() ? false : highlighted;
+        //printf("new highlihgt => [%d]\n", newhl);
+        if (this->highlighted != newhl) {
+            //printf("highlihgted <= [%d]\n", newhl);
+            this->highlighted = newhl;
+            hlbrchanged = true;
+        }
     }
 
     void Canvas::setPushed(bool pushed) {
-        this->pushed = getDisabled() ? false : pushed;
-        changed = true;
+        bool newps = getDisabled() ? false : pushed;
+        if (this->pushed != newps) {
+            this->pushed = newps;
+            changed = true;
+        }
     }
 
     void Canvas::setBreak(bool br) {
-        this->br = br;
-        changed = true;
+        if (this->br != br) {
+            this->br = br;
+            changed = true;
+        }
     }
 
 //    void Canvas::setContainer(Container* container) {

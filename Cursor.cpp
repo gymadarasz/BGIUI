@@ -13,15 +13,16 @@ namespace GUI {
     }
 
     void Cursor::step(int x, int y, int nextx, bool br) {
-        if (br) {
-            newline();
-        }
         positionx = currentx;
         positiony = currenty;
         currentx += x;
         maxy = maxy < y ? y : maxy;
-        autowidth = currentx + nextx;
-        if (autowidth > getwidth()) {
+        if (width == GD_AUTOSIZE) {
+            autowidth = currentx > autowidth ? currentx : autowidth;
+        } else {
+            autowidth = currentx + nextx;
+        }
+        if (br || autowidth > getwidth()) {
             newline();
         }
     }

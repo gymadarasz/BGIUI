@@ -32,21 +32,31 @@ namespace GUI {
         // override it and add element here...
         (new Label(canvas))->setup("Hello World!");
         
-        (new Break(canvas));
+        (new Break(canvas))->setup();
 
         (new Label(canvas))->setup("One");
         (new Label(canvas))->setup("Two");
         (new Label(canvas))->setup("Three");
         (new Label(canvas))->setup("Four");
+
+        (new Break(canvas))->setup();
         
         Canvas* cntr = (new Canvas(canvas))->setup();
 
         (new Button(cntr))->setup();
+
+        (new Break(cntr))->setup();
+        
         (new Label(cntr))->setup("In container!");
-        (new Break(cntr));
+
+        (new Break(cntr))->setup();
+
         (new Label(cntr))->setup("Hello1!...");
         (new Label(cntr))->setup("Hello2!...");
         (new Label(cntr))->setup("Hello3!...");
+
+        (new Break(cntr))->setup();
+
         (new Switch(cntr))->setup();
         
         (new Label(canvas))->setup("Next to the container");
