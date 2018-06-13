@@ -38,7 +38,7 @@ namespace GUI {
     }
     
     Canvas* Canvas::setParent(Canvas* parent) {
-        if (NULL != parent && this->parent != parent) {
+        if (/*NULL != parent && */this->parent != parent) {
             this->parent = parent;
             parent->add(this);
             changed = true;
@@ -180,7 +180,7 @@ namespace GUI {
 
     }
     
-    void Canvas::draw() {
+    bool Canvas::draw() {
         bool chg = isChanged();
         bool hlchg = isHlBrChanged();
         if (chg || hlchg) {
@@ -207,7 +207,9 @@ namespace GUI {
             lastLeft = left;
             lastWidth = width;
             lastHeight = height;
+            return true;
         }
+        return false;
     }
     
     void Canvas::clear() {
@@ -431,19 +433,19 @@ namespace GUI {
 
     int Canvas::calcWidth() {
         int w = cursor.getwidth();
-        if (w == GD_AUTOSIZE) {
-            process(true);
-            w = cursor.getwidth();
-        }
+//        if (w == GD_AUTOSIZE) {
+//            //process(true);
+//            w = cursor.getwidth();
+//        }
         return w;
     }
 
     int Canvas::calcHeight() {
         int h = cursor.getheight();
-        if (h == GD_AUTOSIZE) {
-            process(true);
-            h = cursor.getwidth();
-        }
+//        if (h == GD_AUTOSIZE) {
+//            //process(true);
+//            h = cursor.getwidth();
+//        }
         return h;
     }
 

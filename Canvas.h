@@ -84,7 +84,7 @@ namespace GUI {
 //        virtual bool draws();
         
         virtual void tick();
-        virtual void draw();
+        virtual bool draw();
         virtual void clear();
         virtual bool inside(POINT point);
         virtual RECT* getRect(RECT* rect);
@@ -128,6 +128,7 @@ namespace GUI {
 
         // cursor
         virtual bool isAutoPositioned();
+        
     };
 
 }

@@ -38,6 +38,10 @@ namespace GUI {
     void Button::onMouseUp(int x, int y) {
         setPushed(false);
     }
+    
+    void Button::onMouseLeave(int x, int y) {
+        setPushed(false);
+    }
 
     // ---- protected
 //

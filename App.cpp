@@ -5,6 +5,7 @@
 #include "Break.h"
 #include "Button.h"
 #include "Switch.h"
+#include "Scroll.h"
 
 
 namespace GUI {
@@ -63,7 +64,7 @@ namespace GUI {
         
 
         Canvas* cntr2 = (new Canvas(canvas))->setup(150, 300, 50, 50);
-        //(new Canvas(cntr2))->setup(0, 0, 50, 50, GD_NOMARGIN, GD_NOPADDING, 2, 3);
+        (new Canvas(cntr2))->setup(0, 0, 50, 50, GD_NOMARGIN, GD_NOPADDING, 2, 3);
         (new Label(cntr2))->setup("A");
         (new Label(cntr2))->setup("BB");
         (new Label(cntr2))->setup("CCC");
@@ -74,6 +75,10 @@ namespace GUI {
         (new Label(cntr2))->setup("HHH");
         (new Label(cntr2))->setup("IIII");
         (new Label(cntr2))->setup("JJJJJ");
+
+        (new Scroll(canvas))->setup(); //GD_HORIZONTAL); //->setWidth(100);
+        (new Scroll(canvas))->setup(GD_VERTICAL); //->setWidth(100);
+        
         
     }
 

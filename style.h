@@ -10,6 +10,8 @@
 #define GD_NOPADDING        {0, 0, 0, 0}
 #define GD_FILL             true
 #define GD_NOFILL           false
+#define GD_HORIZONTAL       true
+#define GD_VERTICAL         !GD_HORIZONTAL
 #define GD_BRSIZE           1
 #define GD_WMARGIN          GD_BRSIZE
 #define GD_HMARGIN          GD_BRSIZE
@@ -20,6 +22,8 @@
 #define GD_TXCOLOR          BLACK
 #define GD_HLBRCOLOR        WHITE       // highlighted border color on mouse over
 #define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
+
+#define GD_SCROLL_DEFAULT_SIZE  100
 
 // window
 #define GD_WIN_DEFAULT_TOP      0
@@ -97,6 +101,19 @@
 //#define GD_SWITCH_ON_TEXT   "On"
 //#define GD_SWITCH_OFF_TEXT  "_/_"
 //#define GD_SWITCH_ON_TEXT   "___"
+
+// scroll
+#define GD_SCROLL_LMARGIN   GD_WMARGIN
+#define GD_SCROLL_RMARGIN   GD_WMARGIN
+#define GD_SCROLL_TMARGIN   GD_HMARGIN
+#define GD_SCROLL_BMARGIN   GD_HMARGIN
+#define GD_SCROLL_LPADDING  GD_WPADDING
+#define GD_SCROLL_RPADDING  GD_WPADDING
+#define GD_SCROLL_TPADDING  GD_HPADDING
+#define GD_SCROLL_BPADDING  GD_HPADDING
+#define GD_SCROLL_BGCOLOR   GD_BGCOLOR
+#define GD_SCROLL_BRCOLOR   LIGHTGRAY
+
 
 // ----------------------------------------------------
 
