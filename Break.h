@@ -6,8 +6,6 @@
 namespace GUI {
     
     class Break: public Canvas {
-    protected:
-        bool isChanged();
     public:
         Break(Canvas* parent = NULL);
         virtual Break* setup(int height = GD_BREAK_HEIGHT);

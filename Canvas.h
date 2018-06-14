@@ -50,7 +50,7 @@ namespace GUI {
         virtual int calcWidth();
         virtual int calcHeight();
 
-        bool isChanged();
+        virtual bool isChanged();
         bool isHlBrChanged();
         bool RectEqu(RECT r1, RECT r2);
         
