@@ -7,6 +7,10 @@
 #include "Switch.h"
 #include "Scroll.h"
 
+int onHelloClick(GUI::Canvas*, ...) {
+    printf("Hello\n");
+    return 0;
+}
 
 namespace GUI {
     
@@ -44,7 +48,7 @@ namespace GUI {
         
         Canvas* cntr = (new Canvas(canvas))->setup();
 
-        (new Button(cntr))->setup();
+        (new Button(cntr))->setup()->onClick = onHelloClick;
 
         (new Break(cntr))->setup();
         

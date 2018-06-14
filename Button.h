@@ -35,11 +35,11 @@ namespace GUI {
         );
 //        virtual void onMouseOver(int x, int y);
 //        virtual void onMouseLeave(int x, int y);
-        virtual void onMouseDown(int x, int y);
-        virtual void onMouseUp(int x, int y);
-        virtual void onMouseLeave(int x, int y);
     };
 
+    int onButtonMouseDown(Canvas*, ...);
+    int onButtonMouseUp(Canvas*, ...);
+    int onButtonMouseLeave(Canvas*, ...);
 }
 
 #endif

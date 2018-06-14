@@ -8,9 +8,9 @@ namespace GUI {
     
     class Scroll: public Canvas {
     protected:
-        int value;
-        int minValue;
-        int maxValue;
+        double value;
+//        int minValue;
+//        int maxValue;
         int direction;
         Button* minusBtn;
         Button* plusBtn;
@@ -24,9 +24,9 @@ namespace GUI {
         Scroll(Canvas* parent = NULL);
         virtual Scroll* setup(
             bool direction = GD_HORIZONTAL,
-            int value = 0,
-            int minValue = 0,
-            int maxValue = 255,
+            double value = 0,
+//            int minValue = 0,
+//            int maxValue = 255,
             const char* textPlus = "+",
             const char* textMinus = "-",
             int top = GD_AUTOPOSITION,
@@ -51,17 +51,25 @@ namespace GUI {
 
         virtual bool draw();
         
-        virtual void setValue(int value);
-        virtual void setMinValue(int minValue);
-        virtual void setMaxValue(int maxValue);
+        virtual void setValue(double value, int left = GD_AUTOPOSITION);
+//        virtual void setMinValue(int minValue);
+//        virtual void setMaxValue(int maxValue);
         virtual void setDirection(bool direction);
         
         virtual int getValue();
-        virtual int getMinValue();
-        virtual int getMaxValue();
+//        virtual int getMinValue();
+//        virtual int getMaxValue();
         virtual bool getDirection();
+        virtual Button* getScrollButton();
         
     };
+
+//    int onScrollMinusButtonClick(Canvas* areaButton, ...);
+//    int onScrollPlusButtonClick(Canvas* areaButton, ...);
+//    int onScrollAreaButtonClick(Canvas* areaButton, ...);
+    int onScrollAreaButtonClick(Canvas* areaBtn, ...);
+    int onScrollAreaButtonMouseUp(Canvas* areaBtn, ...);
+    int onScrollAreaButtonMouseLeave(Canvas* areaBtn, ...);
 
 }
 

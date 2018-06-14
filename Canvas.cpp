@@ -8,8 +8,21 @@
 namespace GUI {
     
     Canvas::Canvas(Canvas* parent): Counted() {
-        setup();
         setParent(parent);
+        clearEvents();
+        setup();
+    }
+    
+    void Canvas::clearEvents() {
+        onTick = NULL;
+        onClick = NULL;
+        onDblClick = NULL;
+        onMouseMove = NULL;
+        onMouseDrag = NULL;
+        onMouseOver = NULL;
+        onMouseLeave = NULL;
+        onMouseDown = NULL;
+        onMouseUp = NULL;
     }
     
     Canvas* Canvas::setup(
@@ -133,7 +146,9 @@ namespace GUI {
     void Canvas::tick() {
         
 
-        onTick();
+        if (onTick) {
+            onTick(this);
+        }
 
         if (getDisabled()) {
             return ;
@@ -143,39 +158,60 @@ namespace GUI {
         int left = getLeft();
         
         // click?
-        if (App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
-            onClick(App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
+        if (
+            onClick && App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
+            onClick(this, App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
         }
 
         // dblclick?
-        if (App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
-            onDblClick(App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
+        if ((onClick || onDblClick) && App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
+//            if (onClick) {
+//                onClick(this, App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
+//            }
+            if (onDblClick) {
+                onDblClick(this, App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
+            }
         }
 
         // mouse move, over, leave?
         if (App::mouse.events.onMouseMove.happend) {
-            if (inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
+            if (onMouseMove && inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
                 onMouseMove(
+                    this,
                     App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top,
                     App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
                 );
             } else if (inside(App::mouse.events.onMouseMove.current)) {
                 setHighlighted(true);
-                onMouseOver(App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
+                if (onMouseOver) {
+                    onMouseOver(this, App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
+                }
             } else if (inside(App::mouse.events.onMouseMove.previous)) {
                 setHighlighted(false);
-                onMouseLeave(App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
+                if (onMouseLeave) {
+                    onMouseLeave(this, App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
+                }
+            }
+        }
+        
+        if (App::mouse.events.onMouseDrag.happend) {
+            if (onMouseDrag && inside(App::mouse.events.onMouseDrag.current) && inside(App::mouse.events.onMouseDrag.previous)) {
+                onMouseDrag(
+                    this,
+                    App::mouse.events.onMouseDrag.current.x-left, App::mouse.events.onMouseDrag.current.y-top,
+                    App::mouse.events.onMouseDrag.previous.x-left, App::mouse.events.onMouseDrag.previous.y-top
+                );
             }
         }
 
         // mouse down?
-        if (App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
-            onMouseDown(App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
+        if (onMouseDown && App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
+            onMouseDown(this, App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
         }
 
         // mouse up?
-        if (App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
-            onMouseUp(App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
+        if (onMouseUp && App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
+            onMouseUp(this, App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
         }
 
     }
@@ -378,6 +414,10 @@ namespace GUI {
         }
     }
 
+    void Canvas::setChanged(bool changed) {
+        this->changed = changed;
+    }
+
     void Canvas::setBreak(bool br) {
         if (this->br != br) {
             this->br = br;
@@ -405,23 +445,23 @@ namespace GUI {
 //    }
 
 
-    void Canvas::onTick() {}
-
-    void Canvas::onClick(int x, int y) {
-        printf("Click on elem[%d]\n", getId());
-    }
-
-    void Canvas::onDblClick(int x, int y) {}
-
-    void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {}
-
-    void Canvas::onMouseOver(int x, int y) {}
-
-    void Canvas::onMouseLeave(int x, int y) {}
-
-    void Canvas::onMouseDown(int x, int y) {}
-
-    void Canvas::onMouseUp(int x, int y) {}
+//    void Canvas::onTick() {}
+//
+//    void Canvas::onClick(int x, int y) {
+//        printf("Click on elem[%d]\n", getId());
+//    }
+//
+//    void Canvas::onDblClick(int x, int y) {}
+//
+//    void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {}
+//
+//    void Canvas::onMouseOver(int x, int y) {}
+//
+//    void Canvas::onMouseLeave(int x, int y) {}
+//
+//    void Canvas::onMouseDown(int x, int y) {}
+//
+//    void Canvas::onMouseUp(int x, int y) {}
 
 
 
@@ -433,19 +473,19 @@ namespace GUI {
 
     int Canvas::calcWidth() {
         int w = cursor.getwidth();
-//        if (w == GD_AUTOSIZE) {
-//            //process(true);
-//            w = cursor.getwidth();
-//        }
+        if (w == GD_AUTOSIZE) {
+            //process(true);
+            w = cursor.getwidth();
+        }
         return w;
     }
 
     int Canvas::calcHeight() {
         int h = cursor.getheight();
-//        if (h == GD_AUTOSIZE) {
-//            //process(true);
-//            h = cursor.getwidth();
-//        }
+        if (h == GD_AUTOSIZE) {
+            //process(true);
+            h = cursor.getwidth();
+        }
         return h;
     }
 

@@ -10,7 +10,10 @@
 
 namespace GUI {
 
+    class Canvas;
 
+    typedef (*CanvasEvent)(Canvas*, ...);
+    
     class Canvas: public Counted {
     private:
 
@@ -40,7 +43,9 @@ namespace GUI {
         bool pushed;
         bool changed;
         bool hlbrchanged;
-        
+
+//        virtual int calcTop();
+//        virtual int calcLeft();
         virtual int calcWidth();
         virtual int calcHeight();
 
@@ -50,6 +55,17 @@ namespace GUI {
         
     public:
         
+        // events
+        CanvasEvent onTick;
+        CanvasEvent onClick;
+        CanvasEvent onDblClick;
+        CanvasEvent onMouseMove;
+        CanvasEvent onMouseDrag;
+        CanvasEvent onMouseOver;
+        CanvasEvent onMouseLeave;
+        CanvasEvent onMouseDown;
+        CanvasEvent onMouseUp;
+        
 //        POINT offset;
         Canvas* canvases[CANVASES] = {NULL};
         Cursor cursor;
@@ -57,6 +73,7 @@ namespace GUI {
         Canvas(Canvas* parent = NULL);
         Canvas* setParent(Canvas* canvas);
         Canvas* getParent();
+        virtual void clearEvents();
         virtual Canvas* setup(
             int top = GD_AUTOPOSITION,
             int left = GD_AUTOPOSITION,
@@ -114,17 +131,17 @@ namespace GUI {
         virtual void setDisabled(bool disabled);
         virtual void setHighlighted(bool highlighted);
         virtual void setPushed(bool pushed);
-        
+        virtual void setChanged(bool changed);
         virtual void setBreak(bool br = true);
         
-        virtual void onTick();
-        virtual void onClick(int x, int y);
-        virtual void onDblClick(int x, int y);
-        virtual void onMouseMove(int x, int y, int prevx, int prevy);
-        virtual void onMouseOver(int x, int y);
-        virtual void onMouseLeave(int x, int y);
-        virtual void onMouseDown(int x, int y);
-        virtual void onMouseUp(int x, int y);
+//        virtual void onTick();
+//        virtual void onClick(int x, int y);
+//        virtual void onDblClick(int x, int y);
+//        virtual void onMouseMove(int x, int y, int prevx, int prevy);
+//        virtual void onMouseOver(int x, int y);
+//        virtual void onMouseLeave(int x, int y);
+//        virtual void onMouseDown(int x, int y);
+//        virtual void onMouseUp(int x, int y);
 
         // cursor
         virtual bool isAutoPositioned();

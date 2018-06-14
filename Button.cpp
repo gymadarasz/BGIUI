@@ -20,6 +20,9 @@ namespace GUI {
     ) {
         Label::setup(text, top, left, width, height, margin, padding, bgcolor, txcolor, brcolor);
         setDisabled(false);
+        onMouseDown = onButtonMouseDown;
+        onMouseUp = onButtonMouseUp;
+        onMouseLeave = onButtonMouseLeave;
         return this;
     }
 
@@ -30,18 +33,24 @@ namespace GUI {
 //    void Button::onMouseLeave(int x, int y) {
 //        Canvas::onMouseLeave(x, y);
 //    }
-    
-    void Button::onMouseDown(int x, int y) {
-        setPushed(true);
+
+
+    int onButtonMouseDown(Canvas* button, ...) {
+        button->setPushed(true);
+        return 0;
     }
 
-    void Button::onMouseUp(int x, int y) {
-        setPushed(false);
+    int onButtonMouseUp(Canvas* button, ...) {
+        button->setPushed(false);
+        return 0;
     }
-    
-    void Button::onMouseLeave(int x, int y) {
-        setPushed(false);
+
+    int onButtonMouseLeave(Canvas* button, ...) {
+        button->setPushed(false);
+        return 0;
     }
+
+}
 
     // ---- protected
 //
@@ -53,5 +62,4 @@ namespace GUI {
 //        return textheight((char*)getText()) + GD_BTN_HPADDING*2;
 //    }
 
-}
 

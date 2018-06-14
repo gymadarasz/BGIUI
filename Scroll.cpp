@@ -10,36 +10,40 @@ namespace GUI {
     }
     
     Scroll* Scroll::setup(
-            bool direction,
-            int value,
-            int minValue,
-            int maxValue,
-            const char* textPlus,
-            const char* textMinus,
-            int top,
-            int left,
-            int width,
-            int height,
-            RECT margin,
-            RECT padding,
-            int bgcolor,
-            int brcolor
+        bool direction,
+        double value,
+//        int minValue,
+//        int maxValue,
+        const char* textPlus,
+        const char* textMinus,
+        int top,
+        int left,
+        int width,
+        int height,
+        RECT margin,
+        RECT padding,
+        int bgcolor,
+        int brcolor
     ) {
         Canvas::setup(top, left, width, height, margin, padding, bgcolor, brcolor);
-        setValue(value);
-        setMinValue(minValue);
-        setMaxValue(maxValue);
+//        setMinValue(minValue);
+//        setMaxValue(maxValue);
         setDirection(direction);
 
         minusBtn = (new Button(this))->setup(textMinus);
-//        minusBtn->on(ON_CLICK, onMinusClick);
+        //minusBtn->onClick = onScrollMinusButtonClick;
         
         if (direction == GD_VERTICAL) {
             new Break(this);
         }
         
         areaBtn = (new Button(this))->setup("");
+        areaBtn->onMouseUp = onScrollAreaButtonMouseUp;
+        areaBtn->onMouseLeave = onScrollAreaButtonMouseLeave;
+        areaBtn->onClick = onScrollAreaButtonClick;
+
         scrollBtn = (new Button(areaBtn))->setup(" ");
+        
         plusBtn = (new Button(this))->setup(textPlus);
 
         setBgColor(bgcolor);
@@ -57,6 +61,8 @@ namespace GUI {
             areaBtn->setWidth(this->getWidth());
         }
         
+        setValue(value);
+        
         return this;
     }
 
@@ -64,26 +70,30 @@ namespace GUI {
         return Canvas::draw();
     }
 
-    void Scroll::setValue(int value) {
+    void Scroll::setValue(double value, int left) {
         if (this->value != value) {
             this->value = value;
             changed = true;
         }
+        if (left == GD_AUTOPOSITION) {
+            left = value * getWidth();
+        }
+        scrollBtn->setLeft(left);
     }
 
-    void Scroll::setMinValue(int minValue) {
-        if (this->minValue != minValue) {
-            this->minValue = minValue;
-            changed = true;
-        }
-    }
-
-    void Scroll::setMaxValue(int maxValue) {
-        if (this->maxValue != maxValue) {
-            this->maxValue = maxValue;
-            changed = true;
-        }
-    }
+//    void Scroll::setMinValue(int minValue) {
+//        if (this->minValue != minValue) {
+//            this->minValue = minValue;
+//            changed = true;
+//        }
+//    }
+//
+//    void Scroll::setMaxValue(int maxValue) {
+//        if (this->maxValue != maxValue) {
+//            this->maxValue = maxValue;
+//            changed = true;
+//        }
+//    }
     
     void Scroll::setDirection(bool direction) {
         if (this->direction != direction) {
@@ -101,13 +111,13 @@ namespace GUI {
         return value;
     }
 
-    int Scroll::getMinValue() {
-        return minValue;
-    }
-
-    int Scroll::getMaxValue() {
-        return maxValue;
-    }
+//    int Scroll::getMinValue() {
+//        return minValue;
+//    }
+//
+//    int Scroll::getMaxValue() {
+//        return maxValue;
+//    }
 
     // ---
 
@@ -134,5 +144,61 @@ namespace GUI {
         }
         return h;
     }
+    
+    Button* Scroll::getScrollButton() {
+        return scrollBtn;
+    }
+    
 
+    int onScrollAreaButtonClick(Canvas* areaBtn, ...) {
+        va_list args;
+        va_start(args, areaBtn);
+        int x = va_arg(args, int);
+        int y = va_arg(args, int);
+        va_end(args);
+        
+        printf("SCROLL-CLICK:(%d, %d); ", x, y);
+        
+        Scroll* scroll = (Scroll*)(areaBtn->getParent());
+        Button* scrollBtn = scroll->getScrollButton();
+        bool direction = scroll->getDirection();
+        
+        if (direction == GD_HORIZONTAL) {
+            int areaBtnWidth = areaBtn->getWidth();
+            int scrollBtnLeftRelative = scroll->getLeft() - scrollBtn->getLeft();
+            int scrollBtnWidth = scrollBtn->getWidth();
+            int _left = x - scrollBtnWidth / 2;
+            int _leftMax = areaBtnWidth - scrollBtnLeftRelative;
+            
+            printf("SCROLL-LEFT-MAX:[%d-%d=%d]; ", areaBtnWidth, scrollBtnLeftRelative, _leftMax);
+            
+            if (_left > _leftMax) {
+                _left = _leftMax;
+            }
+            if (_left < 0) {
+                _left = 0;
+            }
+            
+            double value = _left / _leftMax;
+
+            printf("SCROLL-SET:(value:%d, left:%d)\n", value, _left);
+            scroll->setValue(value, _left);
+        } else {
+            
+        }
+
+        areaBtn->setChanged(true);
+        scrollBtn->setChanged(true);
+        return 0;
+    }
+    
+    int onScrollAreaButtonMouseUp(Canvas* areaBtn, ...) {
+        ((Scroll*)(areaBtn->getParent()))->getScrollButton()->setChanged(true);
+        return 0;
+    }
+
+    int onScrollAreaButtonMouseLeave(Canvas* areaBtn, ...) {
+        ((Scroll*)(areaBtn->getParent()))->getScrollButton()->setChanged(true);
+        return 0;
+    }
 }

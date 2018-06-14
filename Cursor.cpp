@@ -51,7 +51,11 @@ namespace GUI {
     }
 
     int Cursor::getwidth() {
-        return width == GD_AUTOSIZE ? autowidth : width;
+        int ret = width == GD_AUTOSIZE ? autowidth : width;
+        if (ret < 0) {
+            ret = 0;
+        }
+        return ret;
     }
     
     int Cursor::getheight() {

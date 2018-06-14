@@ -22,22 +22,12 @@ namespace GUI {
         this->labelOff = labelOff;
         this->labelOn = labelOn;
         Button::setup(labelOff, top, left, width, height, margin, padding, bgcolor, txcolor, brcolor);
+        onMouseDown = onSwitchMouseDown;
+        onMouseUp = NULL;
+        return this;
     }
 
-    void Switch::onMouseOver(int x, int y) {
-        Canvas::onMouseOver(x, y);
-    }
 
-    void Switch::onMouseLeave(int x, int y) {
-        Canvas::onMouseLeave(x, y);
-    }
-    
-    void Switch::onMouseDown(int x, int y) {
-        setPushed(!getPushed());
-        setText(getPushed() ? labelOn : labelOff);
-    }
-    
-    void Switch::onMouseUp(int x, int y) {}
 
     // ---- protected
 
@@ -48,6 +38,23 @@ namespace GUI {
 
         return max + padding.left + padding.right;
     }
+    
+//    // -- events
+//    int onSwitchMouseOver(Canvas* swtch, ...) {
+//        swtch->onMouseOver(x, y);
+//    }
+//
+//    int onSwitchMouseLeave(Canvas* swtch, ...) {
+//        Canvas::onMouseLeave(x, y);
+//    }
+
+    int onSwitchMouseDown(Canvas* swtch, ...) {
+        swtch->setPushed(!swtch->getPushed());
+        ((Switch*)swtch)->setText(swtch->getPushed() ? ((Switch*)swtch)->labelOn : ((Switch*)swtch)->labelOff);
+        return 0;
+    }
+
+//    int onSwitchMouseUp(Canvas* swtch, ...) {}
     
 }
 

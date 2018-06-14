@@ -330,18 +330,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit30]
-FileName=HScroll.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit31]
-FileName=VScroll.h
+FileName=Events.h
 CompileCpp=1
 Folder=
 Compile=1

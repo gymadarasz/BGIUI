@@ -21,6 +21,7 @@ namespace GUI {
         MousePointEvent onClick;
         MousePointEvent onDblClick;
         MouseMoveEvent onMouseMove;
+        MouseMoveEvent onMouseDrag;
         MousePointEvent onMouseDown;
         MousePointEvent onMouseUp;
     } MouseEvents;
@@ -29,8 +30,10 @@ namespace GUI {
     private:
         int lastMouseX;
         int lastMouseY;
+        bool lbtndown;
     public:
         MouseEvents events;
+        Mouse();
         void check();
     };
 

@@ -7,10 +7,11 @@ namespace GUI {
 
     class Switch: public Button {
     protected:
-        const char* labelOff;
-        const char* labelOn;
         virtual int calcWidth();
     public:
+        const char* labelOff;
+        const char* labelOn;
+        
         Switch(Canvas* parent = NULL);
         virtual Switch* setup(
             const char* labelOff = "Off",
@@ -35,12 +36,12 @@ namespace GUI {
             int txcolor = GD_SWITCH_TXCOLOR,
             int brcolor = GD_SWITCH_BRCOLOR
         );
-        virtual void onMouseOver(int x, int y);
-        virtual void onMouseLeave(int x, int y);
-        virtual void onMouseDown(int x, int y);
-        virtual void onMouseUp(int x, int y);
     };
 
+//    int onSwitchMouseOver(Canvas* swtch, ...);
+//    int onSwitchMouseLeave(Canvas* swtch, ...);
+    int onSwitchMouseDown(Canvas* swtch, ...);
+//    int onSwitchMouseUp(Canvas* swtch, ...);
 }
 
 #endif
