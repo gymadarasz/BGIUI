@@ -17,7 +17,6 @@ namespace GUI {
     typedef (*CanvasEvent)(Canvas*, ...);
     
     class Canvas: public Counted {
-    private:
 
         int lastTop;
         int lastLeft;
@@ -29,13 +28,10 @@ namespace GUI {
         
         void findNextWidthAndStepCursor(int current);
         
-    protected:
-        static Painter painter;
+    //protected:
 
         Canvas* parent = {NULL};
         
-        int width;
-        int height;
         RECT margin;
         RECT padding;
         int bgcolor;
@@ -47,6 +43,12 @@ namespace GUI {
         bool changed;
         bool hlbrchanged;
 
+    protected:
+        
+        static Painter painter;
+        int width;
+        int height;
+        
         virtual int calcWidth();
         virtual int calcHeight();
 
@@ -117,6 +119,8 @@ namespace GUI {
         virtual bool getDisabled();
         virtual bool getHighlighted();
         virtual bool getPushed();
+        virtual bool getChanged();
+        virtual bool getHlBrChanged();
 
         virtual void setTop(int top);
         virtual void setLeft(int left);
@@ -130,6 +134,7 @@ namespace GUI {
         virtual void setHighlighted(bool highlighted);
         virtual void setPushed(bool pushed);
         virtual void setChanged(bool changed);
+        virtual void setHlBrChanged(bool hlbrchanged);
         virtual void setBreak(bool br = true);
         
         // cursor

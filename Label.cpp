@@ -52,25 +52,21 @@ namespace GUI {
 
     void Label::setText(const char* text) {
         this->text = text;
-        changed = true;
+        setChanged(true);
     }
     
     void Label::setTxColor(int txcolor) {
         this->txcolor = txcolor;
-        changed = true;
+        setChanged(true);
     }
-
-//    void Label::onMouseOver(int x, int y) {}
-
-//    void Label::onMouseLeave(int x, int y) {}
-
-    // ---- protected
-
+    
     int Label::calcWidth() {
+        RECT padding = getPadding();
         return textwidth((char*)getText()) + padding.left + padding.right;
     }
 
     int Label::calcHeight() {
+        RECT padding = getPadding();
         return textheight((char*)getText()) + padding.left + padding.right;
     }
     

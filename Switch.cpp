@@ -27,34 +27,19 @@ namespace GUI {
         return this;
     }
 
-
-
-    // ---- protected
-
     int Switch::calcWidth() {
-        int wOff = textwidth((char*)labelOff);
+        int wOff = textwidth((char*)labelOff); // TODO: use painter instead
         int wOn = textwidth((char*)labelOn);
         int max = wOff > wOn ? wOff : wOn;
-
+        RECT padding = getPadding();
         return max + padding.left + padding.right;
     }
-    
-//    // -- events
-//    int onSwitchMouseOver(Canvas* swtch, ...) {
-//        swtch->onMouseOver(x, y);
-//    }
-//
-//    int onSwitchMouseLeave(Canvas* swtch, ...) {
-//        Canvas::onMouseLeave(x, y);
-//    }
 
     int onSwitchMouseDown(Canvas* swtch, ...) {
         swtch->setPushed(!swtch->getPushed());
         ((Switch*)swtch)->setText(swtch->getPushed() ? ((Switch*)swtch)->labelOn : ((Switch*)swtch)->labelOff);
         return 0;
     }
-
-//    int onSwitchMouseUp(Canvas* swtch, ...) {}
     
 }
 

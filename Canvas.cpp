@@ -52,7 +52,7 @@ namespace GUI {
         if (this->parent != parent) {
             this->parent = parent;
             parent->add(this);
-            changed = true;
+            setChanged(true);
         }
         return this;
     }
@@ -62,14 +62,14 @@ namespace GUI {
     }
 
     bool Canvas::isChanged() {
-        bool ret = changed;
-        changed = false;
+        bool ret = getChanged();
+        setChanged(false);
         return ret;
     }
 
     bool Canvas::isHlBrChanged() {
-        bool ret = hlbrchanged;
-        hlbrchanged = false;
+        bool ret = getHlBrChanged();
+        setHlBrChanged(false);
         return ret;
     }
 
@@ -300,31 +300,39 @@ namespace GUI {
         return getDisabled() ? false : pushed;
     }
 
+    bool Canvas::getChanged() {
+        return changed;
+    }
+    
+    bool Canvas::getHlBrChanged() {
+        return changed;
+    }
+
     void Canvas::setTop(int top) {
         if (this->top != top) {
             this->top = top;
-            changed = true;
+            setChanged(true);
         }
     }
 
     void Canvas::setLeft(int left) {
         if (this->left != left) {
            this->left = left;
-           changed = true;
+           setChanged(true);
         }
     }
 
     void Canvas::setWidth(int width) {
         if (this->width != width) {
             this->width = width;
-            changed = true;
+            setChanged(true);
         }
     }
 
     void Canvas::setHeight(int height) {
         if (this->height != height) {
             this->height = height;
-            changed = true;
+            setChanged(true);
         }
     }
     
@@ -339,35 +347,35 @@ namespace GUI {
     void Canvas::setMargin(RECT margin) {
         if (!RectEqu(this->margin, margin)) {
             this->margin = margin;
-            changed = true;
+            setChanged(true);
         }
     }
 
     void Canvas::setPadding(RECT padding) {
         if (!RectEqu(this->padding, padding)) {
             this->padding = padding;
-            changed = true;
+            setChanged(true);
         }
     }
 
     void Canvas::setBgColor(int bgcolor) {
         if (this->bgcolor != bgcolor) {
             this->bgcolor = bgcolor;
-            changed = true;
+            setChanged(true);
         }
     }
 
     void Canvas::setBrColor(int brcolor) {
         if (this->brcolor != brcolor) {
             this->brcolor = brcolor;
-            hlbrchanged = true;
+            setHlBrChanged(true);
         }
     }
     
     void Canvas::setDisabled(bool disabled) {
         if (this->disabled != disabled) {
             this->disabled = disabled;
-            changed = true;
+            setChanged(true);
         }
     }
 
@@ -375,7 +383,7 @@ namespace GUI {
         bool newhl = getDisabled() ? false : highlighted;
         if (this->highlighted != newhl) {
             this->highlighted = newhl;
-            hlbrchanged = true;
+            setHlBrChanged(true);
         }
     }
 
@@ -383,7 +391,7 @@ namespace GUI {
         bool newps = getDisabled() ? false : pushed;
         if (this->pushed != newps) {
             this->pushed = newps;
-            changed = true;
+            setChanged(true);
         }
     }
 
@@ -391,10 +399,15 @@ namespace GUI {
         this->changed = changed;
     }
 
+
+    void Canvas::setHlBrChanged(bool hlbrchanged) {
+        this->hlbrchanged = hlbrchanged;
+    }
+
     void Canvas::setBreak(bool br) {
         if (this->br != br) {
             this->br = br;
-            changed = true;
+            setChanged(true);
         }
     }
 

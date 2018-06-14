@@ -68,7 +68,7 @@ namespace GUI {
     void Scroll::setValue(double value, int left) {
         if (this->value != value) {
             this->value = value;
-            changed = true;
+            setChanged(true);
         }
         if (left == GD_AUTOPOSITION) {
             left = value * getWidth();
@@ -79,7 +79,7 @@ namespace GUI {
     void Scroll::setDirection(bool direction) {
         if (this->direction != direction) {
             this->direction = direction;
-            changed = true;
+            setChanged(true);
         }
     }
 
