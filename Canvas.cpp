@@ -1,11 +1,9 @@
 #include "Canvas.h"
 
-#include "App.h"
-
-//#define CANVAS_DEFAULT_WIDTH 128
-//#define CANVAS_DEFAULT_HEIGHT 160
-
 namespace GUI {
+    
+    Mouse Canvas::mouse;
+    Painter Canvas::painter;
     
     Canvas::Canvas(Canvas* parent): Counted() {
         setParent(parent);
@@ -51,7 +49,7 @@ namespace GUI {
     }
     
     Canvas* Canvas::setParent(Canvas* parent) {
-        if (/*NULL != parent && */this->parent != parent) {
+        if (this->parent != parent) {
             this->parent = parent;
             parent->add(this);
             changed = true;
@@ -82,7 +80,6 @@ namespace GUI {
         for (int i=0; i < CANVASES; i++) {
             if (NULL == canvases[i]) {
                 canvases[i] = canvas;
-                //floatCanvas(canvas);
                 canvas->setParent(this); // join canvas into this container
                 return canvas;
             }
@@ -122,26 +119,9 @@ namespace GUI {
             if (NULL != canvases[i]) {
                 findNextWidthAndStepCursor(i);
                 canvases[i]->process(getsizeonly);
-
-//                canvases[i]->tick();
-//                canvases[i]->draw();
             }
         }
     }
-//
-//    bool Canvas::draws() {
-//        cursor.reset(width);
-//        // for each canvases..
-//        for (int i=0; i < CANVASES; i++) {
-//            if (NULL != canvases[i]) {
-//                findNextWidthAndStepCursor(i);
-//                
-//            }
-//        }
-//    }
-//    
-    
-    
 
     void Canvas::tick() {
         
@@ -159,59 +139,56 @@ namespace GUI {
         
         // click?
         if (
-            onClick && App::mouse.events.onClick.happend && inside(App::mouse.events.onClick.position)) {
-            onClick(this, App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
+            onClick && mouse.events.onClick.happend && inside(mouse.events.onClick.position)) {
+            onClick(this, mouse.events.onClick.position.x-left, mouse.events.onClick.position.y-top);
         }
 
         // dblclick?
-        if ((onClick || onDblClick) && App::mouse.events.onDblClick.happend && inside(App::mouse.events.onDblClick.position)) {
-//            if (onClick) {
-//                onClick(this, App::mouse.events.onClick.position.x-left, App::mouse.events.onClick.position.y-top);
-//            }
+        if ((onClick || onDblClick) && mouse.events.onDblClick.happend && inside(mouse.events.onDblClick.position)) {
             if (onDblClick) {
-                onDblClick(this, App::mouse.events.onDblClick.position.x-left, App::mouse.events.onDblClick.position.y-top);
+                onDblClick(this, mouse.events.onDblClick.position.x-left, mouse.events.onDblClick.position.y-top);
             }
         }
 
         // mouse move, over, leave?
-        if (App::mouse.events.onMouseMove.happend) {
-            if (onMouseMove && inside(App::mouse.events.onMouseMove.current) && inside(App::mouse.events.onMouseMove.previous)) {
+        if (mouse.events.onMouseMove.happend) {
+            if (onMouseMove && inside(mouse.events.onMouseMove.current) && inside(mouse.events.onMouseMove.previous)) {
                 onMouseMove(
                     this,
-                    App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top,
-                    App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top
+                    mouse.events.onMouseMove.current.x-left, mouse.events.onMouseMove.current.y-top,
+                    mouse.events.onMouseMove.previous.x-left, mouse.events.onMouseMove.previous.y-top
                 );
-            } else if (inside(App::mouse.events.onMouseMove.current)) {
+            } else if (inside(mouse.events.onMouseMove.current)) {
                 setHighlighted(true);
                 if (onMouseOver) {
-                    onMouseOver(this, App::mouse.events.onMouseMove.current.x-left, App::mouse.events.onMouseMove.current.y-top);
+                    onMouseOver(this, mouse.events.onMouseMove.current.x-left, mouse.events.onMouseMove.current.y-top);
                 }
-            } else if (inside(App::mouse.events.onMouseMove.previous)) {
+            } else if (inside(mouse.events.onMouseMove.previous)) {
                 setHighlighted(false);
                 if (onMouseLeave) {
-                    onMouseLeave(this, App::mouse.events.onMouseMove.previous.x-left, App::mouse.events.onMouseMove.previous.y-top);
+                    onMouseLeave(this, mouse.events.onMouseMove.previous.x-left, mouse.events.onMouseMove.previous.y-top);
                 }
             }
         }
         
-        if (App::mouse.events.onMouseDrag.happend) {
-            if (onMouseDrag && inside(App::mouse.events.onMouseDrag.current) && inside(App::mouse.events.onMouseDrag.previous)) {
+        if (mouse.events.onMouseDrag.happend) {
+            if (onMouseDrag && inside(mouse.events.onMouseDrag.current) && inside(mouse.events.onMouseDrag.previous)) {
                 onMouseDrag(
                     this,
-                    App::mouse.events.onMouseDrag.current.x-left, App::mouse.events.onMouseDrag.current.y-top,
-                    App::mouse.events.onMouseDrag.previous.x-left, App::mouse.events.onMouseDrag.previous.y-top
+                    mouse.events.onMouseDrag.current.x-left, mouse.events.onMouseDrag.current.y-top,
+                    mouse.events.onMouseDrag.previous.x-left, mouse.events.onMouseDrag.previous.y-top
                 );
             }
         }
 
         // mouse down?
-        if (onMouseDown && App::mouse.events.onMouseDown.happend && inside(App::mouse.events.onMouseDown.position)) {
-            onMouseDown(this, App::mouse.events.onMouseDown.position.x-left, App::mouse.events.onMouseDown.position.y-top);
+        if (onMouseDown && mouse.events.onMouseDown.happend && inside(mouse.events.onMouseDown.position)) {
+            onMouseDown(this, mouse.events.onMouseDown.position.x-left, mouse.events.onMouseDown.position.y-top);
         }
 
         // mouse up?
-        if (onMouseUp && App::mouse.events.onMouseUp.happend && inside(App::mouse.events.onMouseUp.position)) {
-            onMouseUp(this, App::mouse.events.onMouseUp.position.x-left, App::mouse.events.onMouseUp.position.y-top);
+        if (onMouseUp && mouse.events.onMouseUp.happend && inside(mouse.events.onMouseUp.position)) {
+            onMouseUp(this, mouse.events.onMouseUp.position.x-left, mouse.events.onMouseUp.position.y-top);
         }
 
     }
@@ -234,10 +211,10 @@ namespace GUI {
             }
             if (hlchg) {
                 // todo: use class variable instead GD_BRSIZE
-                App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE, height+GD_BRSIZE, getBrColor(), GD_NOFILL);
+                painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE, height+GD_BRSIZE, getBrColor(), GD_NOFILL);
             }
             if (chg) {
-                App::painter.box(top, left, width, height, getBgColor(), GD_FILL);
+                painter.box(top, left, width, height, getBgColor(), GD_FILL);
             }
             lastTop = top;
             lastLeft = left;
@@ -249,13 +226,12 @@ namespace GUI {
     }
     
     void Canvas::clear() {
-        int top = lastTop; //getTop();
-        int left = lastLeft; //getLeft();
-        int width = lastWidth; //getWidth();
-        int height = lastHeight; //getHeight();
-        //App::painter.box(top-1, left-1, width+2, height+2, App::rootCanvas.getBgColor(), EMPTY_FILL);
+        int top = lastTop;
+        int left = lastLeft;
+        int width = lastWidth;
+        int height = lastHeight;
         int bgcolor = getBgColor();
-        App::painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, bgcolor, GD_FILL);
+        painter.box(top-GD_BRSIZE, left-GD_BRSIZE, width+GD_BRSIZE*2, height+GD_BRSIZE*2, bgcolor, GD_FILL);
     }
 
     RECT* Canvas::getRect(RECT* rect) {
@@ -396,11 +372,8 @@ namespace GUI {
     }
 
     void Canvas::setHighlighted(bool highlighted) {
-        //printf("highlihgt to [%d]\n", highlighted);
         bool newhl = getDisabled() ? false : highlighted;
-        //printf("new highlihgt => [%d]\n", newhl);
         if (this->highlighted != newhl) {
-            //printf("highlihgted <= [%d]\n", newhl);
             this->highlighted = newhl;
             hlbrchanged = true;
         }
@@ -425,47 +398,11 @@ namespace GUI {
         }
     }
 
-//    void Canvas::setContainer(Container* container) {
-//        this->container = container;
-//        this->container->add(this);
-//    }
-    
-//    Container* Canvas::getContainer() {
-//        return container;
-//    }
-
     bool Canvas::inside(POINT point) {
         RECT rect;
         getRect(&rect);
         return point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom;
     }
-    
-//    void Canvas::join(Container* container) {
-//        this->container = container;
-//    }
-
-
-//    void Canvas::onTick() {}
-//
-//    void Canvas::onClick(int x, int y) {
-//        printf("Click on elem[%d]\n", getId());
-//    }
-//
-//    void Canvas::onDblClick(int x, int y) {}
-//
-//    void Canvas::onMouseMove(int x, int y, int prevx, int prevy) {}
-//
-//    void Canvas::onMouseOver(int x, int y) {}
-//
-//    void Canvas::onMouseLeave(int x, int y) {}
-//
-//    void Canvas::onMouseDown(int x, int y) {}
-//
-//    void Canvas::onMouseUp(int x, int y) {}
-
-
-
-    // ---- protected
     
     bool Canvas::isAutoPositioned() {
         return top == GD_AUTOPOSITION || left == GD_AUTOPOSITION;

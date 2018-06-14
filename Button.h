@@ -6,9 +6,6 @@
 namespace GUI {
     
     class Button: public Label {
-//    protected:
-//        virtual int calcWidth();
-//        virtual int calcHeight();
     public:
         Button(Canvas* parent = NULL);
         virtual Button* setup(
@@ -33,8 +30,6 @@ namespace GUI {
             int txcolor = GD_BTN_TXCOLOR,
             int brcolor = GD_BTN_BRCOLOR
         );
-//        virtual void onMouseOver(int x, int y);
-//        virtual void onMouseLeave(int x, int y);
     };
 
     int onButtonMouseDown(Canvas*, ...);

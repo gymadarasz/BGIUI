@@ -11,7 +11,6 @@ namespace GUI {
     public:
         Break(Canvas* parent = NULL);
         virtual Break* setup(int height = GD_BREAK_HEIGHT);
-//        virtual int getHeight();
     };
 
 }

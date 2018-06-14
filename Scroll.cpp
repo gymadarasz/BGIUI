@@ -12,8 +12,6 @@ namespace GUI {
     Scroll* Scroll::setup(
         bool direction,
         double value,
-//        int minValue,
-//        int maxValue,
         const char* textPlus,
         const char* textMinus,
         int top,
@@ -26,12 +24,9 @@ namespace GUI {
         int brcolor
     ) {
         Canvas::setup(top, left, width, height, margin, padding, bgcolor, brcolor);
-//        setMinValue(minValue);
-//        setMaxValue(maxValue);
         setDirection(direction);
 
         minusBtn = (new Button(this))->setup(textMinus);
-        //minusBtn->onClick = onScrollMinusButtonClick;
         
         if (direction == GD_VERTICAL) {
             new Break(this);
@@ -81,20 +76,6 @@ namespace GUI {
         scrollBtn->setLeft(left);
     }
 
-//    void Scroll::setMinValue(int minValue) {
-//        if (this->minValue != minValue) {
-//            this->minValue = minValue;
-//            changed = true;
-//        }
-//    }
-//
-//    void Scroll::setMaxValue(int maxValue) {
-//        if (this->maxValue != maxValue) {
-//            this->maxValue = maxValue;
-//            changed = true;
-//        }
-//    }
-    
     void Scroll::setDirection(bool direction) {
         if (this->direction != direction) {
             this->direction = direction;
@@ -110,16 +91,6 @@ namespace GUI {
     int Scroll::getValue() {
         return value;
     }
-
-//    int Scroll::getMinValue() {
-//        return minValue;
-//    }
-//
-//    int Scroll::getMaxValue() {
-//        return maxValue;
-//    }
-
-    // ---
 
     int Scroll::calcWidth() {
         int w = width;

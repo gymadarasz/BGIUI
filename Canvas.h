@@ -5,6 +5,8 @@
 #include "style.h"
 #include "Counted.h"
 #include "Cursor.h"
+#include "Mouse.h"
+#include "Painter.h"
 
 #define CANVASES 40
 
@@ -28,6 +30,7 @@ namespace GUI {
         void findNextWidthAndStepCursor(int current);
         
     protected:
+        static Painter painter;
 
         Canvas* parent = {NULL};
         
@@ -44,8 +47,6 @@ namespace GUI {
         bool changed;
         bool hlbrchanged;
 
-//        virtual int calcTop();
-//        virtual int calcLeft();
         virtual int calcWidth();
         virtual int calcHeight();
 
@@ -54,6 +55,7 @@ namespace GUI {
         bool RectEqu(RECT r1, RECT r2);
         
     public:
+        static Mouse mouse;
         
         // events
         CanvasEvent onTick;
@@ -66,7 +68,6 @@ namespace GUI {
         CanvasEvent onMouseDown;
         CanvasEvent onMouseUp;
         
-//        POINT offset;
         Canvas* canvases[CANVASES] = {NULL};
         Cursor cursor;
         
@@ -97,9 +98,6 @@ namespace GUI {
 
         Canvas* add(Canvas* canvas);
         virtual void process(int getsizeonly = false);
-//        virtual void ticks();
-//        virtual bool draws();
-        
         virtual void tick();
         virtual bool draw();
         virtual void clear();
@@ -134,15 +132,6 @@ namespace GUI {
         virtual void setChanged(bool changed);
         virtual void setBreak(bool br = true);
         
-//        virtual void onTick();
-//        virtual void onClick(int x, int y);
-//        virtual void onDblClick(int x, int y);
-//        virtual void onMouseMove(int x, int y, int prevx, int prevy);
-//        virtual void onMouseOver(int x, int y);
-//        virtual void onMouseLeave(int x, int y);
-//        virtual void onMouseDown(int x, int y);
-//        virtual void onMouseUp(int x, int y);
-
         // cursor
         virtual bool isAutoPositioned();
         

@@ -4,6 +4,7 @@
 // --------- STYLE DEFINITIONS DEFAULTS --------------
 
 // common
+
 #define GD_AUTOPOSITION     -1
 #define GD_AUTOSIZE         -1
 #define GD_NOMARGIN         {0, 0, 0, 0}
@@ -25,19 +26,23 @@
 
 #define GD_SCROLL_DEFAULT_SIZE  100
 
+
 // window
+
 #define GD_WIN_DEFAULT_TOP      0
 #define GD_WIN_DEFAULT_LEFT     0
 #define GD_WIN_DEFAULT_WIDTH    800
 #define GD_WIN_DEFAULT_HEIGHT   600
 #define GD_WIN_BGCOLOR          GD_BGCOLOR
 
+
 // break
+
 #define GD_BREAK_HEIGHT     0   // min line height
 
+
 // canvas
-//#define GD_CANVAS_WIDTH     128
-//#define GD_CANVAS_HEIGHT    160
+
 #define GD_CANVAS_LMARGIN   GD_WMARGIN
 #define GD_CANVAS_RMARGIN   GD_WMARGIN
 #define GD_CANVAS_TMARGIN   GD_HMARGIN
@@ -48,6 +53,7 @@
 #define GD_CANVAS_BPADDING  GD_HPADDING
 #define GD_CANVAS_BGCOLOR   GD_NOCOLOR
 #define GD_CANVAS_BRCOLOR   GD_NOCOLOR
+
 
 // label
 
@@ -62,9 +68,7 @@
 #define GD_LBL_BGCOLOR      GD_NOCOLOR //GD_WIN_BGCOLOR
 #define GD_LBL_TXCOLOR      GD_TXCOLOR
 #define GD_LBL_BRCOLOR      GD_NOCOLOR //GD_WIN_BGCOLOR
-//#define GD_LBL_TEXT         "Label"
-//#define GD_LBL_WPADDING     1
-//#define GD_LBL_HPADDING     0
+
 
 // buttons
 
@@ -79,9 +83,6 @@
 #define GD_BTN_BGCOLOR      LIGHTGRAY
 #define GD_BTN_TXCOLOR      GD_LBL_TXCOLOR
 #define GD_BTN_BRCOLOR      LIGHTGRAY
-//#define GD_BTN_TEXT         "Button"
-//#define GD_BTN_WPADDING     GD_WPADDING
-//#define GD_BTN_HPADDING     GD_HPADDING
 
 
 // switch
@@ -97,12 +98,10 @@
 #define GD_SWITCH_BGCOLOR   GD_BTN_BGCOLOR
 #define GD_SWITCH_TXCOLOR   GD_BTN_TXCOLOR
 #define GD_SWITCH_BRCOLOR   GD_BTN_BRCOLOR
-//#define GD_SWITCH_OFF_TEXT  "Off"
-//#define GD_SWITCH_ON_TEXT   "On"
-//#define GD_SWITCH_OFF_TEXT  "_/_"
-//#define GD_SWITCH_ON_TEXT   "___"
+
 
 // scroll
+
 #define GD_SCROLL_LMARGIN   GD_WMARGIN
 #define GD_SCROLL_RMARGIN   GD_WMARGIN
 #define GD_SCROLL_TMARGIN   GD_HMARGIN

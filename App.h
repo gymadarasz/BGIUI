@@ -3,8 +3,6 @@
 
 #include "style.h"
 #include "Window.h"
-#include "Mouse.h"
-#include "Painter.h"
 
 #include "Canvas.h"
 
@@ -15,12 +13,9 @@ namespace GUI {
     class Container;
 
     class App {
-    public:
         static Window window;
-        static Mouse mouse;
-        static Painter painter;
-//        static Container rootContainer;
-        static Canvas* canvas;
+        Canvas* canvas;
+    public:
         App(
             const char* title,
             int top = GD_WIN_DEFAULT_TOP,

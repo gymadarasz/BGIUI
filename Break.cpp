@@ -14,22 +14,4 @@ namespace GUI {
         return this;
     }
     
-//    int Break::getHeight() {
-//        return height;
-//    }
-//    
-//    void Break::tick() {
-//        parent->cursor.newline(height);
-//    }
-//    
-//    bool Break::draw() {
-//        
-//        parent->cursor.newline(height);
-//        return true;
-//    }
-//    
-//    bool Break::isChanged() {
-//        return true;
-//    }
-    
 }

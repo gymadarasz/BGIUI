@@ -11,9 +11,6 @@ namespace GUI {
     void Mouse::check() {
         int x, y;
 
-        //MouseEvents mouseEvents = Mouse::events;
-
-
         // mouse released (mouse up)?
         events.onMouseUp.happend = false;
         if (ismouseclick(WM_LBUTTONUP)) {

@@ -26,15 +26,6 @@ namespace GUI {
         return this;
     }
 
-//    void Button::onMouseOver(int x, int y) {
-//        Canvas::onMouseOver(x, y);
-//    }
-//
-//    void Button::onMouseLeave(int x, int y) {
-//        Canvas::onMouseLeave(x, y);
-//    }
-
-
     int onButtonMouseDown(Canvas* button, ...) {
         button->setPushed(true);
         return 0;
@@ -51,15 +42,5 @@ namespace GUI {
     }
 
 }
-
-    // ---- protected
-//
-//    int Button::calcWidth() {
-//        return textwidth((char*)getText()) + GD_BTN_WPADDING*2;
-//    }
-//
-//    int Button::calcHeight() {
-//        return textheight((char*)getText()) + GD_BTN_HPADDING*2;
-//    }
 
 

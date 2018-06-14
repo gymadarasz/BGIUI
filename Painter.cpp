@@ -8,30 +8,22 @@ namespace GUI {
         if (color == GD_NOCOLOR) {
             return ;
         }
-//        for (int y=y1; y<=y2; y++) {
-//            putpixel(x, y, color);
-//        }
 
         int c = getcolor();
         setcolor(color);
         line(x, y1, x, y2);
         setcolor(c);
-//        delay(1);
     }
     
     void Painter::vline(int x1, int y, int x2, int color) {
         if (color == GD_NOCOLOR) {
             return ;
         }
-//        for (int x=x1; x<=x2; x++) {
-//            putpixel(x, y, color);
-//        }
 
         int c = getcolor();
         setcolor(color);
         line(x1, y, x2, y);
         setcolor(c);
-//        delay(1);
     }
 
     void Painter::box(int top, int left, int width, int height, int color, bool fill) {

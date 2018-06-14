@@ -43,8 +43,6 @@ namespace GUI {
         virtual const char* getText();
         virtual void setText(const char* text);
         virtual void setTxColor(int txcolor);
-//        virtual void onMouseOver(int x, int y);
-//        virtual void onMouseLeave(int x, int y);
     };
 
 }

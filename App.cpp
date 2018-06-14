@@ -14,12 +14,8 @@ int onHelloClick(GUI::Canvas*, ...) {
 
 namespace GUI {
     
-    Mouse App::mouse;
     Window App::window;
-    Painter App::painter;
-//    Container App::rootContainer;
-    Canvas* App::canvas = NULL;
-    //Container App::container; // at (0, 0) by default
+    //Canvas* App::canvas = NULL;
     
     App::App(
         const char* title,
@@ -88,17 +84,8 @@ namespace GUI {
 
     void App::run() {
         while(1) {
-            mouse.check();
+            Canvas::mouse.check();
             canvas->process();
-//            canvas->ticks();
-//            canvas->draws();
-            
-//            for (int i=0; i < CONTAINERS; i++) {
-//                if (NULL != containers[i]) {
-//                    containers[i]->ticks();
-//                    containers[i]->draws();
-//                }
-//            }
             
             delay(0);
         }
