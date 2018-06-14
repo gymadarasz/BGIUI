@@ -7,10 +7,13 @@
 
 #include <graphics.h>
 #include <stdio.h>
+#include "Window.h"
+
+using namespace GUI;
 
 int main() {
-	initwindow(10,10,"hello");
-	printf("Hello World!1");
+	Window window;
+	circle(10,10,10);
 	getch();
 	return 0;
 }
