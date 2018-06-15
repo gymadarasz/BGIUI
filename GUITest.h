@@ -9,6 +9,7 @@
 #define GUITEST_H_
 
 #include "Test.h"
+#include "style.h"
 
 namespace GUI {
 

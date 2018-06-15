@@ -253,8 +253,8 @@ Canvas* Canvas::setup(
 	setBorderColorSelected(borderColorSelected);
 	setSelected(false);
 	setPushed(false);
-	setChangedBorder(false);
-	setChangedInner(false);
+	setChangedBorder(true);
+	setChangedInner(true);
 	return this;
 }
 

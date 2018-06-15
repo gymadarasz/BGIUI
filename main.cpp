@@ -14,8 +14,7 @@ using namespace GUI;
 int main() {
 	GUITest test;
 	test.run();
-	test.stat();
-	return 0;
+	return test.stat();
 }
 
 

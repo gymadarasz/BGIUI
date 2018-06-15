@@ -24,8 +24,10 @@ public:
 		bool closeflag = true
 	);
 	static int close();
+	static void hline(int x, int y1, int y2, int color);
+    static void vline(int x1, int y, int x2, int color);
 	static void rect(int top, int left, int width, int height, int color);
-	static void fillrect(int top, int left, int width, int height, int color);
+	static void fillrect(int top, int left, int width, int height, int color, int borderColor = -1);
 };
 
 } /* namespace GUI */

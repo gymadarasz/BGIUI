@@ -47,58 +47,16 @@ void Test::equ(const char* a, const char* b, const char* errmsg) {
     }
 }
 
-void Test::stat() {
+int Test::stat() {
     printf("\nRuns: %d, Success: %d, Failed: %d\n", runs, success, failed);
     if (runs == success) {
         printf("All test SUCCESS.\n:)\n");
+        return 0;
     } else {
         printf("FAILED tests found. :(\n");
+        return 1;
     }
 }
-//
-//void Test::canvasTest() {
-//
-//	Canvas canvas1;
-//	int id = canvas1.getId();
-//	equ(id, 0);
-//	Canvas canvas2;
-//	id = canvas2.getId();
-//	equ(id, 1);
-//
-//	Canvas canvas;
-//	canvas.setup(10, 10, 20, 20);
-//	//canvas.draw();
-//}
-//
-//void Test::windowTest() {
-//	Window window;
-//	int color = getpixel(0, 0);
-//	equ(color, BLACK);
-//	color = getpixel(10, 10);
-//	equ(color, BLACK);
-//	putpixel(10, 10, WHITE);
-//	color = getpixel(10, 10);
-//	equ(color, WHITE);
-//}
-//
-//Test::Test() {
-//
-//	printf("Test start\n");
-//	asserts = 0;
-//	errors = 0;
-//
-//	canvasTest();
-//	windowTest();
-//
-//	printf("\nAsserts: %d\n", asserts);
-//	if (!errors) {
-//		printf("All test SUCCESS\n");
-//	} else {
-//		printf("Errors: %d\n", errors);
-//	}
-//
-//	getch();
-//
-//}
+
 
 } /* namespace GUI */
