@@ -9,9 +9,9 @@
 
 namespace GUI {
 
-Tester::Tester(Test* test) {
+int Tester::run(Test* test) {
     test->run();
-    test->stat();
+    return test->stat();
 }
 
 } /* namespace GUI */

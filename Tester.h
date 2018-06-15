@@ -14,7 +14,7 @@ namespace GUI {
 
 class Tester {
 public:
-    Tester(Test* test);
+    int run(Test* test);
 };
 
 } /* namespace GUI */
