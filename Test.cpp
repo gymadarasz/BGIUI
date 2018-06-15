@@ -5,11 +5,11 @@
  *      Author: Gyula
  */
 
-#include "GUITest.h"
+#include "Test.h"
 
 namespace GUI {
 
-void GUITest::equ(int a, int b, const char* errmsg) {
+void Test::equ(int a, int b, const char* errmsg) {
 	asserts++;
 	if (a == b) {
 		printf(".");
@@ -19,16 +19,20 @@ void GUITest::equ(int a, int b, const char* errmsg) {
 	}
 }
 
-void GUITest::countedTest() {
-	Counted counted1;
-	int id = counted1.getId();
+void Test::canvasTest() {
+
+	Canvas canvas1;
+	int id = canvas1.getId();
 	equ(id, 1);
-	Counted counted2;
-	id = counted2.getId();
+	Canvas canvas2;
+	id = canvas2.getId();
 	equ(id, 2);
+
+	Canvas canvas;
+	canvas.setup();
 }
 
-void GUITest::windowTest() {
+void Test::windowTest() {
 	Window window;
 	int color = getpixel(0, 0);
 	equ(color, BLACK);
@@ -39,13 +43,13 @@ void GUITest::windowTest() {
 	equ(color, WHITE);
 }
 
-GUITest::GUITest() {
+Test::Test() {
 
 	printf("Test start\n");
 	asserts = 0;
 	errors = 0;
 
-	countedTest();
+	canvasTest();
 	windowTest();
 
 	printf("\nAsserts: %d\n", asserts);

@@ -6,12 +6,13 @@
  */
 
 #include <stdio.h>
-#include "GUITest.h"
+
+#include "Test.h"
 
 using namespace GUI;
 
 int main() {
-	GUITest test;
+	Test test;
 	return 0;
 }
 

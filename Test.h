@@ -5,25 +5,26 @@
  *      Author: Gyula
  */
 
-#ifndef GUITEST_H_
-#define GUITEST_H_
+#ifndef TEST_H_
+#define TEST_H_
 
 #include <stdio.h>
-#include "Counted.h"
+
+#include "Canvas.h"
 #include "Window.h"
 
 namespace GUI {
 
-class GUITest {
+class Test {
 	int asserts;
 	int errors;
 	void equ(int a, int b, const char* errmsg = "\nERROR: Test assert equals integer error: %d != %d\n");
-	void countedTest();
+	void canvasTest();
 	void windowTest();
 public:
-	GUITest();
+	Test();
 };
 
 } /* namespace GUI */
 
-#endif /* GUITEST_H_ */
+#endif /* TEST_H_ */
