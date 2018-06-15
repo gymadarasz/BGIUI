@@ -24,6 +24,8 @@ public:
 		bool closeflag = true
 	);
 	static int close();
+	static void rect(int top, int left, int width, int height, int color);
+	static void fillrect(int top, int left, int width, int height, int color);
 };
 
 } /* namespace GUI */

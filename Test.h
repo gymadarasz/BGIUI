@@ -16,13 +16,17 @@
 namespace GUI {
 
 class Test {
-	int asserts;
-	int errors;
-	void equ(int a, int b, const char* errmsg = "\nERROR: Test assert equals integer error: %d != %d\n");
-	void canvasTest();
-	void windowTest();
+protected:
+    int runs;
+    int failed;
+    int success;
 public:
-	Test();
+    Test();
+    virtual ~Test();
+    virtual void equ(int a, int b, const char* errmsg = "\nError (integers are not equals): %d != %d\n");
+    virtual void equ(const char* a, const char* b, const char* errmsg = "Error (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
+    virtual void run();
+    virtual void stat();
 };
 
 } /* namespace GUI */

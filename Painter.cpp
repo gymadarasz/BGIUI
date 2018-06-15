@@ -38,4 +38,12 @@ namespace GUI {
 		return 0;
 	}
 
+	void Painter::rect(int top, int left, int width, int height, int color) {
+		// TODO !@#
+	}
+
+	void Painter::fillrect(int top, int left, int width, int height, int color) {
+		// TODO !@#
+	}
+
 } /* namespace GUI */

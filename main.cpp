@@ -7,12 +7,14 @@
 
 #include <stdio.h>
 
-#include "Test.h"
+#include "GUITest.h"
 
 using namespace GUI;
 
 int main() {
-	Test test;
+	GUITest test;
+	test.run();
+	test.stat();
 	return 0;
 }
 

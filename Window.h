@@ -24,6 +24,7 @@ public:
 		bool closeflag = true
 	);
 	virtual ~Window();
+	virtual void run();
 };
 
 } /* namespace GUI */
