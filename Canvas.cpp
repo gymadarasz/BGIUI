@@ -18,7 +18,6 @@ void Canvas::setInstance(int id, Canvas* canvas) {
 }
 
 Canvas* Canvas::setId(int id) {
-	setInstance(id, this);
 	this->id = id;
 	return this;
 }
@@ -197,6 +196,7 @@ void Canvas::drawBorder() {
 			calcHeightFull(),
 			calcBorderColorCurrent()
 		);
+		setChangedBorder(false);
 	}
 }
 
@@ -209,6 +209,7 @@ void Canvas::drawInner() {
 			getHeight(),
 			calcColorCurrent()
 		);
+		setChangedInner(false);
 	}
 }
 
@@ -217,6 +218,7 @@ void Canvas::drawInner() {
 Canvas::Canvas(Canvas* parent) {
 	setId(next++);
 	setParent(parent);
+	setInstance(getId(), this);
 }
 
 Canvas::~Canvas() {
@@ -230,10 +232,11 @@ Canvas* Canvas::getInstance(int id) {
 void Canvas::clearInstances() {
 	for (int i=0; i<CANVAS_INSTANCES; i++) {
 		if(instances[i]) {
-			delete instances[i];
+			//delete instances[i];
 			instances[i] = 0;
 		}
 	}
+	next = 0;
 }
 
 int Canvas::getId() {

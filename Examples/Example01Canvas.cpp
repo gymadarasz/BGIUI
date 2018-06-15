@@ -9,8 +9,8 @@
 
 Example01Canvas::Example01Canvas() {
 	Window window;
+	(new Canvas(window.getCanvas()))->setup(100, 100, 10, 10, RED);
 	window.run();
-	getch();
 }
 
 Example01Canvas::~Example01Canvas() {

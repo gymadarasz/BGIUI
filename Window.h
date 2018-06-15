@@ -15,7 +15,7 @@
 namespace GUI {
 
 class Window {
-	Canvas canvas;
+	Canvas* canvas; // TODO: make it private - maybe the example 01 will alert but change the example also
 public:
 	Window(
 	    int width = 0,
@@ -30,6 +30,7 @@ public:
 	);
 	virtual ~Window();
 	virtual void run();
+	virtual Canvas* getCanvas();
 };
 
 } /* namespace GUI */
