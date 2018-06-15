@@ -15,7 +15,7 @@ namespace GUI {
 
 class GUITest: public Test {
 public:
-	virtual void run();
+    virtual void run();
 };
 
 } /* namespace GUI */

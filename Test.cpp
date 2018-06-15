@@ -37,14 +37,26 @@ void Test::equ(int a, int b, const char* msg, const char* errmsg) {
 }
 
 void Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
-    runs++;
     int res = strcmp(a, b);
+    runs++;
     printf("\nTEST %d: ", runs);
     printf(msg, res, a, b);
     if (!res) {
         success++;
     } else {
         printf(errmsg, res, a, b);
+        failed++;
+    }
+}
+
+void Test::chk(bool expr, const char* msg, const char* errmsg) {
+    runs++;
+    printf("\nTEST %d: ", runs);
+    printf(msg, expr, true);
+    if (expr == true) {
+        success++;
+    } else {
+        printf(errmsg, expr, true);
         failed++;
     }
 }

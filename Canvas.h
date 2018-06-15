@@ -12,13 +12,13 @@
 #include "style.h"
 #include "Painter.h"
 
-#define GUI_CANVAS_INSTANCES 100
+#define CANVAS_INSTANCES 100
 
 namespace GUI {
 
 class Canvas {
 	static int next;
-	static Canvas* instances[GUI_CANVAS_INSTANCES];
+	static Canvas* instances[CANVAS_INSTANCES];
 	int id;
 	Canvas* parent;
 	int top;
@@ -82,10 +82,11 @@ public:
 	Canvas(Canvas* parent = 0);
 	virtual ~Canvas();
 	static Canvas* getInstance(int id);
+	static void clearInstances();
 	virtual int getId();
 	virtual Canvas* setup(
-		int width,
-		int height,
+		int width = GUI_ADJUST,
+		int height = GUI_ADJUST,
 		int top = GUI_ADJUST,
 		int left = GUI_ADJUST,
 		int color = GUI_CANVAS_COLOR,

@@ -29,6 +29,8 @@ public:
     static void vline(int x1, int y, int x2, int color);
 	static void rect(int top, int left, int width, int height, int color);
 	static void fillrect(int top, int left, int width, int height, int color, int borderColor = -1);
+	static int getmaxwidth();
+	static int getmaxheight();
 };
 
 } /* namespace GUI */

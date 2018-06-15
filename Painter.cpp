@@ -98,4 +98,12 @@ namespace GUI {
 		}
 	}
 
+	int Painter::getmaxwidth() {
+		return getmaxx();
+	}
+
+	int Painter::getmaxheight() {
+		return getmaxy();
+	}
+
 } /* namespace GUI */

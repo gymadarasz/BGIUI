@@ -23,11 +23,11 @@ void GUITest::run() {
 
     // Is Canvas id incrementing?
     Canvas canvas1;
-    equ(canvas1.getId(), 0, "First canvas ID should be 0.");
+    equ(canvas1.getId(), 1, "First canvas ID should be 1.");
     Canvas canvas2;
-    equ(canvas2.getId(), 1, "Second canvas ID should be 1.");
+    equ(canvas2.getId(), 2, "Second canvas ID should be 2.");
     Canvas canvas3;
-    equ(canvas3.getId(), 2, "Third canvas ID should be 2.");
+    equ(canvas3.getId(), 3, "Third canvas ID should be 3.");
 
     // Canvas draws?
     Painter::clear();
@@ -45,6 +45,14 @@ void GUITest::run() {
     equ(color, GUI_CANVAS_COLOR, "Canvas inner should be visible on the screen. (top/right)");
 
     // Canvas auto position
+    chk(Canvas::getInstance(0), "We should have some canvases.. (check at place 0)");
+    chk(Canvas::getInstance(1), "We should have some canvases.. (check at place 1)");
+    chk(Canvas::getInstance(2), "We should have some canvases.. (check at place 2)");
+    Canvas::clearInstances();
+    chk(!Canvas::getInstance(0), "Canvases are cleared (check at 0)");
+    chk(!Canvas::getInstance(1), "Canvases are cleared (check at 1)");
+    chk(!Canvas::getInstance(2), "Canvases are cleared (check at 2)");
+
 }
 
 } /* namespace GUI */

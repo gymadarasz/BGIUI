@@ -9,12 +9,18 @@
 
 #include "Tester.h"
 #include "GUITest.h"
+#include "Examples/Example01Canvas.h"
 
 using namespace GUI;
 
 int main() {
 	Tester tester;
-	return tester.run(new GUITest);
+	if (tester.run(new GUITest)) {
+		return 1;
+	}
+	Example01Canvas example01;
+
+	return 0;
 }
 
 

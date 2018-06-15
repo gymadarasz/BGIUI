@@ -10,7 +10,7 @@
 namespace GUI {
 
 int Canvas::next = 0;
-Canvas* Canvas::instances[GUI_CANVAS_INSTANCES] = {0};
+Canvas* Canvas::instances[CANVAS_INSTANCES] = {0};
 
 
 void Canvas::setInstance(int id, Canvas* canvas) {
@@ -225,6 +225,15 @@ Canvas::~Canvas() {
 
 Canvas* Canvas::getInstance(int id) {
 	return instances[id];
+}
+
+void Canvas::clearInstances() {
+	for (int i=0; i<CANVAS_INSTANCES; i++) {
+		if(instances[i]) {
+			delete instances[i];
+			instances[i] = 0;
+		}
+	}
 }
 
 int Canvas::getId() {
