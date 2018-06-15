@@ -7,14 +7,16 @@
 
 #include <graphics.h>
 #include <stdio.h>
-#include "Window.h"
+#include "GUITest.h"
 
 using namespace GUI;
 
 int main() {
-	Window window;
-	circle(10,10,10);
-	getch();
+	printf("here I am!\n");
+	GUITest test;
+//	Window window;
+//	circle(10,10,10);
+//	getch();
 	return 0;
 }
 

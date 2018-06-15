@@ -8,6 +8,8 @@
 #ifndef COUNTED_H_
 #define COUNTED_H_
 
+#include <conio.h>
+
 namespace GUI {
 
 class Counted {
