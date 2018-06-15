@@ -232,10 +232,10 @@ int Canvas::getId() {
 }
 
 Canvas* Canvas::setup(
-	int top,
-	int left,
 	int width,
 	int height,
+	int top,
+	int left,
 	int color,
 	int colorPushed,
 	int borderSize,

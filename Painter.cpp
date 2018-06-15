@@ -30,7 +30,7 @@ namespace GUI {
 			initgraph(&g,&d,(char*)"../../bgi");
 		}
 
-		cleardevice();
+		clear();
 
 		return found;
 	}
@@ -40,8 +40,12 @@ namespace GUI {
 		return 0;
 	}
 
+	void Painter::clear() {
+		cleardevice();
+	}
+
     void Painter::hline(int x, int y1, int y2, int color) {
-        if (color == GUI_STYLE_NOCOLOR) {
+        if (color == GUI_NOCOLOR) {
             return ;
         }
 
@@ -52,7 +56,7 @@ namespace GUI {
     }
 
     void Painter::vline(int x1, int y, int x2, int color) {
-        if (color == GUI_STYLE_NOCOLOR) {
+        if (color == GUI_NOCOLOR) {
             return ;
         }
 

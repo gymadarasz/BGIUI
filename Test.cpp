@@ -24,10 +24,11 @@ void Test::run() {
 }
 
 
-void Test::equ(int a, int b, const char* errmsg) {
+void Test::equ(int a, int b, const char* msg, const char* errmsg) {
     runs++;
+    printf("\nTEST %d: ", runs);
+    printf(msg, a, b);
     if (a == b) {
-        printf(".");
         success++;
     } else {
         printf(errmsg, a, b);
@@ -35,11 +36,12 @@ void Test::equ(int a, int b, const char* errmsg) {
     }
 }
 
-void Test::equ(const char* a, const char* b, const char* errmsg) {
-    int res = strcmp(a, b);
+void Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
     runs++;
+    int res = strcmp(a, b);
+    printf("\nTEST %d: ", runs);
+    printf(msg, res, a, b);
     if (!res) {
-        printf(".");
         success++;
     } else {
         printf(errmsg, res, a, b);

@@ -84,15 +84,15 @@ public:
 	static Canvas* getInstance(int id);
 	virtual int getId();
 	virtual Canvas* setup(
-		int top = -1,
-		int left = -1,
-		int width = -1,
-		int height = -1,
-		int color = GUI_STYLE_CANVAS_COLOR,
-		int colorPushed = GUI_STYLE_CANVAS_COLOR_PUSHED,
-		int borderSize = GUI_STYLE_CANVAS_BORDER_SIZE,
-		int borderColor = GUI_STYLE_CANVAS_BORDER_COLOR,
-		int borderColorSelected = GUI_STYLE_CANVAS_BORDER_COLOR_SELECTED
+		int width,
+		int height,
+		int top = GUI_ADJUST,
+		int left = GUI_ADJUST,
+		int color = GUI_CANVAS_COLOR,
+		int colorPushed = GUI_CANVAS_COLOR_PUSHED,
+		int borderSize = GUI_CANVAS_BORDER_SIZE,
+		int borderColor = GUI_CANVAS_BORDER_COLOR,
+		int borderColorSelected = GUI_CANVAS_BORDER_COLOR_SELECTED
 	);
 	virtual void draw();
 };

@@ -23,8 +23,8 @@ protected:
 public:
     Test();
     virtual ~Test();
-    virtual void equ(int a, int b, const char* errmsg = "\nError (integers are not equals): %d != %d\n");
-    virtual void equ(const char* a, const char* b, const char* errmsg = "Error (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
+    virtual void equ(int a, int b, const char* msg = "OK", const char* errmsg = "\nError (integers are not equals): %d != %d\n");
+    virtual void equ(const char* a, const char* b, const char* msg = "OK", const char* errmsg = "\nError (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
     virtual void run();
     virtual int stat();
 };
