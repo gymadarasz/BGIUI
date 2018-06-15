@@ -10,11 +10,16 @@
 
 #include <stdio.h>
 #include "Counted.h"
+#include "Window.h"
 
 namespace GUI {
 
 class GUITest {
-	int equ(int a, int b, const char* errmsg = "\nERROR: Test assert equals integer error: %d != %d\n");
+	int asserts;
+	int errors;
+	void equ(int a, int b, const char* errmsg = "\nERROR: Test assert equals integer error: %d != %d\n");
+	void countedTest();
+	void windowTest();
 public:
 	GUITest();
 };
