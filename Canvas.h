@@ -11,10 +11,13 @@
 #include <conio.h>
 #include "style.h"
 
+#define GUI_CANVAS_INSTANCES_MAX 100
+
 namespace GUI {
 
 class Canvas {
 	static int next;
+	static Canvas* instances[GUI_CANVAS_INSTANCES_MAX];
 	int id;
 	Canvas* parent;
 	int top;
@@ -23,6 +26,7 @@ class Canvas {
 	int height;
 	int color;
 
+	virtual Canvas* setId(int id);
 	virtual Canvas* setParent(Canvas* parent = 0);
 	virtual Canvas* setTop(int top);
 	virtual Canvas* setLeft(int left);

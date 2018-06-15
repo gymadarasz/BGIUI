@@ -10,6 +10,14 @@
 namespace GUI {
 
 int Canvas::next = 0;
+Canvas* Canvas::instances[GUI_CANVAS_INSTANCES_MAX] = {0};
+
+Canvas* Canvas::setId(int id) {
+	instances[id] = this;
+
+	this->id = id;
+	return this;
+}
 
 Canvas* Canvas::setParent(Canvas* parent) {
 	this->parent = parent;
@@ -44,12 +52,12 @@ Canvas* Canvas::setColor(int color) {
 // public:
 
 Canvas::Canvas(Canvas* parent) {
-	id = ++next;
+	setId(next++);
 	setParent(parent);
 }
 
 Canvas::~Canvas() {
-
+	instances[getId()] = 0;
 }
 
 int Canvas::getId() {

@@ -23,10 +23,10 @@ void Test::canvasTest() {
 
 	Canvas canvas1;
 	int id = canvas1.getId();
-	equ(id, 1);
+	equ(id, 0);
 	Canvas canvas2;
 	id = canvas2.getId();
-	equ(id, 2);
+	equ(id, 1);
 
 	Canvas canvas;
 	canvas.setup();

@@ -1,21 +1,21 @@
 /*
- * Window.h
+ * Painter.h
  *
- *  Created on: Jun 14, 2018
+ *  Created on: Jun 15, 2018
  *      Author: Gyula
  */
 
-#ifndef WINDOW_H_
-#define WINDOW_H_
+#ifndef PAINTER_H_
+#define PAINTER_H_
 
-#include "Painter.h"
+#include <graphics.h>
 
 namespace GUI {
 
-class Window {
+class Painter {
 public:
-	Window(
-	    int width = 0,
+	static int init(
+		int width = 0,
 		int height = 0,
 		const char* title = "Windows BGI",
 		int left = 0,
@@ -23,9 +23,9 @@ public:
 		bool dbflag = false,
 		bool closeflag = true
 	);
-	virtual ~Window();
+	static int close();
 };
 
 } /* namespace GUI */
 
-#endif /* WINDOW_H_ */
+#endif /* PAINTER_H_ */
