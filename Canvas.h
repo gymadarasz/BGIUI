@@ -40,14 +40,12 @@ class Canvas {
 	bool lineBreak;
 	int marginSize;
 
-	static void setInstance(int id, Canvas* canvas);
+	static bool setInstance(int id, Canvas* canvas);
 	virtual Canvas* setAdjust(bool adjust);
 	virtual Canvas* setId(int id);
 	virtual Canvas* setParent(Canvas* parent = 0);
 	virtual Canvas* setTop(int top);
 	virtual Canvas* setLeft(int left);
-	virtual Canvas* setWidth(int width);
-	virtual Canvas* setHeight(int height);
 	virtual Canvas* setColor(int color);
 	virtual Canvas* setColorPushed(int colorPushed);
 	virtual Canvas* setBorderSize(int borderSize);
@@ -57,18 +55,11 @@ class Canvas {
 	virtual Canvas* setSelected(bool selected);
 	virtual Canvas* setPushed(bool pushed);
 	virtual Canvas* setChangedBorder(bool changedBorder);
-	virtual Canvas* setChangedInner(bool changedInner);
-	virtual Canvas* setLineBreak(bool lineBreak);
 
 	virtual Canvas* getParent();
-	virtual bool getAdjust();
 	virtual int getTop();
 	virtual int getLeft();
-	virtual int getWidth();
-	virtual int getHeight();
-	virtual int getColor();
 	virtual int getColorPushed();
-	virtual int getBorderSize();
 	virtual int getBorderColor();
 	virtual int getBorderColorSelected();
 	virtual int getMarginSize();
@@ -78,28 +69,39 @@ class Canvas {
 	virtual bool getChangedInner();
 	virtual bool getLineBreak();
 
-	virtual int calcTopRelativeToParent();
-	virtual int calcLeftRelativeToParent();
 	virtual int calcWidthFull();
 	virtual int calcHeightFull();
 	virtual int calcColorCurrent();
 	virtual int calcBorderColorCurrent();
 
-	virtual void drawBorder(int offsetTop, int offsetLeft);
-	virtual void drawInner(int offsetTop, int offsetLeft);
-	virtual void drawChildren();
+	virtual bool drawBorder(int offsetTop, int offsetLeft);
+	virtual int drawChildren();
+protected:
+	virtual Canvas* setWidth(int width);
+	virtual Canvas* setHeight(int height);
+	virtual Canvas* setChangedInner(bool changedInner);
+
+	virtual bool drawInner(int offsetTop, int offsetLeft);
+	virtual bool getAdjust();
+	virtual int getWidth();
+	virtual int getHeight();
+	virtual int getColor();
+	virtual int getBorderSize();
+
+	virtual int calcTopRelativeToParent();
+	virtual int calcLeftRelativeToParent();
 public:
 	Canvas(Canvas* parent = 0);
 	virtual ~Canvas();
 	static Canvas* getInstance(int id);
-	static void clearInstances();
+	static int clearInstances();
 	virtual int getId();
 	virtual Canvas* setup(
-		bool adjust = true,
-		int width = 0,
-		int height = 0,
-		int top = 0,
-		int left = 0,
+		bool adjust = GUI_CANVAS_DEFAULT_ADJUST,
+		int width = GUI_CANVAS_DEFAULT_WIDTH,
+		int height = GUI_CANVAS_DEFAULT_HEIGHT,
+		int top = GUI_CANVAS_DEFAULT_TOP,
+		int left = GUI_CANVAS_DEFAULT_LEFT,
 		int color = GUI_CANVAS_COLOR,
 		int colorPushed = GUI_CANVAS_COLOR_PUSHED,
 		int borderSize = GUI_CANVAS_BORDER_SIZE,
@@ -107,7 +109,8 @@ public:
 		int borderColorSelected = GUI_CANVAS_BORDER_COLOR_SELECTED,
 		int marginSize = GUI_CANVAS_MARGIN_SIZE
 	);
-	virtual void draw(int offsetTop = 0, int offsetLeft = 0);
+	virtual int draw(int offsetTop = 0, int offsetLeft = 0);
+	virtual Canvas* setLineBreak(bool lineBreak);
 	static void debugInstances();
 };
 

@@ -13,8 +13,112 @@ int Canvas::next = 0;
 Canvas* Canvas::instances[CANVAS_INSTANCES] = {0};
 
 
-void Canvas::setInstance(int id, Canvas* canvas) {
-	Canvas::instances[id] = canvas;
+// public:
+
+Canvas::Canvas(Canvas* parent) {
+	setId(next++);
+	setParent(parent);
+	setInstance(getId(), this);
+	setup(false, 0, 0);
+}
+
+Canvas::~Canvas() {
+	instances[getId()] = 0;
+}
+
+Canvas* Canvas::getInstance(int id) {
+	return instances[id];
+}
+
+int Canvas::clearInstances() {
+	int ret = 0;
+	for (int i=0; i<CANVAS_INSTANCES; i++) {
+		if(instances[i]) {
+			//delete instances[i];
+			instances[i] = 0;
+			ret++;
+		}
+	}
+	next = 0;
+	return ret;
+}
+
+int Canvas::getId() {
+	return id;
+}
+
+Canvas* Canvas::setup(
+	bool adjust,
+	int width,
+	int height,
+	int top,
+	int left,
+	int color,
+	int colorPushed,
+	int borderSize,
+	int borderColor,
+	int borderColorSelected,
+	int marginSize
+) {
+	setAdjust(adjust);
+	setTop(top);
+	setLeft(left);
+	setWidth(width);
+	setHeight(height);
+	setColor(color);
+	setColorPushed(colorPushed);
+	setBorderSize(borderSize);
+	setBorderColor(borderColor);
+	setBorderColorSelected(borderColorSelected);
+	setMarginSize(marginSize);
+	setSelected(false);
+	setPushed(false);
+	setChangedBorder(true);
+	setChangedInner(true);
+	setLineBreak(false);
+	return this;
+}
+
+int Canvas::draw(int offsetTop, int offsetLeft) {
+	int ret = 0;
+	ret += drawBorder(offsetTop, offsetLeft);
+	ret += drawInner(offsetTop, offsetLeft);
+	ret += drawChildren();
+	return ret;
+}
+
+Canvas* Canvas::setLineBreak(bool lineBreak) {
+	this->lineBreak = lineBreak;
+	return this;
+}
+
+void Canvas::debugInstances() {
+	printf("\nCanvas instances:");
+	for (int i=0; i<CANVAS_INSTANCES; i++) {
+		printf("\ncanvas[index:%d]\n", i);
+		Canvas* current = getInstance(i);
+		if (current) {
+			printf("id:%d (top:%d, left:%d)\n", current->getId(), current->getTop(), current->getLeft());
+			Canvas* parent = current->getParent();
+			if (parent) {
+				printf("parent-id:%d (top:%d, left:%d)\n", parent->getId(), parent->getTop(), parent->getLeft());
+			} else {
+				printf("parent:-none-\n");
+			}
+		} else {
+			printf("-empty-\n");
+		}
+	}
+}
+
+// private:
+
+bool Canvas::setInstance(int id, Canvas* canvas) {
+	if (Canvas::instances[id] != canvas) {
+		Canvas::instances[id] = canvas;
+		return true;
+	}
+	return false;
 }
 
 Canvas* Canvas::setAdjust(bool adjust) {
@@ -39,16 +143,6 @@ Canvas* Canvas::setTop(int top) {
 
 Canvas* Canvas::setLeft(int left) {
 	this->left = left;
-	return this;
-}
-
-Canvas* Canvas::setWidth(int width) {
-	this->width = width;
-	return this;
-}
-
-Canvas* Canvas::setHeight(int height) {
-	this->height = height;
 	return this;
 }
 
@@ -98,51 +192,25 @@ Canvas* Canvas::setChangedBorder(bool changedBorder) {
 	return this;
 }
 
-Canvas* Canvas::setChangedInner(bool changedInner) {
-	this->changedInner = changedInner;
-	return this;
-}
-
-Canvas* Canvas::setLineBreak(bool lineBreak) {
-	this->lineBreak = lineBreak;
-	return this;
-}
-
 
 Canvas* Canvas::getParent() {
 	return parent;
-}
-
-bool Canvas::getAdjust() {
-	return adjust;
 }
 
 int Canvas::getTop() {
 	return top;
 }
 
-int Canvas::getLeft() {
-	return left;
-}
-
-int Canvas::getWidth() {
-	return width;
-}
-
-int Canvas::getHeight() {
-	return height;
-}
-
 int Canvas::getColor() {
 	return color;
 }
 
-int Canvas::getColorPushed() {
-	return colorPushed;
-}
-
 int Canvas::getBorderSize() {
 	return borderSize;
+}
+
+int Canvas::getColorPushed() {
+	return colorPushed;
 }
 
 int Canvas::getBorderColor() {
@@ -179,16 +247,6 @@ bool Canvas::getLineBreak() {
 
 
 
-int Canvas::calcTopRelativeToParent() {
-	int top = getTop();
-	return parent ? parent->calcTopRelativeToParent() + top : top;
-}
-
-int Canvas::calcLeftRelativeToParent() {
-	int left = getLeft();
-	return parent ? parent->calcLeftRelativeToParent() + left : left;
-}
-
 int Canvas::calcWidthFull() {
 	return getWidth() + getBorderSize()*2;
 }
@@ -205,7 +263,7 @@ int Canvas::calcBorderColorCurrent() {
 	return getSelected() ? getBorderColorSelected() : getBorderColor();
 }
 
-void Canvas::drawBorder(int offsetTop, int offsetLeft) {
+bool Canvas::drawBorder(int offsetTop, int offsetLeft) {
 	if (getChangedBorder()) {
 		Painter::rect(
 			calcTopRelativeToParent() + offsetTop,
@@ -215,23 +273,15 @@ void Canvas::drawBorder(int offsetTop, int offsetLeft) {
 			calcBorderColorCurrent()
 		);
 		setChangedBorder(false);
+		return true;
 	}
+	return false;
 }
 
-void Canvas::drawInner(int offsetTop, int offsetLeft) {
-	if (getChangedInner()) {
-		Painter::fillrect(
-			calcTopRelativeToParent() + getBorderSize() + offsetTop,
-			calcLeftRelativeToParent() + getBorderSize() + offsetLeft,
-			getWidth(),
-			getHeight(),
-			calcColorCurrent()
-		);
-		setChangedInner(false);
-	}
-}
 
-void Canvas::drawChildren() {
+int Canvas::drawChildren() {
+	int ret = 0;
+
 	// reset cursor
 	cursor.reset(getWidth());
 
@@ -246,12 +296,21 @@ void Canvas::drawChildren() {
 
 			if (child->getAdjust()) {
 
-				offsetTop = child->getMarginSize() + cursor.getTop();
-				offsetLeft = child->getMarginSize() + cursor.getLeft();
-				if(cursor.step(child->calcWidthFull() + child->getMarginSize()*2, child->calcHeightFull() + child->getMarginSize()*2)) {
-					offsetTop = child->getMarginSize() + cursor.getTop();
-					offsetLeft = child->getMarginSize() + cursor.getLeft();
-					if(cursor.step(child->calcWidthFull() + child->getMarginSize()*2, child->calcHeightFull() + child->getMarginSize()*2)) {
+				int childMarginSize = child->getMarginSize();
+				int childCalcWidhtFull = child->calcWidthFull();
+				int childCalcHeightFull = child->calcHeightFull();
+				bool childLineBreak = child->getLineBreak();
+
+				if (childLineBreak) {
+					cursor.br();
+				}
+
+				offsetTop = childMarginSize + cursor.getTop();
+				offsetLeft = childMarginSize + cursor.getLeft();
+				if(cursor.step(childCalcWidhtFull + childMarginSize*2, childCalcHeightFull + childMarginSize*2)) {
+					offsetTop = childMarginSize + cursor.getTop();
+					offsetLeft = childMarginSize + cursor.getLeft();
+					if(cursor.step(childCalcWidhtFull + childMarginSize*2, childCalcHeightFull + childMarginSize*2)) {
 						// TODO: child element width greater then child's parent (this) element width. do we extends parent (this) size? (may if its adjust?)? - if so then resize the cursor too!!
 					}
 				}
@@ -259,95 +318,69 @@ void Canvas::drawChildren() {
 
 			// draw it
 			child->draw(offsetTop, offsetLeft);
+			ret++;
 		}
 	}
+	return ret;
 }
 
-// public:
+// protected:
 
-Canvas::Canvas(Canvas* parent) {
-	setId(next++);
-	setParent(parent);
-	setInstance(getId(), this);
-	setup(false, 0, 0);
-}
-
-Canvas::~Canvas() {
-	instances[getId()] = 0;
-}
-
-Canvas* Canvas::getInstance(int id) {
-	return instances[id];
-}
-
-void Canvas::clearInstances() {
-	for (int i=0; i<CANVAS_INSTANCES; i++) {
-		if(instances[i]) {
-			//delete instances[i];
-			instances[i] = 0;
-		}
-	}
-	next = 0;
-}
-
-int Canvas::getId() {
-	return id;
-}
-
-Canvas* Canvas::setup(
-	bool adjust,
-	int width,
-	int height,
-	int top,
-	int left,
-	int color,
-	int colorPushed,
-	int borderSize,
-	int borderColor,
-	int borderColorSelected,
-	int marginSize
-) {
-	setAdjust(adjust);
-	setTop(top);
-	setLeft(left);
-	setWidth(width);
-	setHeight(height);
-	setColor(color);
-	setColorPushed(colorPushed);
-	setBorderSize(borderSize);
-	setBorderColor(borderColor);
-	setBorderColorSelected(borderColorSelected);
-	setMarginSize(marginSize);
-	setSelected(false);
-	setPushed(false);
-	setChangedBorder(true);
-	setChangedInner(true);
-	setLineBreak(false);
+Canvas* Canvas::setWidth(int width) {
+	this->width = width;
 	return this;
 }
 
-void Canvas::draw(int offsetTop, int offsetLeft) {
-	drawBorder(offsetTop, offsetLeft);
-	drawInner(offsetTop, offsetLeft);
-	drawChildren();
+Canvas* Canvas::setHeight(int height) {
+	this->height = height;
+	return this;
 }
 
-void Canvas::debugInstances() {
-	for (int i=0; i<CANVAS_INSTANCES; i++) {
-		printf("\ncanvas[index:%d]\n", i);
-		Canvas* current = getInstance(i);
-		if (current) {
-			printf("id:%d (top:%d, left:%d)\n", current->getId(), current->getTop(), current->getLeft());
-			Canvas* parent = current->getParent();
-			if (parent) {
-				printf("parent-id:%d (top:%d, left:%d)\n", parent->getId(), parent->getTop(), parent->getLeft());
-			} else {
-				printf("parent:-none-\n");
-			}
-		} else {
-			printf("-empty-\n");
-		}
+Canvas* Canvas::setChangedInner(bool changedInner) {
+	this->changedInner = changedInner;
+	return this;
+}
+
+bool Canvas::drawInner(int offsetTop, int offsetLeft) {
+	if (getChangedInner()) {
+		Painter::fillrect(
+			calcTopRelativeToParent() + getBorderSize() + offsetTop,
+			calcLeftRelativeToParent() + getBorderSize() + offsetLeft,
+			getWidth(),
+			getHeight(),
+			calcColorCurrent()
+		);
+		setChangedInner(false);
+		return true;
 	}
+	return false;
+}
+
+bool Canvas::getAdjust() {
+	return adjust;
+}
+
+int Canvas::getWidth() {
+	return width;
+}
+
+int Canvas::getHeight() {
+	return height;
+}
+
+int Canvas::getLeft() {
+	return left;
+}
+
+
+int Canvas::calcTopRelativeToParent() {
+	int top = getTop();
+	return parent ? parent->calcTopRelativeToParent() + top : top;
+}
+
+int Canvas::calcLeftRelativeToParent() {
+	int left = getLeft();
+	return parent ? parent->calcLeftRelativeToParent() + left : left;
 }
 
 } /* namespace GUI */

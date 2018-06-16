@@ -106,4 +106,29 @@ namespace GUI {
 		return getmaxy();
 	}
 
+	int Painter::getTextWidth(const char* text) {
+		return textwidth((char*)text);
+	}
+
+	int Painter::getTextHeight(const char* text) {
+		return textheight((char*)text);
+	}
+
+	void Painter::text(int top, int left, const char* text, int color, int bgcolor) {
+        if (color == GUI_NOCOLOR) {
+            if (bgcolor != GUI_NOCOLOR) {
+                fillrect(top, left, getTextWidth(text), getTextHeight(text), bgcolor);
+            }
+            return ;
+        }
+
+        int c = getcolor();
+        int b = getbkcolor();
+        setcolor(color);
+        setbkcolor(bgcolor);
+        outtextxy(left, top, (char*)text);
+        setcolor(c);
+        setbkcolor(b);
+	}
+
 } /* namespace GUI */

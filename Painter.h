@@ -31,6 +31,9 @@ public:
 	static void fillrect(int top, int left, int width, int height, int color, int borderColor = -1);
 	static int getmaxwidth();
 	static int getmaxheight();
+	static int getTextWidth(const char* text);
+	static int getTextHeight(const char* text);
+	static void text(int top, int left, const char* text, int color, int bgcolor);
 };
 
 } /* namespace GUI */
