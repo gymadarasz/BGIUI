@@ -60,9 +60,6 @@ void GUITest::testCanvasDraw() {
 void GUITest::testCanvasBoxing(){
 
 	Window window;
-	int color;
-	int i = 0;
-	int precision = 7;
 
     window.reset();
     Canvas* testCanvas = new Canvas(window.getCanvas());
