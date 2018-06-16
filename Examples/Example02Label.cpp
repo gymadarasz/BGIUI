@@ -16,7 +16,6 @@ Example02Label::Example02Label() {
 	(new Label(window.getCanvas()))->setup("This is a Label.");
 	(new Label(window.getCanvas()))->setup("This label in new line.")->setLineBreak(true);
 
-
 	window.run();
 }
 

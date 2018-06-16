@@ -16,14 +16,14 @@ using namespace GUI;
 
 int main() {
 	// run test
-//	Tester tester;
-//	if (tester.run(new GUITest)) {
-//		return 1;
-//	}
+	Tester tester;
+	if (tester.run(new GUITest)) {
+		return 1;
+	}
 	// end tests
 
 //	Example01Canvas example01;
-	Example02Label example02;
+//	Example02Label example02;
 	return 0;
 }
 

@@ -28,6 +28,8 @@ public:
     virtual bool chk(bool expr, const char* msg = "Check if boolean or expression is true..", const char* errmsg = "\nError (expression as boolean is not true): %d != %d\n");
     virtual void run();
     virtual int stat();
+    virtual void snapScr(int xmin, int ymin, int xmax, int ymax, int precision, bool stopView = true);
+    virtual bool chkScr(int* scrData, int xmin, int ymin, int xmax, int ymax, int precision);
 };
 
 } /* namespace GUI */

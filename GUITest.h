@@ -10,6 +10,7 @@
 
 #include "Test.h"
 #include "style.h"
+#include "Label.h"
 
 namespace GUI {
 
@@ -20,6 +21,7 @@ class GUITest: public Test {
 	void testCanvasBoxing();
 	void testCanvasAutoPosition();
 	void testCursor();
+	void testLabelAndLineBreak();
 public:
     virtual void run();
 };
