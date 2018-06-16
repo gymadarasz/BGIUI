@@ -13,17 +13,15 @@
 
 using namespace GUI;
 
-#define RUN_TESTS 0
-
 int main() {
-#if RUN_TEST
+	// run test
 	Tester tester;
 	if (tester.run(new GUITest)) {
 		return 1;
 	}
-#endif
-	Example01Canvas example01;
+	// end tests
 
+	Example01Canvas example01;
 	return 0;
 }
 

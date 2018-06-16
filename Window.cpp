@@ -12,7 +12,7 @@ namespace GUI {
 
 Window::Window(int width, int height, const char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed) {
 	Painter::init(width, height, title, left, top, dbflag, closeflag);
-	(canvas = new Canvas())->setup(Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, 0);
+	reset();
 }
 
 Window::~Window() {
@@ -20,21 +20,20 @@ Window::~Window() {
 }
 
 void Window::run() {
-	Canvas* canvas;
 	while (true) {
-		for (int i=0; i<CANVAS_INSTANCES; i++) {
-			canvas = Canvas::getInstance(i);
-			if (canvas) {
-				printf("paint canvas: %d\n", i);
-				canvas->draw();
-			}
-		}
+		canvas->draw();
 		delay(1);
 	}
 }
 
 Canvas* Window::getCanvas() {
 	return canvas;
+}
+
+Window* Window::reset(int color, int colorPushed) {
+	Canvas::clearInstances();
+	(canvas = new Canvas())->setup(false, Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, 0);
+	return this;
 }
 
 } /* namespace GUI */

@@ -23,9 +23,9 @@ protected:
 public:
     Test();
     virtual ~Test();
-    virtual void equ(int a, int b, const char* msg = "OK", const char* errmsg = "\nError (integers are not equals): %d != %d\n");
-    virtual void equ(const char* a, const char* b, const char* msg = "OK", const char* errmsg = "\nError (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
-    virtual void chk(bool expr, const char* msg = "OK", const char* errmsg = "\nError (expression as boolean is not true): %d != %d\n");
+    virtual bool equ(int a, int b, const char* msg = "Check if integers are equals..", const char* errmsg = "\nError (integers are not equals): %d != %d\n");
+    virtual bool equ(const char* a, const char* b, const char* msg = "Check if strings are equals..", const char* errmsg = "\nError (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
+    virtual bool chk(bool expr, const char* msg = "Check if boolean or expression is true..", const char* errmsg = "\nError (expression as boolean is not true): %d != %d\n");
     virtual void run();
     virtual int stat();
 };

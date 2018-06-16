@@ -24,41 +24,50 @@ void Test::run() {
 }
 
 
-void Test::equ(int a, int b, const char* msg, const char* errmsg) {
+bool Test::equ(int a, int b, const char* msg, const char* errmsg) {
+	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
     printf(msg, a, b);
     if (a == b) {
         success++;
+        ret = true;
     } else {
         printf(errmsg, a, b);
         failed++;
     }
+    return ret;
 }
 
-void Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
+bool Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
     int res = strcmp(a, b);
+	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
     printf(msg, res, a, b);
     if (!res) {
         success++;
+        ret = true;
     } else {
         printf(errmsg, res, a, b);
         failed++;
     }
+    return ret;
 }
 
-void Test::chk(bool expr, const char* msg, const char* errmsg) {
+bool Test::chk(bool expr, const char* msg, const char* errmsg) {
+	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
     printf(msg, expr, true);
     if (expr == true) {
         success++;
+        ret = true;
     } else {
         printf(errmsg, expr, true);
         failed++;
     }
+    return ret;
 }
 
 int Test::stat() {

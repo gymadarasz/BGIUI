@@ -14,6 +14,12 @@
 namespace GUI {
 
 class GUITest: public Test {
+	void testWindow();
+	void testCanvasIncrement();
+	void testCanvasDraw();
+	void testCanvasBoxing();
+	void testCanvasAutoPosition();
+	void testCursor();
 public:
     virtual void run();
 };
