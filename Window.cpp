@@ -6,7 +6,6 @@
  */
 
 #include "Window.h"
-#include "Canvas.h"
 
 namespace GUI {
 
@@ -20,9 +19,29 @@ Window::~Window() {
 }
 
 void Window::run() {
+	Mouse::reset();
 	while (true) {
+
 		canvas->draw();
 		delay(1);
+
+		Keyboard::check();
+		Mouse::check();
+
+		if (Keyboard::keypress.happened) {
+			switch (Keyboard::keypress.key) {
+			case KEY_LEFT:
+				Canvas::selectPrev();
+				break;
+			case KEY_RIGHT:
+				Canvas::selectNext();
+				break;
+			case KEY_SPACE:
+				Canvas::selectedsClick();
+				break;
+			}
+		}
+		canvas->tick();
 	}
 }
 

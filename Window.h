@@ -9,8 +9,10 @@
 #define WINDOW_H_
 
 #include <stdio.h>
-#include "Painter.h"
 #include "Canvas.h"
+#include "Painter.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 namespace GUI {
 

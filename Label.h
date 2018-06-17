@@ -17,7 +17,6 @@ class Label: public Canvas {
 	int textColor;
 	int paddingSize;
 
-	Label* setText(const char* text);
 	Label* setTextColor(int color);
 	Label* setPaddingSize(int paddingSize);
 	virtual const char* getText();
@@ -43,6 +42,7 @@ public:
 		int marginSize = GUI_LABEL_MARGIN_SIZE,
 		int paddingSize = GUI_LABEL_PADDING_SIZE
 	);
+	Label* setText(const char* text);
 };
 
 } /* namespace GUI */

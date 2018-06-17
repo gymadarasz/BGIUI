@@ -53,13 +53,11 @@ Label* Label::setup(
 	return this;
 }
 
-
-// private
-
 Label* Label::setText(const char* text) {
 	// TODO: check if text already same as new text
 	this->text = text;
 	if (getAdjust()) {
+		clear();
 		int padding = getPaddingSize();
 		setWidth(Painter::getTextWidth(text) + padding);
 		setHeight(Painter::getTextHeight(text) + padding);
@@ -67,6 +65,8 @@ Label* Label::setText(const char* text) {
 	setChangedInner(true);
 	return this;
 }
+
+// private
 
 Label* Label::setTextColor(int textColor) {
 	this->textColor = textColor;
@@ -93,7 +93,7 @@ int Label::getPaddingSize() {
 bool Label::drawInner(int offsetTop, int offsetLeft) {
 	if (Canvas::drawInner(offsetTop, offsetLeft)) {
 		const char* text = getText();
-		int color = getColor();
+		int color = getPushed() ? getColorPushed() : getColor();
 		int textColor = getTextColor();
 		int borderSize = getBorderSize();
 		int paddingSize = getPaddingSize();

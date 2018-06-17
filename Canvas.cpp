@@ -76,7 +76,89 @@ Canvas* Canvas::setup(
 	setChangedBorder(true);
 	setChangedInner(true);
 	setLineBreak(false);
+	setEnabled(false);
+	setScreenTop(-1);
+	setScreenLeft(-1);
+
+	// clear event handlers
+    setTickHandler(0);
+    setClickHandler(0);
+    setDblClickHandler(0);
+    setMouseMoveHandler(0);
+    setMouseDragHandler(0);
+    setMouseOverHandler(0);
+    setMouseLeaveHandler(0);
+    setMouseDownHandler(0);
+    setMouseUpHandler(0);
+
 	return this;
+}
+
+int Canvas::tick() {
+	int ret = tickChildren();
+
+	onTick();
+	ret++;
+
+    if (!getEnabled()) {
+        return -1;
+    }
+
+    int top = getTop();
+    int left = getLeft();
+
+    // click?
+    if (Mouse::events.click.happend && isInside(Mouse::events.click.position)) {
+        onClick(Mouse::events.click.position.left-left, Mouse::events.click.position.top-top);
+        ret++;
+    }
+
+    // dblclick?
+    if (Mouse::events.dblClick.happend && isInside(Mouse::events.dblClick.position)) {
+        onDblClick(Mouse::events.dblClick.position.left-left, Mouse::events.dblClick.position.top-top);
+        ret++;
+    }
+
+    // mouse move, over, leave?
+    if (Mouse::events.mouseMove.happend) {
+        if (isInside(Mouse::events.mouseMove.current) && isInside(Mouse::events.mouseMove.previous)) {
+            onMouseMove(
+                Mouse::events.mouseMove.current.left-left, Mouse::events.mouseMove.current.top-top,
+                Mouse::events.mouseMove.previous.left-left, Mouse::events.mouseMove.previous.top-top
+            );
+            ret++;
+        } else if (isInside(Mouse::events.mouseMove.current)) {
+            onMouseOver(Mouse::events.mouseMove.current.left-left, Mouse::events.mouseMove.current.top-top);
+            ret++;
+        } else if (isInside(Mouse::events.mouseMove.previous)) {
+            onMouseLeave(Mouse::events.mouseMove.previous.left-left, Mouse::events.mouseMove.previous.top-top);
+            ret++;
+        }
+    }
+
+    if (Mouse::events.mouseDrag.happend) {
+        if (isInside(Mouse::events.mouseDrag.current) && isInside(Mouse::events.mouseDrag.previous)) {
+            onMouseDrag(
+                Mouse::events.mouseDrag.current.left-left, Mouse::events.mouseDrag.current.top-top,
+                Mouse::events.mouseDrag.previous.left-left, Mouse::events.mouseDrag.previous.top-top
+            );
+            ret++;
+        }
+    }
+
+    // mouse down?
+    if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
+        onMouseDown(Mouse::events.mouseDown.position.left-left, Mouse::events.mouseDown.position.top-top);
+        ret++;
+    }
+
+    // mouse up?
+    if (Mouse::events.mouseUp.happend && isInside(Mouse::events.mouseUp.position)) {
+        onMouseUp(Mouse::events.mouseUp.position.left-left, Mouse::events.mouseUp.position.top-top);
+        ret++;
+    }
+
+	return ret;
 }
 
 int Canvas::draw(int offsetTop, int offsetLeft) {
@@ -92,24 +174,145 @@ Canvas* Canvas::setLineBreak(bool lineBreak) {
 	return this;
 }
 
-void Canvas::debugInstances() {
-	printf("\nCanvas instances:");
-	for (int i=0; i<CANVAS_INSTANCES; i++) {
-		printf("\ncanvas[index:%d]\n", i);
-		Canvas* current = getInstance(i);
-		if (current) {
-			printf("id:%d (top:%d, left:%d)\n", current->getId(), current->getTop(), current->getLeft());
-			Canvas* parent = current->getParent();
-			if (parent) {
-				printf("parent-id:%d (top:%d, left:%d)\n", parent->getId(), parent->getTop(), parent->getLeft());
-			} else {
-				printf("parent:-none-\n");
-			}
-		} else {
-			printf("-empty-\n");
+int Canvas::selectNext() {
+	int i = calcFirstSelected() + 1;
+	unselectAll();
+	for (; i < CANVAS_INSTANCES; i++) {
+		Canvas* canvas = getInstance(i);
+		if (canvas && canvas->getEnabled()) {
+			canvas->onMouseOver(-1, -1);
+			//canvas->setSelected(true);
+			return i;
 		}
 	}
+	return -1;
 }
+
+int Canvas::selectPrev() {
+	int i = calcLastSelected() - 1;
+	unselectAll();
+	for (; i >= 0; i--) {
+		Canvas* canvas = getInstance(i);
+		if (canvas && canvas->getEnabled()) {
+			canvas->onMouseOver(-1, -1);
+			//canvas->setSelected(true);
+			return i;
+		}
+	}
+	return -1;
+}
+
+int Canvas::selectedsClick() {
+	int ret = 0;
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* canvas = getInstance(i);
+		if (canvas && canvas->getEnabled()) {
+			canvas->onMouseDown(-1, -1);
+			canvas->onClick(-1, -1);
+			canvas->onMouseUp(-1, -1);
+			ret++;
+		}
+	}
+	return ret;
+}
+
+int Canvas::clearAll() {
+	int ret = 0;
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* canvas = getInstance(i);
+		if (canvas) {
+			canvas->clear();
+			ret++;
+		}
+	}
+	return ret;
+}
+
+// (events getters)
+CanvasEventHandler Canvas::getTickHandler() {
+	return onTickHandler;
+}
+
+CanvasEventHandler Canvas::getClickHandler() {
+	return onClickHandler;
+}
+
+CanvasEventHandler Canvas::getDblClickHandler() {
+	return onDblClickHandler;
+}
+
+CanvasEventHandler Canvas::getMouseMoveHandler() {
+	return onMouseMoveHandler;
+}
+
+CanvasEventHandler Canvas::getMouseDragHandler() {
+	return onMouseDragHandler;
+}
+
+CanvasEventHandler Canvas::getMouseOverHandler() {
+	return onMouseOverHandler;
+}
+
+CanvasEventHandler Canvas::getMouseLeaveHandler() {
+	return onMouseLeaveHandler;
+}
+
+CanvasEventHandler Canvas::getMouseDownHandler() {
+	return onMouseDownHandler;
+}
+
+CanvasEventHandler Canvas::getMouseUpHandler() {
+	return onMouseUpHandler;
+}
+
+
+// (events setters)
+
+Canvas* Canvas::setTickHandler(CanvasEventHandler canvasEventHandler) {
+	this->onTickHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setClickHandler(CanvasEventHandler canvasEventHandler) {
+	this->onClickHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setDblClickHandler(CanvasEventHandler canvasEventHandler) {
+	this->onDblClickHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseMoveHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseMoveHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseDragHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseDragHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseOverHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseOverHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseLeaveHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseLeaveHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseDownHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseDownHandler = canvasEventHandler;
+	return this;
+}
+
+Canvas* Canvas::setMouseUpHandler(CanvasEventHandler canvasEventHandler) {
+	this->onMouseUpHandler = canvasEventHandler;
+	return this;
+}
+
 
 // private:
 
@@ -178,12 +381,23 @@ Canvas* Canvas::setMarginSize(int marginSize) {
 }
 
 Canvas* Canvas::setSelected(bool selected) {
-	this->selected = selected;
+	if (this->selected != selected) {
+		this->selected = selected;
+		if (getBorderColorSelected() != getBorderColor()) {
+			setChangedBorder(true);
+		}
+		// TODO: getColorSelected() => setChangedInner(true)
+	}
 	return this;
 }
 
 Canvas* Canvas::setPushed(bool pushed) {
-	this->pushed = pushed;
+	if (this->pushed != pushed) {
+		this->pushed = pushed;
+		if (getColorPushed() != getColor()) {
+			setChangedInner(true);
+		}
+	}
 	return this;
 }
 
@@ -192,6 +406,21 @@ Canvas* Canvas::setChangedBorder(bool changedBorder) {
 	return this;
 }
 
+Canvas* Canvas::setScreenTop(int screenTop) {
+	this->screenTop = screenTop;
+	return this;
+}
+
+Canvas* Canvas::setScreenLeft(int screenLeft) {
+	this->screenLeft = screenLeft;
+	return this;
+}
+
+Canvas* Canvas::getRootCanvas() {
+	Canvas* parent = getParent();
+	Canvas* root = parent ? parent->getRootCanvas() : this;
+	return root;
+}
 
 Canvas* Canvas::getParent() {
 	return parent;
@@ -205,12 +434,16 @@ int Canvas::getColor() {
 	return color;
 }
 
+int Canvas::getColorPushed() {
+	return colorPushed;
+}
+
 int Canvas::getBorderSize() {
 	return borderSize;
 }
 
-int Canvas::getColorPushed() {
-	return colorPushed;
+bool Canvas::getPushed() {
+	return pushed;
 }
 
 int Canvas::getBorderColor() {
@@ -229,10 +462,6 @@ bool Canvas::getSelected() {
 	return selected;
 }
 
-bool Canvas::getPushed() {
-	return pushed;
-}
-
 bool Canvas::getChangedBorder() {
 	return changedBorder;
 }
@@ -243,6 +472,18 @@ bool Canvas::getChangedInner() {
 
 bool Canvas::getLineBreak() {
 	return lineBreak;
+}
+
+bool Canvas::getEnabled() {
+	return enabled;
+}
+
+int Canvas::getScreenTop() {
+	return screenTop;
+}
+
+int Canvas::getScreenLeft() {
+	return screenLeft;
 }
 
 
@@ -261,6 +502,38 @@ int Canvas::calcColorCurrent() {
 
 int Canvas::calcBorderColorCurrent() {
 	return getSelected() ? getBorderColorSelected() : getBorderColor();
+}
+
+int Canvas::calcFirstSelected() {
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* canvas = getInstance(i);
+		if (canvas && canvas->getSelected()) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int Canvas::calcLastSelected() {
+	for (int i = CANVAS_INSTANCES - 1; i >= 0; i--) {
+		Canvas* canvas = getInstance(i);
+		if (canvas && canvas->getSelected()) {
+			return i;
+		}
+	}
+	return CANVAS_INSTANCES;
+}
+
+int Canvas::unselectAll() {
+	int ret = 0;
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* canvas = getInstance(i);
+		if (canvas) {
+			canvas->setSelected(false);
+			ret++;
+		}
+	}
+	return ret;
 }
 
 bool Canvas::drawBorder(int offsetTop, int offsetLeft) {
@@ -324,7 +597,42 @@ int Canvas::drawChildren() {
 	return ret;
 }
 
+bool Canvas::isInside(EventPoint eventPoint) {
+    int top = getScreenTop();
+    int left = getScreenLeft();
+    int fullwidth = calcWidthFull();
+    int fullheight = calcHeightFull();
+    int right = left + fullwidth;
+    int bottom = top + fullheight;
+    return eventPoint.left >= left && eventPoint.left <= right && eventPoint.top >= top && eventPoint.top <= bottom;
+}
+
+int Canvas::tickChildren() {
+	int ret = 0;
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* child = getInstance(i);
+		Canvas* parent = child ? child->getParent() : 0;
+		if (child && parent && parent->getId() == getId()) {
+			ret += child->tick();
+		}
+	}
+	return ret;
+}
+
 // protected:
+
+Canvas* Canvas::clear() {
+	Canvas* root = getRootCanvas();
+	int top = getScreenTop() - getBorderSize();
+	int left = getScreenLeft() - getBorderSize();
+	int width = calcWidthFull();
+	int height = calcWidthFull();
+	int color = root->getColor();
+	Painter::fillrect(top, left, width, height, color, color);
+	setChangedBorder(true);
+	setChangedInner(true);
+	return this;
+}
 
 Canvas* Canvas::setWidth(int width) {
 	this->width = width;
@@ -336,6 +644,11 @@ Canvas* Canvas::setHeight(int height) {
 	return this;
 }
 
+Canvas* Canvas::setEnabled(bool enabled) {
+	this->enabled = enabled;
+	return this;
+}
+
 Canvas* Canvas::setChangedInner(bool changedInner) {
 	this->changedInner = changedInner;
 	return this;
@@ -343,13 +656,17 @@ Canvas* Canvas::setChangedInner(bool changedInner) {
 
 bool Canvas::drawInner(int offsetTop, int offsetLeft) {
 	if (getChangedInner()) {
+		int screenTop = calcTopRelativeToParent() + getBorderSize() + offsetTop;
+		int screenLeft = calcLeftRelativeToParent() + getBorderSize() + offsetLeft;
 		Painter::fillrect(
-			calcTopRelativeToParent() + getBorderSize() + offsetTop,
-			calcLeftRelativeToParent() + getBorderSize() + offsetLeft,
+			screenTop,
+			screenLeft,
 			getWidth(),
 			getHeight(),
 			calcColorCurrent()
 		);
+		setScreenTop(screenTop);
+		setScreenLeft(screenLeft);
 		setChangedInner(false);
 		return true;
 	}
@@ -381,6 +698,85 @@ int Canvas::calcTopRelativeToParent() {
 int Canvas::calcLeftRelativeToParent() {
 	int left = getLeft();
 	return parent ? parent->calcLeftRelativeToParent() + left : left;
+}
+
+// events
+
+void Canvas::onTick() {
+	CanvasEventHandler onTickHandler = getTickHandler();
+    if (onTickHandler) {
+        onTickHandler(this);
+    }
+}
+
+void Canvas::onClick(int mouseLeft, int mouseTop) {
+	CanvasEventHandler onClickHandler = getClickHandler();
+	if (onClickHandler) {
+		onClickHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onDblClick(int mouseLeft, int mouseTop) {
+	CanvasEventHandler onDblClickHandler = getDblClickHandler();
+	if (onDblClickHandler) {
+		onDblClickHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
+	CanvasEventHandler onMouseMoveHandler = getMouseMoveHandler();
+	if (onMouseMoveHandler) {
+		onMouseMoveHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
+	}
+}
+
+void Canvas::onMouseOver(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		unselectAll();
+		setSelected(true);
+	}
+
+	CanvasEventHandler onMouseOverHandler = getMouseOverHandler();
+	if (onMouseOverHandler) {
+		onMouseOverHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseLeave(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setSelected(false);
+	}
+	CanvasEventHandler onMouseLeaveHandler = getMouseLeaveHandler();
+	if (onMouseLeaveHandler) {
+		onMouseLeaveHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
+	CanvasEventHandler onMouseDragHandler = getMouseDragHandler();
+	if (onMouseDragHandler) {
+		onMouseDragHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
+	}
+}
+
+void Canvas::onMouseDown(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setPushed(true);
+	}
+	CanvasEventHandler onMouseDownHandler = getMouseDownHandler();
+	if (onMouseDownHandler) {
+		onMouseDownHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setPushed(false);
+	}
+	CanvasEventHandler onMouseUpHandler = getMouseUpHandler();
+	if (onMouseUpHandler) {
+		onMouseUpHandler(this, mouseLeft, mouseTop);
+	}
 }
 
 } /* namespace GUI */

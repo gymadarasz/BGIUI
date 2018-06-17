@@ -11,6 +11,7 @@
 #include "GUITest.h"
 #include "Examples/Example01Canvas.h"
 #include "Examples/Example02Label.h"
+#include "Examples/Example03Button.h"
 
 using namespace GUI;
 
@@ -24,6 +25,7 @@ int main() {
 
 //	Example01Canvas example01;
 //	Example02Label example02;
+	Example03Button example03;
 	return 0;
 }
 

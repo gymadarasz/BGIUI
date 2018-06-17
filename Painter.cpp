@@ -15,20 +15,21 @@ namespace GUI {
 
 		int found = false;
 
-	#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__)
 		initwindow(width, height, title, left, top, dbflag, closeflag);
 		found = true;
-	#endif
+#endif
 
-	#ifdef linux
+#if defined(linux)
 		initGraphics(width, height);
 		found = true;
-	#endif
+#endif
 
-		if (!found) {
-			int g=DETECT,d;
-			initgraph(&g,&d,(char*)"../../bgi");
-		}
+#if defined(__BORLANDC__)
+		int g=DETECT,d;
+		initgraph(&g,&d,(char*)"../../bgi");
+		found = true;
+#endif
 
 		clear();
 
