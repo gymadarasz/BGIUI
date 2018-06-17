@@ -72,7 +72,6 @@ class Canvas {
 	virtual Canvas* setBorderColorSelected(int borderColorSelected);
 	virtual Canvas* setMarginSize(int marginSize);
 	virtual Canvas* setSelected(bool selected);
-	virtual Canvas* setPushed(bool pushed);
 	virtual Canvas* setChangedBorder(bool changedBorder);
 	virtual Canvas* setScreenTop(int screenTop);
 	virtual Canvas* setScreenLeft(int screenLeft);
@@ -89,7 +88,6 @@ class Canvas {
 	virtual bool getChangedBorder();
 	virtual bool getChangedInner();
 	virtual bool getLineBreak();
-	virtual bool getEnabled();
 	virtual int getScreenTop();
 	virtual int getScreenLeft();
 
@@ -111,6 +109,7 @@ protected:
 	virtual Canvas* setWidth(int width);
 	virtual Canvas* setHeight(int height);
 	virtual Canvas* setEnabled(bool enabled);
+	virtual Canvas* setPushed(bool pushed);
 	virtual Canvas* setChangedInner(bool changedInner);
 
 	virtual bool drawInner(int offsetTop, int offsetLeft);
@@ -120,7 +119,7 @@ protected:
 	virtual int getColor();
 	virtual int getColorPushed();
 	virtual int getBorderSize();
-	virtual bool getPushed();
+	virtual bool getEnabled();
 
 	virtual int calcTopRelativeToParent();
 	virtual int calcLeftRelativeToParent();
@@ -152,41 +151,45 @@ public:
 	static int selectPrev();
 	static int selectedsClick();
 
-	static int clearAll();
+	static int clearAll(Canvas* parent = 0);
 
 	// events getters
-	CanvasEventHandler getTickHandler();
-	CanvasEventHandler getClickHandler();
-	CanvasEventHandler getDblClickHandler();
-	CanvasEventHandler getMouseMoveHandler();
-	CanvasEventHandler getMouseDragHandler();
-	CanvasEventHandler getMouseOverHandler();
-	CanvasEventHandler getMouseLeaveHandler();
-	CanvasEventHandler getMouseDownHandler();
-	CanvasEventHandler getMouseUpHandler();
+	virtual CanvasEventHandler getTickHandler();
+	virtual CanvasEventHandler getClickHandler();
+	virtual CanvasEventHandler getDblClickHandler();
+	virtual CanvasEventHandler getMouseMoveHandler();
+	virtual CanvasEventHandler getMouseDragHandler();
+	virtual CanvasEventHandler getMouseOverHandler();
+	virtual CanvasEventHandler getMouseLeaveHandler();
+	virtual CanvasEventHandler getMouseDownHandler();
+	virtual CanvasEventHandler getMouseUpHandler();
 
 	// events setters
-    Canvas* setTickHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setClickHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setDblClickHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseMoveHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseDragHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseOverHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseLeaveHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseDownHandler(CanvasEventHandler canvasEventHandler);
-    Canvas* setMouseUpHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setTickHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setClickHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setDblClickHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseMoveHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseDragHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseOverHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseLeaveHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseDownHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setMouseUpHandler(CanvasEventHandler canvasEventHandler);
 
 	// events
-	void onTick();
-	void onClick(int mouseLeft, int moiseTop);
-	void onDblClick(int mouseLeft, int moiseTop);
-	void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	void onMouseOver(int mouseLeft, int moiseTop);
-	void onMouseLeave(int mouseLeft, int moiseTop);
-	void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	void onMouseDown(int mouseLeft, int moiseTop);
-	void onMouseUp(int mouseLeft, int moiseTop);
+	virtual void onTick();
+	virtual void onClick(int mouseLeft, int moiseTop);
+	virtual void onDblClick(int mouseLeft, int moiseTop);
+	virtual void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	virtual void onMouseOver(int mouseLeft, int moiseTop);
+	virtual void onMouseLeave(int mouseLeft, int moiseTop);
+	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	virtual void onMouseDown(int mouseLeft, int moiseTop);
+	virtual void onMouseUp(int mouseLeft, int moiseTop);
 
+	// getters
+	virtual bool getPushed();
+
+	// debug
 	static void debugInstances();
 };
 

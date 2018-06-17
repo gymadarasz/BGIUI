@@ -7,17 +7,34 @@
 
 #include "Example03Button.h"
 
+
+Canvas* root = 0;
+Label* lbl1 = 0;
+
 int exampleButtonClicked(Canvas* btn, ...) {
 	((Button*)btn)->setText("Thanks!");
-	Canvas::clearAll();
+	Canvas::clearAll(root);
+	return 0;
+}
+
+int exampleSwitchClicked(Canvas* swch, ...) {
+	if (((Switch*)swch)->getPushed()) {
+		lbl1->setText("Thanks, it switched on now");
+	} else {
+		lbl1->setText("Switched off? why? ..can you..?");
+	}
+	Canvas::clearAll(root);
 	return 0;
 }
 
 Example03Button::Example03Button() {
 	Window window;
 
-	(new Button(window.getCanvas()))->setup("Push me..")->setClickHandler(exampleButtonClicked);
-	(new Label(window.getCanvas()))->setup("Test..");
+	root = window.getCanvas();
+
+	(new Button(root))->setup("Push me..")->setClickHandler(exampleButtonClicked);
+	(new Switch(root))->setClickHandler(exampleSwitchClicked);
+	(lbl1 = new Label(root))->setup("<- Switch on!");
 
 	window.run();
 

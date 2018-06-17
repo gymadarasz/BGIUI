@@ -107,6 +107,12 @@ int Canvas::tick() {
     int top = getTop();
     int left = getLeft();
 
+    // mouse down?
+    if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
+        onMouseDown(Mouse::events.mouseDown.position.left-left, Mouse::events.mouseDown.position.top-top);
+        ret++;
+    }
+
     // click?
     if (Mouse::events.click.happend && isInside(Mouse::events.click.position)) {
         onClick(Mouse::events.click.position.left-left, Mouse::events.click.position.top-top);
@@ -144,12 +150,6 @@ int Canvas::tick() {
             );
             ret++;
         }
-    }
-
-    // mouse down?
-    if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
-        onMouseDown(Mouse::events.mouseDown.position.left-left, Mouse::events.mouseDown.position.top-top);
-        ret++;
     }
 
     // mouse up?
@@ -206,7 +206,7 @@ int Canvas::selectedsClick() {
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
 		Canvas* canvas = getInstance(i);
-		if (canvas && canvas->getEnabled()) {
+		if (canvas && canvas->getSelected()) {
 			canvas->onMouseDown(-1, -1);
 			canvas->onClick(-1, -1);
 			canvas->onMouseUp(-1, -1);
@@ -216,11 +216,12 @@ int Canvas::selectedsClick() {
 	return ret;
 }
 
-int Canvas::clearAll() {
+int Canvas::clearAll(Canvas* parent) {
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
 		Canvas* canvas = getInstance(i);
-		if (canvas) {
+		Canvas* _parent = canvas ? canvas->getParent() : 0;
+		if (canvas && parent && _parent && parent->getId() == _parent->getId()) {
 			canvas->clear();
 			ret++;
 		}
@@ -392,6 +393,12 @@ void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
 	}
 }
 
+// (getters)
+
+bool Canvas::getPushed() {
+	return pushed;
+}
+
 // private:
 
 bool Canvas::setInstance(int id, Canvas* canvas) {
@@ -469,16 +476,6 @@ Canvas* Canvas::setSelected(bool selected) {
 	return this;
 }
 
-Canvas* Canvas::setPushed(bool pushed) {
-	if (this->pushed != pushed) {
-		this->pushed = pushed;
-		if (getColorPushed() != getColor()) {
-			setChangedInner(true);
-		}
-	}
-	return this;
-}
-
 Canvas* Canvas::setChangedBorder(bool changedBorder) {
 	this->changedBorder = changedBorder;
 	return this;
@@ -520,8 +517,8 @@ int Canvas::getBorderSize() {
 	return borderSize;
 }
 
-bool Canvas::getPushed() {
-	return pushed;
+bool Canvas::getEnabled() {
+	return enabled;
 }
 
 int Canvas::getBorderColor() {
@@ -550,10 +547,6 @@ bool Canvas::getChangedInner() {
 
 bool Canvas::getLineBreak() {
 	return lineBreak;
-}
-
-bool Canvas::getEnabled() {
-	return enabled;
 }
 
 int Canvas::getScreenTop() {
@@ -724,6 +717,16 @@ Canvas* Canvas::setHeight(int height) {
 
 Canvas* Canvas::setEnabled(bool enabled) {
 	this->enabled = enabled;
+	return this;
+}
+
+Canvas* Canvas::setPushed(bool pushed) {
+	if (this->pushed != pushed) {
+		this->pushed = pushed;
+		if (getColorPushed() != getColor()) {
+			setChangedInner(true);
+		}
+	}
 	return this;
 }
 

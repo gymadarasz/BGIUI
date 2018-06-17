@@ -10,6 +10,7 @@
 
 #include "../Window.h"
 #include "../Button.h"
+#include "../Switch.h"
 
 using namespace GUI;
 
