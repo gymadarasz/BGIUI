@@ -313,6 +313,84 @@ Canvas* Canvas::setMouseUpHandler(CanvasEventHandler canvasEventHandler) {
 	return this;
 }
 
+// events
+
+void Canvas::onTick() {
+	CanvasEventHandler onTickHandler = getTickHandler();
+    if (onTickHandler) {
+        onTickHandler(this);
+    }
+}
+
+void Canvas::onClick(int mouseLeft, int mouseTop) {
+	CanvasEventHandler onClickHandler = getClickHandler();
+	if (onClickHandler) {
+		onClickHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onDblClick(int mouseLeft, int mouseTop) {
+	CanvasEventHandler onDblClickHandler = getDblClickHandler();
+	if (onDblClickHandler) {
+		onDblClickHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
+	CanvasEventHandler onMouseMoveHandler = getMouseMoveHandler();
+	if (onMouseMoveHandler) {
+		onMouseMoveHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
+	}
+}
+
+void Canvas::onMouseOver(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		unselectAll();
+		setSelected(true);
+	}
+
+	CanvasEventHandler onMouseOverHandler = getMouseOverHandler();
+	if (onMouseOverHandler) {
+		onMouseOverHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseLeave(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setSelected(false);
+	}
+	CanvasEventHandler onMouseLeaveHandler = getMouseLeaveHandler();
+	if (onMouseLeaveHandler) {
+		onMouseLeaveHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
+	CanvasEventHandler onMouseDragHandler = getMouseDragHandler();
+	if (onMouseDragHandler) {
+		onMouseDragHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
+	}
+}
+
+void Canvas::onMouseDown(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setPushed(true);
+	}
+	CanvasEventHandler onMouseDownHandler = getMouseDownHandler();
+	if (onMouseDownHandler) {
+		onMouseDownHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
+	if (getEnabled()) {
+		setPushed(false);
+	}
+	CanvasEventHandler onMouseUpHandler = getMouseUpHandler();
+	if (onMouseUpHandler) {
+		onMouseUpHandler(this, mouseLeft, mouseTop);
+	}
+}
 
 // private:
 
@@ -700,83 +778,5 @@ int Canvas::calcLeftRelativeToParent() {
 	return parent ? parent->calcLeftRelativeToParent() + left : left;
 }
 
-// events
-
-void Canvas::onTick() {
-	CanvasEventHandler onTickHandler = getTickHandler();
-    if (onTickHandler) {
-        onTickHandler(this);
-    }
-}
-
-void Canvas::onClick(int mouseLeft, int mouseTop) {
-	CanvasEventHandler onClickHandler = getClickHandler();
-	if (onClickHandler) {
-		onClickHandler(this, mouseLeft, mouseTop);
-	}
-}
-
-void Canvas::onDblClick(int mouseLeft, int mouseTop) {
-	CanvasEventHandler onDblClickHandler = getDblClickHandler();
-	if (onDblClickHandler) {
-		onDblClickHandler(this, mouseLeft, mouseTop);
-	}
-}
-
-void Canvas::onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
-	CanvasEventHandler onMouseMoveHandler = getMouseMoveHandler();
-	if (onMouseMoveHandler) {
-		onMouseMoveHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
-	}
-}
-
-void Canvas::onMouseOver(int mouseLeft, int mouseTop) {
-	if (getEnabled()) {
-		unselectAll();
-		setSelected(true);
-	}
-
-	CanvasEventHandler onMouseOverHandler = getMouseOverHandler();
-	if (onMouseOverHandler) {
-		onMouseOverHandler(this, mouseLeft, mouseTop);
-	}
-}
-
-void Canvas::onMouseLeave(int mouseLeft, int mouseTop) {
-	if (getEnabled()) {
-		setSelected(false);
-	}
-	CanvasEventHandler onMouseLeaveHandler = getMouseLeaveHandler();
-	if (onMouseLeaveHandler) {
-		onMouseLeaveHandler(this, mouseLeft, mouseTop);
-	}
-}
-
-void Canvas::onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
-	CanvasEventHandler onMouseDragHandler = getMouseDragHandler();
-	if (onMouseDragHandler) {
-		onMouseDragHandler(this, mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
-	}
-}
-
-void Canvas::onMouseDown(int mouseLeft, int mouseTop) {
-	if (getEnabled()) {
-		setPushed(true);
-	}
-	CanvasEventHandler onMouseDownHandler = getMouseDownHandler();
-	if (onMouseDownHandler) {
-		onMouseDownHandler(this, mouseLeft, mouseTop);
-	}
-}
-
-void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
-	if (getEnabled()) {
-		setPushed(false);
-	}
-	CanvasEventHandler onMouseUpHandler = getMouseUpHandler();
-	if (onMouseUpHandler) {
-		onMouseUpHandler(this, mouseLeft, mouseTop);
-	}
-}
 
 } /* namespace GUI */

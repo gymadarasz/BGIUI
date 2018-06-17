@@ -11,6 +11,7 @@
 #include "Test.h"
 #include "style.h"
 #include "Label.h"
+#include "Button.h"
 
 namespace GUI {
 
@@ -22,7 +23,9 @@ class GUITest: public Test {
 	void testCanvasAutoPosition();
 	void testCursor();
 	void testLabelAndLineBreak();
+	void testButtonClick();
 public:
+	static int exampleButtonClicked(Canvas* btn, ...);
     virtual void run();
 };
 

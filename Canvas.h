@@ -125,16 +125,6 @@ protected:
 	virtual int calcTopRelativeToParent();
 	virtual int calcLeftRelativeToParent();
 
-	// events
-	void onTick();
-	void onClick(int mouseLeft, int moiseTop);
-	void onDblClick(int mouseLeft, int moiseTop);
-	void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	void onMouseOver(int mouseLeft, int moiseTop);
-	void onMouseLeave(int mouseLeft, int moiseTop);
-	void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	void onMouseDown(int mouseLeft, int moiseTop);
-	void onMouseUp(int mouseLeft, int moiseTop);
 
 public:
 	Canvas(Canvas* parent = 0);
@@ -185,6 +175,17 @@ public:
     Canvas* setMouseLeaveHandler(CanvasEventHandler canvasEventHandler);
     Canvas* setMouseDownHandler(CanvasEventHandler canvasEventHandler);
     Canvas* setMouseUpHandler(CanvasEventHandler canvasEventHandler);
+
+	// events
+	void onTick();
+	void onClick(int mouseLeft, int moiseTop);
+	void onDblClick(int mouseLeft, int moiseTop);
+	void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	void onMouseOver(int mouseLeft, int moiseTop);
+	void onMouseLeave(int mouseLeft, int moiseTop);
+	void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	void onMouseDown(int mouseLeft, int moiseTop);
+	void onMouseUp(int mouseLeft, int moiseTop);
 
 	static void debugInstances();
 };
