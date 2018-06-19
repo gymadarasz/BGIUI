@@ -18,7 +18,7 @@ Button::~Button() {
 }
 
 Button* Button::setup(
-	const char* text,
+	char* text,
 	int textColor,
 	bool adjust,
 	int width,

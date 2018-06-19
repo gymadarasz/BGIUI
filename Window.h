@@ -23,7 +23,7 @@ public:
 	Window(
 	    int width = 0,
 		int height = 0,
-		const char* title = "Window GUI",
+		char* title = (char*)"Window GUI",
 		int left = 0,
 		int top = 0,
 		bool dbflag = false,

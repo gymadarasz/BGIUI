@@ -17,7 +17,7 @@ public:
 	Button(Canvas* parent = 0);
 	virtual ~Button();
 	virtual Button* setup(
-		const char* text = GUI_BUTTON_DEFAULT_TEXT,
+		char* text = GUI_BUTTON_DEFAULT_TEXT,
 		int textColor = GUI_BUTTON_TEXT_COLOR,
 		bool adjust = GUI_BUTTON_DEFAULT_ADJUST,
 		int width = GUI_BUTTON_DEFAULT_WIDTH,

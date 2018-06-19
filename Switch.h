@@ -13,18 +13,18 @@
 namespace GUI {
 
 class Switch: public Button {
-	const char* textOff;
-	const char* textOn;
-	Switch* setTextOff(const char* textOff);
-	Switch* setTextOn(const char* textOn);
-	const char* getTextOff();
-	const char* getTextOn();
+	char* textOff;
+	char* textOn;
+	Switch* setTextOff(char* textOff);
+	Switch* setTextOn(char* textOn);
+	char* getTextOff();
+	char* getTextOn();
 public:
 	Switch(Canvas* parent = 0);
 	virtual ~Switch();
 	virtual Switch* setup(
-		const char* textOff = GUI_SWITCH_DEFAULT_TEXT_OFF,
-		const char* textOn = GUI_SWITCH_DEFAULT_TEXT_ON,
+		char* textOff = GUI_SWITCH_DEFAULT_TEXT_OFF,
+		char* textOn = GUI_SWITCH_DEFAULT_TEXT_ON,
 		int textColor = GUI_SWITCH_TEXT_COLOR,
 		bool adjust = GUI_SWITCH_DEFAULT_ADJUST,
 		int width = GUI_SWITCH_DEFAULT_WIDTH,
@@ -39,8 +39,8 @@ public:
 		int marginSize = GUI_SWITCH_MARGIN_SIZE,
 		int paddingSize = GUI_SWITCH_PADDING_SIZE
 	);
-	virtual void onMouseDown(int mouseLeft, int moiseTop);
-	virtual void onMouseUp(int mouseLeft, int moiseTop);
+	virtual void onMouseDown(int mouseLeft, int mouseTop);
+	virtual void onMouseUp(int mouseLeft, int mouseTop);
 };
 
 } /* namespace GUI */

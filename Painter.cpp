@@ -11,7 +11,7 @@
 
 namespace GUI {
 
-	int Painter::init(int width, int height, const char* title, int left, int top, bool dbflag, bool closeflag) {
+	int Painter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
 
 		int found = false;
 
@@ -107,27 +107,32 @@ namespace GUI {
 		return getmaxy();
 	}
 
-	int Painter::getTextWidth(const char* text) {
-		return textwidth((char*)text);
+	int Painter::getTextWidth(char* text) {
+		if (!text) {
+			return 0;
+		}
+		return textwidth(text);
 	}
 
-	int Painter::getTextHeight(const char* text) {
-		return textheight((char*)text);
+	int Painter::getTextHeight(char* text) {
+		if (!text) {
+			return 0;
+		}
+		return textheight(text);
 	}
 
-	void Painter::text(int top, int left, const char* text, int color, int bgcolor) {
+	void Painter::text(int top, int left, char* text, int color, int bgcolor) {
         if (color == GUI_NOCOLOR) {
             if (bgcolor != GUI_NOCOLOR) {
                 fillrect(top, left, getTextWidth(text), getTextHeight(text), bgcolor);
             }
-            return ;
         }
 
         int c = getcolor();
         int b = getbkcolor();
         setcolor(color);
         setbkcolor(bgcolor);
-        outtextxy(left, top, (char*)text);
+        outtextxy(left, top, text);
         setcolor(c);
         setbkcolor(b);
 	}

@@ -47,6 +47,9 @@ class Canvas {
 	bool enabled;
 	int screenTop;
 	int screenLeft;
+	bool noDraw;
+//	int calculatedWidth;
+//	int calculatedHeight;
 
 	// events
 	CanvasEventHandler onTickHandler;
@@ -60,25 +63,19 @@ class Canvas {
 	CanvasEventHandler onMouseUpHandler;
 
 	static bool setInstance(int id, Canvas* canvas);
-	virtual Canvas* setAdjust(bool adjust);
 	virtual Canvas* setId(int id);
 	virtual Canvas* setParent(Canvas* parent = 0);
-	virtual Canvas* setTop(int top);
-	virtual Canvas* setLeft(int left);
-	virtual Canvas* setColor(int color);
-	virtual Canvas* setColorPushed(int colorPushed);
-	virtual Canvas* setBorderSize(int borderSize);
-	virtual Canvas* setBorderColor(int borderColor);
-	virtual Canvas* setBorderColorSelected(int borderColorSelected);
-	virtual Canvas* setMarginSize(int marginSize);
 	virtual Canvas* setSelected(bool selected);
-	virtual Canvas* setChangedBorder(bool changedBorder);
 	virtual Canvas* setScreenTop(int screenTop);
 	virtual Canvas* setScreenLeft(int screenLeft);
+//	virtual Canvas* setCalculatedWidth(int calculatedWidth);
+//	virtual Canvas* setCalculatedHeight(int calculatedHeight);
+	virtual Canvas* setNoDraw(bool noDraw);
+
+	virtual Canvas* setChildrenChanged(bool changed);
 
 	virtual Canvas* getRootCanvas();
 
-	virtual Canvas* getParent();
 	virtual int getTop();
 	virtual int getLeft();
 	virtual int getBorderColor();
@@ -90,39 +87,36 @@ class Canvas {
 	virtual bool getLineBreak();
 	virtual int getScreenTop();
 	virtual int getScreenLeft();
+//	virtual int getCalculatedWidth();
+//	virtual int getCalculatedHaight();
 
-	virtual int calcWidthFull();
-	virtual int calcHeightFull();
-	virtual int calcColorCurrent();
-	virtual int calcBorderColorCurrent();
+	virtual int calcWidthWithChildren();
+	virtual int calcHeightWithChildren();
+
 	static int calcFirstSelected();
 	static int calcLastSelected();
 	static int unselectAll();
 
 	virtual bool drawBorder(int offsetTop, int offsetLeft);
-	virtual int drawChildren();
+	virtual int drawChildren(int offsetTop, int offsetLeft);
 	virtual bool isInside(EventPoint eventPoint);
 	virtual int tickChildren();
 protected:
 	virtual Canvas* clear();
 
-	virtual Canvas* setWidth(int width);
-	virtual Canvas* setHeight(int height);
-	virtual Canvas* setEnabled(bool enabled);
-	virtual Canvas* setPushed(bool pushed);
-	virtual Canvas* setChangedInner(bool changedInner);
-
 	virtual bool drawInner(int offsetTop, int offsetLeft);
+
+	// setters
+
+	// getters
+	virtual Canvas* getParent();
 	virtual bool getAdjust();
-	virtual int getWidth();
-	virtual int getHeight();
 	virtual int getColor();
 	virtual int getColorPushed();
 	virtual int getBorderSize();
 	virtual bool getEnabled();
+	virtual bool getNoDraw();
 
-	virtual int calcTopRelativeToParent();
-	virtual int calcLeftRelativeToParent();
 
 
 public:
@@ -165,29 +159,55 @@ public:
 	virtual CanvasEventHandler getMouseUpHandler();
 
 	// events setters
-	virtual Canvas* setTickHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setClickHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setDblClickHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseMoveHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseDragHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseOverHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseLeaveHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseDownHandler(CanvasEventHandler canvasEventHandler);
-	virtual Canvas* setMouseUpHandler(CanvasEventHandler canvasEventHandler);
+	virtual Canvas* setTickHandler(CanvasEventHandler onTickHandler);
+	virtual Canvas* setClickHandler(CanvasEventHandler onClickHandler);
+	virtual Canvas* setDblClickHandler(CanvasEventHandler onDblClickHandler);
+	virtual Canvas* setMouseMoveHandler(CanvasEventHandler onMouseMoveHandler);
+	virtual Canvas* setMouseDragHandler(CanvasEventHandler onMouseDragHandler);
+	virtual Canvas* setMouseOverHandler(CanvasEventHandler onMouseOverHandler);
+	virtual Canvas* setMouseLeaveHandler(CanvasEventHandler onMouseLeaveHandler);
+	virtual Canvas* setMouseDownHandler(CanvasEventHandler onMouseDownHandler);
+	virtual Canvas* setMouseUpHandler(CanvasEventHandler onMouseUpHandler);
 
 	// events
 	virtual void onTick();
-	virtual void onClick(int mouseLeft, int moiseTop);
-	virtual void onDblClick(int mouseLeft, int moiseTop);
+	virtual void onClick(int mouseLeft, int mouseTop);
+	virtual void onDblClick(int mouseLeft, int mouseTop);
 	virtual void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	virtual void onMouseOver(int mouseLeft, int moiseTop);
-	virtual void onMouseLeave(int mouseLeft, int moiseTop);
+	virtual void onMouseOver(int mouseLeft, int mouseTop);
+	virtual void onMouseLeave(int mouseLeft, int mouseTop);
 	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	virtual void onMouseDown(int mouseLeft, int moiseTop);
-	virtual void onMouseUp(int mouseLeft, int moiseTop);
+	virtual void onMouseDown(int mouseLeft, int mouseTop);
+	virtual void onMouseUp(int mouseLeft, int mouseTop);
+
+	// setters
+	virtual Canvas* setAdjust(bool adjust);
+	virtual Canvas* setEnabled(bool enabled);
+	virtual Canvas* setWidth(int width);
+	virtual Canvas* setHeight(int height);
+	virtual Canvas* setTop(int top);
+	virtual Canvas* setLeft(int left);
+	virtual Canvas* setMarginSize(int marginSize);
+	virtual Canvas* setBorderSize(int borderSize);
+	virtual Canvas* setPushed(bool pushed);
+	virtual Canvas* setChangedInner(bool changedInner);
+	virtual Canvas* setChangedBorder(bool changedBorder);
+	virtual Canvas* setColor(int color);
+	virtual Canvas* setColorPushed(int colorPushed);
+	virtual Canvas* setBorderColor(int borderColor);
+	virtual Canvas* setBorderColorSelected(int borderColorSelected);
 
 	// getters
+	virtual int getWidth();
+	virtual int getHeight();
 	virtual bool getPushed();
+
+	virtual int calcTopRelativeToParent();
+	virtual int calcLeftRelativeToParent();
+	virtual int calcWidthFull();
+	virtual int calcHeightFull();
+	virtual int calcColorCurrent();
+	virtual int calcBorderColorCurrent();
 
 	// debug
 	static void debugInstances();

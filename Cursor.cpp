@@ -22,7 +22,7 @@ bool Cursor::step(int width, int height) {
 	int left = getLeft();
 	int lineHeight = getLineHeight();
 	left += width;
-	if(left > getWidth()) {
+	if(getWidth() && left > getWidth()) {
 		left = 0;
 		top += lineHeight;
 		lineHeight = height;

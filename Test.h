@@ -23,9 +23,9 @@ protected:
 public:
     Test();
     virtual ~Test();
-    virtual bool equ(int a, int b, const char* msg = "Check if integers are equals..", const char* errmsg = "\nError (integers are not equals): %d != %d\n");
-    virtual bool equ(const char* a, const char* b, const char* msg = "Check if strings are equals..", const char* errmsg = "\nError (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
-    virtual bool chk(bool expr, const char* msg = "Check if boolean or expression is true..", const char* errmsg = "\nError (expression as boolean is not true): %d != %d\n");
+    virtual bool equ(int a, int b, char* msg = (char*)"Check if integers are equals..", char* errmsg = (char*)"\nError (integers are not equals): %d != %d\n");
+    virtual bool equ(char* a, char* b, char* msg = (char*)"Check if strings are equals..", char* errmsg = (char*)"\nError (strings are not equals): strcmp() result is %d\nactual:%s\nexpect:%s\n");
+    virtual bool chk(bool expr, char* msg = (char*)"Check if boolean or expression is true..", char* errmsg = (char*)"\nError (expression as boolean is not true): %d != %d\n");
     virtual void run();
     virtual int stat();
     virtual void snapScr(int xmin, int ymin, int xmax, int ymax, int precision, bool stopView = true);

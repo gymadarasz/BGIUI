@@ -19,6 +19,9 @@ Canvas::Canvas(Canvas* parent) {
 	setId(next++);
 	setParent(parent);
 	setInstance(getId(), this);
+	setNoDraw(false);
+//	setCalculatedWidth(0);
+//	setCalculatedHeight(0);
 	setup(false, 0, 0);
 }
 
@@ -77,8 +80,8 @@ Canvas* Canvas::setup(
 	setChangedInner(true);
 	setLineBreak(false);
 	setEnabled(false);
-	setScreenTop(-1);
-	setScreenLeft(-1);
+	setScreenTop(0);
+	setScreenLeft(0);
 
 	// clear event handlers
     setTickHandler(0);
@@ -165,7 +168,7 @@ int Canvas::draw(int offsetTop, int offsetLeft) {
 	int ret = 0;
 	ret += drawBorder(offsetTop, offsetLeft);
 	ret += drawInner(offsetTop, offsetLeft);
-	ret += drawChildren();
+	ret += drawChildren(offsetTop, offsetLeft);
 	return ret;
 }
 
@@ -180,7 +183,7 @@ int Canvas::selectNext() {
 	for (; i < CANVAS_INSTANCES; i++) {
 		Canvas* canvas = getInstance(i);
 		if (canvas && canvas->getEnabled()) {
-			canvas->onMouseOver(-1, -1);
+			canvas->onMouseOver(0, 0);
 			//canvas->setSelected(true);
 			return i;
 		}
@@ -194,7 +197,7 @@ int Canvas::selectPrev() {
 	for (; i >= 0; i--) {
 		Canvas* canvas = getInstance(i);
 		if (canvas && canvas->getEnabled()) {
-			canvas->onMouseOver(-1, -1);
+			canvas->onMouseOver(0, 0);
 			//canvas->setSelected(true);
 			return i;
 		}
@@ -207,9 +210,9 @@ int Canvas::selectedsClick() {
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
 		Canvas* canvas = getInstance(i);
 		if (canvas && canvas->getSelected()) {
-			canvas->onMouseDown(-1, -1);
-			canvas->onClick(-1, -1);
-			canvas->onMouseUp(-1, -1);
+			canvas->onMouseDown(0, 0);
+			canvas->onClick(0, 0);
+			canvas->onMouseUp(0, 0);
 			ret++;
 		}
 	}
@@ -269,48 +272,48 @@ CanvasEventHandler Canvas::getMouseUpHandler() {
 
 // (events setters)
 
-Canvas* Canvas::setTickHandler(CanvasEventHandler canvasEventHandler) {
-	this->onTickHandler = canvasEventHandler;
+Canvas* Canvas::setTickHandler(CanvasEventHandler onTickHandler) {
+	this->onTickHandler = onTickHandler;
 	return this;
 }
 
-Canvas* Canvas::setClickHandler(CanvasEventHandler canvasEventHandler) {
-	this->onClickHandler = canvasEventHandler;
+Canvas* Canvas::setClickHandler(CanvasEventHandler onClickHandler) {
+	this->onClickHandler = onClickHandler;
 	return this;
 }
 
-Canvas* Canvas::setDblClickHandler(CanvasEventHandler canvasEventHandler) {
-	this->onDblClickHandler = canvasEventHandler;
+Canvas* Canvas::setDblClickHandler(CanvasEventHandler onDblClickHandler) {
+	this->onDblClickHandler = onDblClickHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseMoveHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseMoveHandler = canvasEventHandler;
+Canvas* Canvas::setMouseMoveHandler(CanvasEventHandler onMouseMoveHandler) {
+	this->onMouseMoveHandler = onMouseMoveHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseDragHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseDragHandler = canvasEventHandler;
+Canvas* Canvas::setMouseDragHandler(CanvasEventHandler onMouseDragHandler) {
+	this->onMouseDragHandler = onMouseDragHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseOverHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseOverHandler = canvasEventHandler;
+Canvas* Canvas::setMouseOverHandler(CanvasEventHandler onMouseOverHandler) {
+	this->onMouseOverHandler = onMouseOverHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseLeaveHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseLeaveHandler = canvasEventHandler;
+Canvas* Canvas::setMouseLeaveHandler(CanvasEventHandler onMouseLeaveHandler) {
+	this->onMouseLeaveHandler = onMouseLeaveHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseDownHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseDownHandler = canvasEventHandler;
+Canvas* Canvas::setMouseDownHandler(CanvasEventHandler onMouseDownHandler) {
+	this->onMouseDownHandler = onMouseDownHandler;
 	return this;
 }
 
-Canvas* Canvas::setMouseUpHandler(CanvasEventHandler canvasEventHandler) {
-	this->onMouseUpHandler = canvasEventHandler;
+Canvas* Canvas::setMouseUpHandler(CanvasEventHandler onMouseUpHandler) {
+	this->onMouseUpHandler = onMouseUpHandler;
 	return this;
 }
 
@@ -393,34 +396,26 @@ void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
 	}
 }
 
-// (getters)
 
-bool Canvas::getPushed() {
-	return pushed;
-}
-
-// private:
-
-bool Canvas::setInstance(int id, Canvas* canvas) {
-	if (Canvas::instances[id] != canvas) {
-		Canvas::instances[id] = canvas;
-		return true;
-	}
-	return false;
-}
+// (setters)
 
 Canvas* Canvas::setAdjust(bool adjust) {
 	this->adjust = adjust;
 	return this;
 }
 
-Canvas* Canvas::setId(int id) {
-	this->id = id;
+Canvas* Canvas::setEnabled(bool enabled) {
+	this->enabled = enabled;
 	return this;
 }
 
-Canvas* Canvas::setParent(Canvas* parent) {
-	this->parent = parent;
+Canvas* Canvas::setWidth(int width) {
+	this->width = width;
+	return this;
+}
+
+Canvas* Canvas::setHeight(int height) {
+	this->height = height;
 	return this;
 }
 
@@ -434,6 +429,37 @@ Canvas* Canvas::setLeft(int left) {
 	return this;
 }
 
+Canvas* Canvas::setMarginSize(int marginSize) {
+	this->marginSize = marginSize;
+	return this;
+}
+
+Canvas* Canvas::setBorderSize(int borderSize) {
+	this->borderSize = borderSize;
+	return this;
+}
+
+Canvas* Canvas::setPushed(bool pushed) {
+	if (this->pushed != pushed) {
+		this->pushed = pushed;
+		if (getColorPushed() != getColor()) {
+			setChangedInner(true);
+		}
+	}
+	return this;
+}
+
+Canvas* Canvas::setChangedInner(bool changedInner) {
+	this->changedInner = changedInner;
+	setChildrenChanged(true);
+	return this;
+}
+
+Canvas* Canvas::setChangedBorder(bool changedBorder) {
+	this->changedBorder = changedBorder;
+	return this;
+}
+
 Canvas* Canvas::setColor(int color) {
 	this->color = color;
 	return this;
@@ -441,11 +467,6 @@ Canvas* Canvas::setColor(int color) {
 
 Canvas* Canvas::setColorPushed(int colorPushed) {
 	this->colorPushed = colorPushed;
-	return this;
-}
-
-Canvas* Canvas::setBorderSize(int borderSize) {
-	this->borderSize = borderSize;
 	return this;
 }
 
@@ -460,8 +481,71 @@ Canvas* Canvas::setBorderColorSelected(int borderColorSelected) {
 	return this;
 }
 
-Canvas* Canvas::setMarginSize(int marginSize) {
-	this->marginSize = marginSize;
+
+// (getters)
+
+int Canvas::getWidth() {
+	if (width == 0 && getAdjust()) {
+		return calcWidthWithChildren();
+	}
+	return width;
+}
+
+int Canvas::getHeight() {
+	if (height == 0 && getAdjust()) {
+		return calcHeightWithChildren();
+	}
+	return height;
+}
+
+bool Canvas::getPushed() {
+	return pushed;
+}
+
+int Canvas::calcTopRelativeToParent() {
+	int top = getTop();
+	return parent ? parent->calcTopRelativeToParent() + parent->getMarginSize() + top : top;
+}
+
+int Canvas::calcLeftRelativeToParent() {
+	int left = getLeft();
+	return parent ? parent->calcLeftRelativeToParent() + parent->getMarginSize() + left : left;
+}
+
+int Canvas::calcWidthFull() {
+	return getWidth() + getBorderSize()*2;
+}
+
+int Canvas::calcHeightFull() {
+	return getHeight() + getBorderSize()*2;
+}
+
+int Canvas::calcColorCurrent() {
+	return getPushed() ? getColorPushed() : getColor();
+}
+
+int Canvas::calcBorderColorCurrent() {
+	return getSelected() ? getBorderColorSelected() : getBorderColor();
+}
+
+
+// private:
+
+bool Canvas::setInstance(int id, Canvas* canvas) {
+	if (Canvas::instances[id] != canvas) {
+		Canvas::instances[id] = canvas;
+		return true;
+	}
+	return false;
+}
+
+Canvas* Canvas::setId(int id) {
+	this->id = id;
+	return this;
+}
+
+Canvas* Canvas::setParent(Canvas* parent) {
+	this->parent = parent;
 	return this;
 }
 
@@ -476,11 +560,6 @@ Canvas* Canvas::setSelected(bool selected) {
 	return this;
 }
 
-Canvas* Canvas::setChangedBorder(bool changedBorder) {
-	this->changedBorder = changedBorder;
-	return this;
-}
-
 Canvas* Canvas::setScreenTop(int screenTop) {
 	this->screenTop = screenTop;
 	return this;
@@ -491,14 +570,39 @@ Canvas* Canvas::setScreenLeft(int screenLeft) {
 	return this;
 }
 
+//Canvas* Canvas::setCalculatedWidth(int calculatedWidth) {
+//	this->calculatedWidth = calculatedWidth;
+//	return this;
+//}
+//
+//Canvas* Canvas::setCalculatedHeight(int calculatedHeight) {
+//	this->calculatedHeight = calculatedHeight;
+//	return this;
+//}
+
+Canvas* Canvas::setNoDraw(bool noDraw) {
+	this->noDraw = noDraw;
+	return this;
+}
+
+Canvas* Canvas::setChildrenChanged(bool changed) {
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		Canvas* child = instances[i];
+		if (child) {
+			Canvas* parent = child->getParent();
+			if (parent && parent->getId() == getId()) {
+				child->setChangedBorder(true);
+				child->setChangedInner(true);
+			}
+		}
+	}
+	return this;
+}
+
 Canvas* Canvas::getRootCanvas() {
 	Canvas* parent = getParent();
 	Canvas* root = parent ? parent->getRootCanvas() : this;
 	return root;
-}
-
-Canvas* Canvas::getParent() {
-	return parent;
 }
 
 int Canvas::getTop() {
@@ -519,6 +623,10 @@ int Canvas::getBorderSize() {
 
 bool Canvas::getEnabled() {
 	return enabled;
+}
+
+bool Canvas::getNoDraw() {
+	return noDraw;
 }
 
 int Canvas::getBorderColor() {
@@ -557,23 +665,32 @@ int Canvas::getScreenLeft() {
 	return screenLeft;
 }
 
+//int Canvas::getCalculatedWidth() {
+//	return calculatedWidth;
+//}
+//
+//int Canvas::getCalculatedHaight() {
+//	return calculatedHeight;
+//}
 
-
-int Canvas::calcWidthFull() {
-	return getWidth() + getBorderSize()*2;
+int Canvas::calcWidthWithChildren() {
+	if (!getNoDraw()) {
+		setNoDraw(true);
+		draw();
+		setNoDraw(false);
+	}
+	return cursor.getLeft();
 }
 
-int Canvas::calcHeightFull() {
-	return getHeight() + getBorderSize()*2;
+int Canvas::calcHeightWithChildren() {
+	if (!getNoDraw()) {
+		setNoDraw(true);
+		draw();
+		setNoDraw(false);
+	}
+	return cursor.getTop() + cursor.getLineHeight();
 }
 
-int Canvas::calcColorCurrent() {
-	return getPushed() ? getColorPushed() : getColor();
-}
-
-int Canvas::calcBorderColorCurrent() {
-	return getSelected() ? getBorderColorSelected() : getBorderColor();
-}
 
 int Canvas::calcFirstSelected() {
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
@@ -609,25 +726,28 @@ int Canvas::unselectAll() {
 
 bool Canvas::drawBorder(int offsetTop, int offsetLeft) {
 	if (getChangedBorder()) {
-		Painter::rect(
-			calcTopRelativeToParent() + offsetTop,
-			calcLeftRelativeToParent() + offsetLeft,
-			calcWidthFull(),
-			calcHeightFull(),
-			calcBorderColorCurrent()
-		);
-		setChangedBorder(false);
+		if (!getNoDraw()) {
+			Painter::rect(
+				calcTopRelativeToParent() + offsetTop,
+				calcLeftRelativeToParent() + offsetLeft,
+				calcWidthFull(),
+				calcHeightFull(),
+				calcBorderColorCurrent()
+			);
+			setChangedBorder(false);
+		}
 		return true;
 	}
 	return false;
 }
 
 
-int Canvas::drawChildren() {
+int Canvas::drawChildren(int offsetTop, int offsetLeft) {
 	int ret = 0;
 
 	// reset cursor
 	cursor.reset(getWidth());
+
 
 	// for each children
 	for (int i = getId()+1; i<CANVAS_INSTANCES; i++) {
@@ -635,8 +755,8 @@ int Canvas::drawChildren() {
 		Canvas* parent = child ? child->getParent() : 0;
 		if (child && parent && parent->getId() == getId()) {
 
-			int offsetTop = 0;
-			int offsetLeft = 0;
+//			int offsetTop = 0;
+//			int offsetLeft = 0;
 
 			if (child->getAdjust()) {
 
@@ -661,10 +781,19 @@ int Canvas::drawChildren() {
 			}
 
 			// draw it
-			child->draw(offsetTop, offsetLeft);
+			if (!getNoDraw()) {
+				child->draw(offsetTop, offsetLeft);
+			}
 			ret++;
 		}
 	}
+//	if (getAdjust()) {
+//		setCalculatedWidth(cursor.getWidth());
+//		setCalculatedHeight(cursor.getTop() + cursor.getLineHeight());
+//	} else {
+//		setCalculatedWidth(getWidth());
+//		setCalculatedHeight(getHeight());
+//	}
 	return ret;
 }
 
@@ -705,81 +834,45 @@ Canvas* Canvas::clear() {
 	return this;
 }
 
-Canvas* Canvas::setWidth(int width) {
-	this->width = width;
-	return this;
-}
-
-Canvas* Canvas::setHeight(int height) {
-	this->height = height;
-	return this;
-}
-
-Canvas* Canvas::setEnabled(bool enabled) {
-	this->enabled = enabled;
-	return this;
-}
-
-Canvas* Canvas::setPushed(bool pushed) {
-	if (this->pushed != pushed) {
-		this->pushed = pushed;
-		if (getColorPushed() != getColor()) {
-			setChangedInner(true);
-		}
-	}
-	return this;
-}
-
-Canvas* Canvas::setChangedInner(bool changedInner) {
-	this->changedInner = changedInner;
-	return this;
-}
-
 bool Canvas::drawInner(int offsetTop, int offsetLeft) {
 	if (getChangedInner()) {
 		int screenTop = calcTopRelativeToParent() + getBorderSize() + offsetTop;
 		int screenLeft = calcLeftRelativeToParent() + getBorderSize() + offsetLeft;
-		Painter::fillrect(
-			screenTop,
-			screenLeft,
-			getWidth(),
-			getHeight(),
-			calcColorCurrent()
-		);
+		if (!getNoDraw()) {
+			Painter::fillrect(
+				screenTop,
+				screenLeft,
+				getWidth(),
+				getHeight(),
+				calcColorCurrent()
+			);
+			setChangedInner(false);
+		}
 		setScreenTop(screenTop);
 		setScreenLeft(screenLeft);
-		setChangedInner(false);
 		return true;
 	}
 	return false;
+}
+
+// (setters)
+
+
+
+// (getters)
+
+Canvas* Canvas::getParent() {
+	return parent;
 }
 
 bool Canvas::getAdjust() {
 	return adjust;
 }
 
-int Canvas::getWidth() {
-	return width;
-}
-
-int Canvas::getHeight() {
-	return height;
-}
-
 int Canvas::getLeft() {
 	return left;
 }
 
-
-int Canvas::calcTopRelativeToParent() {
-	int top = getTop();
-	return parent ? parent->calcTopRelativeToParent() + top : top;
-}
-
-int Canvas::calcLeftRelativeToParent() {
-	int left = getLeft();
-	return parent ? parent->calcLeftRelativeToParent() + left : left;
-}
 
 
 } /* namespace GUI */

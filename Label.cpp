@@ -10,7 +10,9 @@
 namespace GUI {
 
 Label::Label(Canvas* parent): Canvas(parent) {
-	Canvas::setup();
+	text = GUI_LABEL_DEFAULT_TEXT;
+	textColor = GUI_LABEL_TEXT_COLOR;
+	paddingSize = GUI_LABEL_PADDING_SIZE;
 	setup();
 }
 
@@ -19,7 +21,7 @@ Label::~Label() {
 }
 
 Label* Label::setup(
-	const char* text,
+	char* text,
 	int textColor,
 	bool adjust,
 	int width,
@@ -53,7 +55,7 @@ Label* Label::setup(
 	return this;
 }
 
-Label* Label::setText(const char* text) {
+Label* Label::setText(char* text) {
 	// TODO: check if text already same as new text
 	this->text = text;
 	if (getAdjust()) {
@@ -78,7 +80,7 @@ Label* Label::setPaddingSize(int paddingSize) {
 	return this;
 }
 
-const char* Label::getText() {
+char* Label::getText() {
 	return text;
 }
 
@@ -92,16 +94,18 @@ int Label::getPaddingSize() {
 
 bool Label::drawInner(int offsetTop, int offsetLeft) {
 	if (Canvas::drawInner(offsetTop, offsetLeft)) {
-		const char* text = getText();
-		int color = getPushed() ? getColorPushed() : getColor();
-		int textColor = getTextColor();
-		int borderSize = getBorderSize();
-		int paddingSize = getPaddingSize();
-		int topRelative = calcTopRelativeToParent();
-		int leftRelative = calcLeftRelativeToParent();
-		int textTop = topRelative + borderSize + paddingSize/2 + offsetTop;
-		int textLeft = leftRelative + borderSize + paddingSize/2 + offsetLeft;
-		Painter::text(textTop, textLeft, text, textColor, color);
+		if (!getNoDraw()) {
+			char* text = getText();
+			int color = getPushed() ? getColorPushed() : getColor();
+			int textColor = getTextColor();
+			int borderSize = getBorderSize();
+			int paddingSize = getPaddingSize();
+			int topRelative = calcTopRelativeToParent();
+			int leftRelative = calcLeftRelativeToParent();
+			int textTop = topRelative + borderSize + paddingSize/2 + offsetTop;
+			int textLeft = leftRelative + borderSize + paddingSize/2 + offsetLeft;
+			Painter::text(textTop, textLeft, text, textColor, color);
+		}
 		return true;
 	}
 	return false;

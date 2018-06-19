@@ -13,13 +13,13 @@
 namespace GUI {
 
 class Label: public Canvas {
-	const char* text;
+	char* text;
 	int textColor;
 	int paddingSize;
 
 	Label* setTextColor(int color);
 	Label* setPaddingSize(int paddingSize);
-	virtual const char* getText();
+	virtual char* getText();
 	virtual int getTextColor();
 	virtual int getPaddingSize();
 	virtual bool drawInner(int offsetTop, int offsetLeft);
@@ -27,7 +27,7 @@ public:
 	Label(Canvas* parent = 0);
 	virtual ~Label();
 	virtual Label* setup(
-		const char* text = GUI_LABEL_DEFAULT_TEXT,
+		char* text = GUI_LABEL_DEFAULT_TEXT,
 		int textColor = GUI_LABEL_TEXT_COLOR,
 		bool adjust = GUI_LABEL_DEFAULT_ADJUST,
 		int width = GUI_LABEL_DEFAULT_WIDTH,
@@ -42,7 +42,7 @@ public:
 		int marginSize = GUI_LABEL_MARGIN_SIZE,
 		int paddingSize = GUI_LABEL_PADDING_SIZE
 	);
-	Label* setText(const char* text);
+	Label* setText(char* text);
 };
 
 } /* namespace GUI */

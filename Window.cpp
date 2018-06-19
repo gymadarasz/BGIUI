@@ -9,7 +9,7 @@
 
 namespace GUI {
 
-Window::Window(int width, int height, const char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed) {
+Window::Window(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed) {
 	Painter::init(width, height, title, left, top, dbflag, closeflag);
 	reset();
 }

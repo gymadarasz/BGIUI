@@ -24,7 +24,7 @@ void Test::run() {
 }
 
 
-bool Test::equ(int a, int b, const char* msg, const char* errmsg) {
+bool Test::equ(int a, int b, char* msg, char* errmsg) {
 	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
@@ -39,7 +39,7 @@ bool Test::equ(int a, int b, const char* msg, const char* errmsg) {
     return ret;
 }
 
-bool Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
+bool Test::equ(char* a, char* b, char* msg, char* errmsg) {
     int res = strcmp(a, b);
 	bool ret = false;
     runs++;
@@ -55,7 +55,7 @@ bool Test::equ(const char* a, const char* b, const char* msg, const char* errmsg
     return ret;
 }
 
-bool Test::chk(bool expr, const char* msg, const char* errmsg) {
+bool Test::chk(bool expr, char* msg, char* errmsg) {
 	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
@@ -82,28 +82,31 @@ int Test::stat() {
 }
 
 void Test::snapScr(int xmin, int ymin, int xmax, int ymax, int precision, bool stopView) {
-	if(stopView)printf("// Snap screen from area [%d, %d - %d, %d; precision:%d]:\n", xmin, ymin, xmax, ymax, precision);
+	if (!stopView) {
+		return ;
+	}
+	printf("\n// Snap screen from area [%d, %d - %d, %d; precision:%d]:\n", xmin, ymin, xmax, ymax, precision);
 	int i = 0;
 	int len = (xmax-xmin) * (ymax-ymin);
-	if(stopView)printf("int scrData[%d] = {", len);
+	printf("int scrData[%d] = {", len);
 	for (int x = xmin; x < xmax; x += precision) {
-		if(stopView)printf("\n\t");
+		printf("\n\t");
 		for (int y = ymin; y < ymax; y += precision) {
 			if (i > 0) {
-				if(stopView)printf(",");
+				printf(",");
 			}
-			if(stopView)printf("%d", getpixel(x,y));
-			if(stopView)putpixel(x,y,BLACK);
+			printf("%d", getpixel(x,y));
+			putpixel(x,y,BLACK);
 			i += precision;
 		}
 	}
-	if(stopView)printf("\n}; // Snap screen end.\n");
-	if(stopView)printf(
+	printf("\n}; // Snap screen end.\n");
+	printf(
 		"chk(chkScr(scrData, %d, %d, %d, %d, %d), \"Check screen snap area [%d, %d - %d, %d; precision:%d]\");\n",
 		xmin, ymin, xmax, ymax, precision,
 		xmin, ymin, xmax, ymax, precision
 	);
-	if(stopView)getch();
+	getch();
 }
 
 bool Test::chkScr(int* scrData, int xmin, int ymin, int xmax, int ymax, int precision) {

@@ -17,7 +17,7 @@ public:
 	static int init(
 		int width = 0,
 		int height = 0,
-		const char* title = "Windows BGI",
+		char* title = (char*)"Windows BGI",
 		int left = 0,
 		int top = 0,
 		bool dbflag = false,
@@ -31,9 +31,9 @@ public:
 	static void fillrect(int top, int left, int width, int height, int color, int borderColor = -1);
 	static int getmaxwidth();
 	static int getmaxheight();
-	static int getTextWidth(const char* text);
-	static int getTextHeight(const char* text);
-	static void text(int top, int left, const char* text, int color, int bgcolor);
+	static int getTextWidth(char* text);
+	static int getTextHeight(char* text);
+	static void text(int top, int left, char* text, int color, int bgcolor);
 };
 
 } /* namespace GUI */

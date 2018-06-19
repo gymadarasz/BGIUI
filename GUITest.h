@@ -24,6 +24,7 @@ class GUITest: public Test {
 	void testCursor();
 	void testLabelAndLineBreak();
 	void testButtonClick();
+	void testMarginsAndOffset();
 public:
 	static int exampleButtonClicked(Canvas* btn, ...);
     virtual void run();

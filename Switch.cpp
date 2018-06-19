@@ -18,8 +18,8 @@ Switch::~Switch() {
 }
 
 Switch* Switch::setup(
-	const char* textOff,
-	const char* textOn,
+	char* textOff,
+	char* textOn,
 	int textColor,
 	bool adjust,
 	int width,
@@ -80,21 +80,21 @@ void Switch::onMouseUp(int mouseLeft, int mouseTop) {
 // private
 
 
-Switch* Switch::setTextOff(const char* textOff) {
+Switch* Switch::setTextOff(char* textOff) {
 	this->textOff = textOff;
 	return this;
 }
 
-Switch* Switch::setTextOn(const char* textOn) {
+Switch* Switch::setTextOn(char* textOn) {
 	this->textOn = textOn;
 	return this;
 }
 
-const char* Switch::getTextOff() {
+char* Switch::getTextOff() {
 	return textOff;
 }
 
-const char* Switch::getTextOn() {
+char* Switch::getTextOn() {
 	return textOn;
 }
 
