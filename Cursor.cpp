@@ -17,7 +17,7 @@ namespace GUI {
         positiony = currenty;
         currentx += x;
         maxy = maxy < y ? y : maxy;
-        if (width == GD_AUTOSIZE) {
+        if (width == GUI_AUTOSIZE) {
             autowidth = currentx > autowidth ? currentx : autowidth;
         } else {
             autowidth = currentx + nextx;
@@ -51,7 +51,7 @@ namespace GUI {
     }
 
     int Cursor::getwidth() {
-        int ret = width == GD_AUTOSIZE ? autowidth : width;
+        int ret = width == GUI_AUTOSIZE ? autowidth : width;
         if (ret < 0) {
             ret = 0;
         }

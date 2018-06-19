@@ -1,11 +1,11 @@
 #include "Painter.h"
 
-#include "App.h"
+#include "style.h"
 
 namespace GUI {
     
     void Painter::hline(int x, int y1, int y2, int color) {
-        if (color == GD_NOCOLOR) {
+        if (color == GUI_NOCOLOR) {
             return ;
         }
 
@@ -16,7 +16,7 @@ namespace GUI {
     }
     
     void Painter::vline(int x1, int y, int x2, int color) {
-        if (color == GD_NOCOLOR) {
+        if (color == GUI_NOCOLOR) {
             return ;
         }
 
@@ -27,7 +27,7 @@ namespace GUI {
     }
 
     void Painter::box(int top, int left, int width, int height, int color, bool fill) {
-        if (color == GD_NOCOLOR) {
+        if (color == GUI_NOCOLOR) {
             return ;
         }
         int bottom = top+height;
@@ -46,9 +46,9 @@ namespace GUI {
 
     void Painter::text(int top, int left, int color, int bgcolor, const char* txt) {
 
-        if (color == GD_NOCOLOR) {
-            if (bgcolor != GD_NOCOLOR) {
-                box(top, left, textwidth((char*)txt), textheight((char*)txt), bgcolor, GD_FILL);
+        if (color == GUI_NOCOLOR) {
+            if (bgcolor != GUI_NOCOLOR) {
+                box(top, left, textwidth((char*)txt), textheight((char*)txt), bgcolor, GUI_FILL);
             }
             return ;
         }

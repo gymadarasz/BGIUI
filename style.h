@@ -1,119 +1,13 @@
 #ifndef STYLE_H
 #define STYLE_H
 
-// --------- STYLE DEFINITIONS DEFAULTS --------------
+#define GUI_AUTOSIZE -1
+#define GUI_NOCOLOR -1
+#define GUI_FILL true
 
-// common
-
-#define GD_AUTOPOSITION     -1
-#define GD_AUTOSIZE         -1
-#define GD_NOMARGIN         {0, 0, 0, 0}
-#define GD_NOPADDING        {0, 0, 0, 0}
-#define GD_FILL             true
-#define GD_NOFILL           false
-#define GD_HORIZONTAL       true
-#define GD_VERTICAL         !GD_HORIZONTAL
-#define GD_BRSIZE           1
-#define GD_WMARGIN          GD_BRSIZE
-#define GD_HMARGIN          GD_BRSIZE
-#define GD_WPADDING         5
-#define GD_HPADDING         3
-#define GD_NOCOLOR          -1
-#define GD_BGCOLOR          DARKGRAY
-#define GD_TXCOLOR          BLACK
-#define GD_HLBRCOLOR        WHITE       // highlighted border color on mouse over
-#define GD_PSBGCOLOR        DARKGRAY    // pushed background color on mouse pushed
-
-#define GD_SCROLL_DEFAULT_SIZE  100
-
-
-// window
-
-#define GD_WIN_DEFAULT_TOP      0
-#define GD_WIN_DEFAULT_LEFT     0
-#define GD_WIN_DEFAULT_WIDTH    800
-#define GD_WIN_DEFAULT_HEIGHT   600
-#define GD_WIN_BGCOLOR          GD_BGCOLOR
-
-
-// break
-
-#define GD_BREAK_HEIGHT     0   // min line height
-
-
-// canvas
-
-#define GD_CANVAS_LMARGIN   GD_WMARGIN
-#define GD_CANVAS_RMARGIN   GD_WMARGIN
-#define GD_CANVAS_TMARGIN   GD_HMARGIN
-#define GD_CANVAS_BMARGIN   GD_HMARGIN
-#define GD_CANVAS_LPADDING  GD_WPADDING
-#define GD_CANVAS_RPADDING  GD_WPADDING
-#define GD_CANVAS_TPADDING  GD_HPADDING
-#define GD_CANVAS_BPADDING  GD_HPADDING
-#define GD_CANVAS_BGCOLOR   GD_NOCOLOR
-#define GD_CANVAS_BRCOLOR   GD_NOCOLOR
-
-
-// label
-
-#define GD_LBL_LMARGIN      GD_WMARGIN
-#define GD_LBL_RMARGIN      GD_WMARGIN
-#define GD_LBL_TMARGIN      GD_HMARGIN
-#define GD_LBL_BMARGIN      GD_HMARGIN
-#define GD_LBL_LPADDING     1
-#define GD_LBL_RPADDING     1
-#define GD_LBL_TPADDING     1
-#define GD_LBL_BPADDING     1
-#define GD_LBL_BGCOLOR      GD_NOCOLOR //GD_WIN_BGCOLOR
-#define GD_LBL_TXCOLOR      GD_TXCOLOR
-#define GD_LBL_BRCOLOR      GD_NOCOLOR //GD_WIN_BGCOLOR
-
-
-// buttons
-
-#define GD_BTN_LMARGIN      GD_WMARGIN
-#define GD_BTN_RMARGIN      GD_WMARGIN
-#define GD_BTN_TMARGIN      GD_HMARGIN
-#define GD_BTN_BMARGIN      GD_HMARGIN
-#define GD_BTN_LPADDING     GD_WPADDING
-#define GD_BTN_RPADDING     GD_WPADDING
-#define GD_BTN_TPADDING     GD_HPADDING
-#define GD_BTN_BPADDING     GD_HPADDING
-#define GD_BTN_BGCOLOR      LIGHTGRAY
-#define GD_BTN_TXCOLOR      GD_LBL_TXCOLOR
-#define GD_BTN_BRCOLOR      LIGHTGRAY
-
-
-// switch
-
-#define GD_SWITCH_LMARGIN   GD_BTN_LMARGIN
-#define GD_SWITCH_RMARGIN   GD_BTN_RMARGIN
-#define GD_SWITCH_TMARGIN   GD_BTN_TMARGIN
-#define GD_SWITCH_BMARGIN   GD_BTN_BMARGIN
-#define GD_SWITCH_LPADDING  GD_BTN_LPADDING
-#define GD_SWITCH_RPADDING  GD_BTN_RPADDING
-#define GD_SWITCH_TPADDING  GD_BTN_TPADDING
-#define GD_SWITCH_BPADDING  GD_BTN_BPADDING
-#define GD_SWITCH_BGCOLOR   GD_BTN_BGCOLOR
-#define GD_SWITCH_TXCOLOR   GD_BTN_TXCOLOR
-#define GD_SWITCH_BRCOLOR   GD_BTN_BRCOLOR
-
-
-// scroll
-
-#define GD_SCROLL_LMARGIN   GD_WMARGIN
-#define GD_SCROLL_RMARGIN   GD_WMARGIN
-#define GD_SCROLL_TMARGIN   GD_HMARGIN
-#define GD_SCROLL_BMARGIN   GD_HMARGIN
-#define GD_SCROLL_LPADDING  GD_WPADDING
-#define GD_SCROLL_RPADDING  GD_WPADDING
-#define GD_SCROLL_TPADDING  GD_HPADDING
-#define GD_SCROLL_BPADDING  GD_HPADDING
-#define GD_SCROLL_BGCOLOR   GD_BGCOLOR
-#define GD_SCROLL_BRCOLOR   LIGHTGRAY
-
-
-// ----------------------------------------------------
+#define GUI_WINDOW_DEFAULT_TOP 0
+#define GUI_WINDOW_DEFAULT_LEFT 0
+#define GUI_WINDOW_DEFAULT_WIDTH 800
+#define GUI_WINDOW_DEFAULT_HEIGHT 600
 
 #endif

@@ -14,7 +14,7 @@ namespace GUI {
         int maxy;
         int autowidth;
     public:
-        void reset(int width = GD_AUTOSIZE);
+        void reset(int width = GUI_AUTOSIZE);
         void step(int x, int y, int nextx, bool br);
         void newline(int height = 0);
         int getpositionx();
