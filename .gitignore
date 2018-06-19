@@ -1,6 +1,0 @@
-*.o
-*.gcnd
-*.gcda
-*.gcno
-*.exe
-/Release/
