@@ -71,6 +71,8 @@ Scroll* Scroll::setValue(int value) {
 	if (this->value != value) {
 		int previousValue = this->value;
 		this->value = value;
+		repositionScrollHandlerCanvas();
+
 		if (!getInitializedValue()) {
 			setInitializedValue(true);
 		} else {
@@ -82,11 +84,13 @@ Scroll* Scroll::setValue(int value) {
 
 Scroll* Scroll::setMinValue(int minValue) {
 	this->minValue = minValue;
+	repositionScrollHandlerCanvas();
 	return this;
 }
 
 Scroll* Scroll::setMaxValue(int maxValue) {
 	this->maxValue = maxValue;
+	repositionScrollHandlerCanvas();
 	return this;
 }
 
@@ -100,6 +104,23 @@ int Scroll::getMinValue() {
 
 int Scroll::getMaxValue() {
 	return maxValue;
+}
+
+
+ScrollMinusButton* Scroll::getMinusButton() {
+	return minusButton;
+}
+
+ScrollAreaCanvas* Scroll::getScrollAreaCanvas() {
+	return scrollAreaCanvas;
+}
+
+ScrollHandlerCanvas* Scroll::getScrollHandlerCanvas() {
+	return scrollHandlerCanvas;
+}
+
+ScrollPlusButton* Scroll::getPlusButton() {
+	return plusButton;
 }
 
 
@@ -149,22 +170,6 @@ Scroll* Scroll::setInitializedChildren(bool initializedChildren) {
 Scroll* Scroll::setInitializedValue(bool initializedValue) {
 	this->initializedValue = initializedValue;
 	return this;
-}
-
-Button* Scroll::getMinusButton() {
-	return minusButton;
-}
-
-Canvas* Scroll::getScrollAreaCanvas() {
-	return scrollAreaCanvas;
-}
-
-Canvas* Scroll::getScrollHandlerCanvas() {
-	return scrollHandlerCanvas;
-}
-
-Button* Scroll::getPlusButton() {
-	return plusButton;
 }
 
 bool Scroll::getInitializedChildren() {
@@ -261,6 +266,27 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 //		getPlusButton()->calcWidthFull()
 //	);
 	return ret;
+}
+
+int Scroll::repositionScrollHandlerCanvas() {
+	int newHandlerPosition = -1;
+	ScrollAreaCanvas* scrollAreaCanvas = getScrollAreaCanvas();
+	ScrollHandlerCanvas* scrollHandlerCanvas = getScrollHandlerCanvas();
+	if (scrollAreaCanvas && scrollHandlerCanvas) {
+		int value = getValue();
+		int minValue = getMinValue();
+		int maxValue = getMaxValue();
+		int areaWidth = scrollAreaCanvas->getWidth();
+		int handlerWidth = scrollHandlerCanvas->getWidth();
+		int scrollSize = areaWidth - handlerWidth;
+		int maxminDiff = abs(maxValue - minValue);
+		if (maxminDiff > 0) {
+			newHandlerPosition = (scrollSize * value) / maxminDiff;
+			scrollHandlerCanvas->setLeft(newHandlerPosition);
+			clear();
+		}
+	}
+	return newHandlerPosition;
 }
 
 

@@ -33,7 +33,8 @@ Example04Scroll::Example04Scroll() {
 	Window window;
 
 	scrl1ForExample04 = new Scroll(window.getCanvas());
-	scrl1ForExample04->setup(22, 0, 100)->setScrollHandler(exampleScrollHandler);
+	scrl1ForExample04->setup(22, 0, 100);
+	scrl1ForExample04->setScrollHandler(exampleScrollHandler);
 
 
 	lbl1ForExample04 = new Label(window.getCanvas());

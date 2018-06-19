@@ -15,7 +15,8 @@ ScrollHandlerCanvas::ScrollHandlerCanvas(Canvas* parent): Canvas(parent) {
 }
 
 void ScrollHandlerCanvas::onClick(int mouseLeft, int mouseTop) {
-
+	Canvas::onClick(mouseLeft, mouseTop);
+// todo??? kell ez?e?
 }
 
 } /* namespace GUI */

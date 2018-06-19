@@ -17,6 +17,7 @@ ScrollMinusButton::ScrollMinusButton(Canvas* parent): Button(parent) {
 
 
 void ScrollMinusButton::onClick(int mouseLeft, int mouseTop) {
+	Button::onClick(mouseLeft, mouseTop);
 	Scroll* parent = (Scroll*)getParent();
 	if (parent) {
 		int value = parent->getValue();

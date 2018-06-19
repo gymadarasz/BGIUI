@@ -20,6 +20,8 @@ Canvas::Canvas(Canvas* parent) {
 	setParent(parent);
 	setInstance(getId(), this);
 	setNoDraw(false);
+	setInitializedScreenTop(false);
+	setInitializedScreenLeft(false);
 //	setCalculatedWidth(0);
 //	setCalculatedHeight(0);
 	setup(false, 0, 0);
@@ -107,8 +109,8 @@ int Canvas::tick() {
         return -1;
     }
 
-    int top = getTop();
-    int left = getLeft();
+    int top = calcTopRelativeToParent();
+    int left = calcLeftRelativeToParent();
 
     // mouse down?
     if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
@@ -170,6 +172,21 @@ int Canvas::draw(int offsetTop, int offsetLeft) {
 	ret += drawInner(offsetTop, offsetLeft);
 	ret += drawChildren(offsetTop, offsetLeft);
 	return ret;
+}
+
+Canvas* Canvas::clear() {
+	if (getInitializedScreenTop() && getInitializedScreenLeft()) {
+		Canvas* root = getRootCanvas();
+		int top = getScreenTop() - getBorderSize();
+		int left = getScreenLeft() - getBorderSize();
+		int width = calcWidthFull();
+		int height = calcWidthFull();
+		int color = root->getColor();
+		Painter::fillrect(top, left, width, height, color, color);
+		setChangedBorder(true);
+		setChangedInner(true);
+	}
+	return this;
 }
 
 Canvas* Canvas::setLineBreak(bool lineBreak) {
@@ -562,11 +579,13 @@ Canvas* Canvas::setSelected(bool selected) {
 
 Canvas* Canvas::setScreenTop(int screenTop) {
 	this->screenTop = screenTop;
+	setInitializedScreenTop(true);
 	return this;
 }
 
 Canvas* Canvas::setScreenLeft(int screenLeft) {
 	this->screenLeft = screenLeft;
+	setInitializedScreenLeft(true);
 	return this;
 }
 
@@ -596,6 +615,16 @@ Canvas* Canvas::setChildrenChanged(bool changed) {
 			}
 		}
 	}
+	return this;
+}
+
+
+Canvas* Canvas::setInitializedScreenTop(bool initializedScreenTop) {
+	this->initializedScreenTop = initializedScreenTop;
+	return this;
+}
+Canvas* Canvas::setInitializedScreenLeft(bool initializedScreenLeft) {
+	this->initializedScreenLeft = initializedScreenLeft;
 	return this;
 }
 
@@ -672,6 +701,15 @@ int Canvas::getScreenLeft() {
 //int Canvas::getCalculatedHaight() {
 //	return calculatedHeight;
 //}
+
+bool Canvas::getInitializedScreenTop() {
+	return initializedScreenTop;
+}
+
+bool Canvas::getInitializedScreenLeft() {
+	return initializedScreenLeft;
+}
+
 
 int Canvas::calcWidthWithChildren() {
 	if (!getNoDraw()) {
@@ -820,19 +858,6 @@ int Canvas::tickChildren() {
 }
 
 // protected:
-
-Canvas* Canvas::clear() {
-	Canvas* root = getRootCanvas();
-	int top = getScreenTop() - getBorderSize();
-	int left = getScreenLeft() - getBorderSize();
-	int width = calcWidthFull();
-	int height = calcWidthFull();
-	int color = root->getColor();
-	Painter::fillrect(top, left, width, height, color, color);
-	setChangedBorder(true);
-	setChangedInner(true);
-	return this;
-}
 
 bool Canvas::drawInner(int offsetTop, int offsetLeft) {
 	if (getChangedInner()) {

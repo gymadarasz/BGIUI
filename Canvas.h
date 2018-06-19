@@ -50,6 +50,8 @@ class Canvas {
 	bool noDraw;
 //	int calculatedWidth;
 //	int calculatedHeight;
+	bool initializedScreenTop;
+	bool initializedScreenLeft;
 
 	// events
 	CanvasEventHandler onTickHandler;
@@ -73,6 +75,8 @@ class Canvas {
 	virtual Canvas* setNoDraw(bool noDraw);
 
 	virtual Canvas* setChildrenChanged(bool changed);
+	virtual Canvas* setInitializedScreenTop(bool initializedScreenTop);
+	virtual Canvas* setInitializedScreenLeft(bool initializedScreenLeft);
 
 	virtual Canvas* getRootCanvas();
 
@@ -89,6 +93,8 @@ class Canvas {
 	virtual int getScreenLeft();
 //	virtual int getCalculatedWidth();
 //	virtual int getCalculatedHaight();
+	virtual bool getInitializedScreenTop();
+	virtual bool getInitializedScreenLeft();
 
 	virtual int calcWidthWithChildren();
 	virtual int calcHeightWithChildren();
@@ -102,7 +108,6 @@ class Canvas {
 	virtual bool isInside(EventPoint eventPoint);
 	virtual int tickChildren();
 protected:
-	virtual Canvas* clear();
 
 	virtual bool drawInner(int offsetTop, int offsetLeft);
 
@@ -140,6 +145,7 @@ public:
 	);
 	virtual int tick();
 	virtual int draw(int offsetTop = 0, int offsetLeft = 0);
+	virtual Canvas* clear();
 	virtual Canvas* setLineBreak(bool lineBreak);
 	static int selectNext();
 	static int selectPrev();

@@ -19,6 +19,7 @@ namespace GUI {
 
 class ScrollMinusButton;
 class ScrollPlusButton;
+class ScrollAreaCanvas;
 
 class Scroll: public Canvas {
 	int value;
@@ -40,14 +41,12 @@ class Scroll: public Canvas {
 	Scroll* setInitializedChildren(bool initializedChildren);
 	Scroll* setInitializedValue(bool initializedValue);
 
-	Button* getMinusButton();
-	Canvas* getScrollAreaCanvas();
-	Canvas* getScrollHandlerCanvas();
-	Button* getPlusButton();
 	bool getInitializedChildren();
 	bool getInitializedValue();
 
 	bool initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed);
+
+	int repositionScrollHandlerCanvas();
 
 public:
 	Scroll(Canvas* parent = 0);
@@ -78,6 +77,11 @@ public:
 	virtual int getValue();
 	virtual int getMinValue();
 	virtual int getMaxValue();
+
+	ScrollMinusButton* getMinusButton();
+	ScrollAreaCanvas* getScrollAreaCanvas();
+	ScrollHandlerCanvas* getScrollHandlerCanvas();
+	ScrollPlusButton* getPlusButton();
 
 	virtual CanvasEventHandler getScrollHandler();
 
