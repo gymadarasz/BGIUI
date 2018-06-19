@@ -12,6 +12,7 @@
 #include "style.h"
 #include "Label.h"
 #include "Button.h"
+#include "Scroll.h"
 
 namespace GUI {
 
@@ -25,6 +26,7 @@ class GUITest: public Test {
 	void testLabelAndLineBreak();
 	void testButtonClick();
 	void testMarginsAndOffset();
+	void testScrollView();
 public:
 	static int exampleButtonClicked(Canvas* btn, ...);
     virtual void run();

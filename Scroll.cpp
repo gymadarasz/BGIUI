@@ -41,7 +41,9 @@ Scroll* Scroll::setup(
 	int borderColorSelected,
 	int marginSize,
 	int areaColor,
-	int areaColorPushed
+	int areaColorPushed,
+	int handlerColor,
+	int handlerColorPushed
 ){
 	Canvas::setup(
 		adjust,
@@ -57,11 +59,11 @@ Scroll* Scroll::setup(
 		marginSize
 	);
     setScrollHandler(0);
+	initializeChildren(minusText, plusText, areaColor, areaColorPushed, handlerColor, handlerColorPushed);
 	setValue(value);
 	setMinValue(minValue);
 	setMaxValue(maxValue);
 
-	initializeChildren(minusText, plusText, areaColor, areaColorPushed);
 
 	//setEnabled(true);
 	return this;
@@ -181,7 +183,7 @@ bool Scroll::getInitializedValue() {
 }
 
 // return true if it's the first initialization
-bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed) {
+bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed, int handlerColor, int handlerColorPushed) {
 	bool ret = false;
 	if (!getInitializedChildren()) {
 		setScrollAreaCanvas(new ScrollAreaCanvas(this));
@@ -192,8 +194,10 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 		ret = true;
 	}
 
-	Button* plusButton = getPlusButton();
-	Button* minusButton = getMinusButton();
+	ScrollPlusButton* plusButton = getPlusButton();
+	ScrollMinusButton* minusButton = getMinusButton();
+	ScrollAreaCanvas* areaCanvas = getScrollAreaCanvas();
+	ScrollHandlerCanvas* handlerCanvas = getScrollHandlerCanvas();
 
 	plusButton->setText(plusText);
 	minusButton->setText(minusText);
@@ -202,11 +206,14 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 	int minusButtonHeight = minusButton->getHeight();
 	int plusButtonWidth = plusButton->getWidth();
 	int minusButtonWidth = minusButton->getWidth();
-	int scrollButtonsMaxHeight = plusButtonHeight > minusButtonHeight ? plusButtonHeight : minusButtonHeight;
+	int width = getWidth();
+	int height = getHeight();
+	int scrollButtonsMaxHeight = height ? height : (plusButtonHeight > minusButtonHeight ? plusButtonHeight : minusButtonHeight);
 	int scrollButtonsMaxWidth = plusButtonWidth > minusButtonWidth ? plusButtonWidth : minusButtonWidth;
 	int scrollButtonsSizeMax = scrollButtonsMaxHeight > scrollButtonsMaxWidth ? scrollButtonsMaxHeight : scrollButtonsMaxWidth;
+	int newAreaCanvasWidth = width ? width - scrollButtonsSizeMax * 2  : scrollButtonsMaxWidth * 3;
 
-	getMinusButton()
+	minusButton
 		->setAdjust(false)
 		->setEnabled(true)
 		->setBorderSize(0)
@@ -216,21 +223,19 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 		->setTop(0)
 		->setLeft(0)
 		->setChangedBorder(true);
-	getScrollAreaCanvas()
+	areaCanvas
 		->setAdjust(false)
 		->setEnabled(true)
 		->setBorderSize(0)
 		->setMarginSize(0)
+		->setWidth(newAreaCanvasWidth)
 		->setHeight(scrollButtonsSizeMax)
 		->setTop(0)
 		->setLeft(scrollButtonsSizeMax)
 		->setColor(areaColor)
 		->setColorPushed(areaColorPushed)
 		->setChangedBorder(true);
-	if (getWidth() == 0) {
-		getScrollAreaCanvas()->setWidth(scrollButtonsMaxWidth * 3);
-	}
-	getScrollHandlerCanvas()
+	handlerCanvas
 		->setAdjust(false)
 		->setEnabled(true)
 		->setBorderSize(0)
@@ -239,8 +244,10 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 		->setHeight(scrollButtonsSizeMax)
 		->setTop(0)
 		->setLeft(0)
+		->setColor(handlerColor)
+		->setColorPushed(handlerColorPushed)
 		->setChangedBorder(true);
-	getPlusButton()
+	plusButton
 		->setAdjust(false)
 		->setEnabled(true)
 		->setBorderSize(0)
@@ -257,7 +264,7 @@ bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, 
 		getPlusButton()->calcWidthFull()
 	);
 	setHeight(scrollButtonsSizeMax);
-	draw();
+	//draw();
 
 //	// TODO: !@# Problem: scroll canvas width + height isfailing => calculated Width + Haight added after draw() but needs to test
 //	setWidth(

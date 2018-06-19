@@ -44,7 +44,7 @@ class Scroll: public Canvas {
 	bool getInitializedChildren();
 	bool getInitializedValue();
 
-	bool initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed);
+	bool initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed, int handlerColor, int handlerColorPushed);
 
 	int repositionScrollHandlerCanvas();
 
@@ -69,7 +69,9 @@ public:
 		int borderColorSelected = GUI_SCROLL_BORDER_COLOR_SELECTED,
 		int marginSize = GUI_SCROLL_MARGIN_SIZE,
 		int areaColor = GUI_SCROLL_AREA_COLOR,
-		int areaColorPushed = GUI_SCROLL_AREA_COLOR_PUSHED
+		int areaColorPushed = GUI_SCROLL_AREA_COLOR_PUSHED,
+		int handlerColor = GUI_SCROLL_HANDLER_COLOR,
+		int handlerColorPushed = GUI_SCROLL_HANDLER_COLOR_PUSHED
 	);
 	virtual Scroll* setValue(int value);
 	virtual Scroll* setMinValue(int minValue);
