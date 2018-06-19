@@ -7,11 +7,16 @@
 
 #include "Tester.h"
 
-namespace GUI {
+namespace test {
+
+test::Tester::~Tester() {
+
+}
 
 int Tester::run(Test* test) {
     test->run();
     return test->stat();
 }
 
-} /* namespace GUI */
+} /* namespace test */
+

@@ -10,13 +10,15 @@
 
 #include "Test.h"
 
-namespace GUI {
+namespace test {
 
 class Tester {
 public:
-    int run(Test* test);
+    virtual ~Tester();
+	virtual int run(Test* test);
+
 };
 
-} /* namespace GUI */
+} /* namespace test */
 
 #endif /* TESTER_H_ */

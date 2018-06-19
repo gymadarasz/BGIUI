@@ -6,8 +6,9 @@
  */
 
 #include "Test.h"
+#include <graphics.h>
 
-namespace GUI {
+namespace test {
 
 Test::Test() {
     runs = 0;
@@ -24,7 +25,7 @@ void Test::run() {
 }
 
 
-bool Test::equ(int a, int b, char* msg, char* errmsg) {
+bool Test::equ(int a, int b, const char* msg, const char* errmsg) {
 	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
@@ -33,13 +34,15 @@ bool Test::equ(int a, int b, char* msg, char* errmsg) {
         success++;
         ret = true;
     } else {
+    	printf("\n");
         printf(errmsg, a, b);
+    	printf("\n");
         failed++;
     }
     return ret;
 }
 
-bool Test::equ(char* a, char* b, char* msg, char* errmsg) {
+bool Test::equ(const char* a, const char* b, const char* msg, const char* errmsg) {
     int res = strcmp(a, b);
 	bool ret = false;
     runs++;
@@ -49,13 +52,15 @@ bool Test::equ(char* a, char* b, char* msg, char* errmsg) {
         success++;
         ret = true;
     } else {
+    	printf("\n");
         printf(errmsg, res, a, b);
+    	printf("\n");
         failed++;
     }
     return ret;
 }
 
-bool Test::chk(bool expr, char* msg, char* errmsg) {
+bool Test::chk(bool expr, const char* msg, const char* errmsg) {
 	bool ret = false;
     runs++;
     printf("\nTEST %d: ", runs);
@@ -64,7 +69,9 @@ bool Test::chk(bool expr, char* msg, char* errmsg) {
         success++;
         ret = true;
     } else {
+    	printf("\n");
         printf(errmsg, expr, true);
+    	printf("\n");
         failed++;
     }
     return ret;
@@ -123,4 +130,4 @@ bool Test::chkScr(int* scrData, int xmin, int ymin, int xmax, int ymax, int prec
 }
 
 
-} /* namespace GUI */
+} /* namespace test */
