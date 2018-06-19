@@ -1,6 +1,0 @@
-_safe/
-*.o
-*.exe
-*.gch
-gmon.out
-BGIUI.layout
