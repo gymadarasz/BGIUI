@@ -20,7 +20,7 @@ namespace GUI {
 
 class Canvas;
 
-typedef (*CanvasEventHandler)(Canvas*, ...);
+typedef int (*CanvasEventHandler)(Canvas*, ...);
 
 class Canvas {
 	static int next;
