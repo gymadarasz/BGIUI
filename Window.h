@@ -18,6 +18,7 @@ namespace GUI {
 
 class Window {
 	Canvas* canvas;
+	bool exit;
 	// TODO: virtual Canvas* setCanvas();
 public:
 	Window(
@@ -38,6 +39,7 @@ public:
 		int color = GUI_WINDOW_COLOR,
 		int colorPushed = GUI_WINDOW_COLOR_PUSHED
 	);
+	virtual void close();
 };
 
 } /* namespace GUI */

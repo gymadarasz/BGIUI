@@ -10,6 +10,7 @@
 namespace GUI {
 
 Window::Window(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed) {
+	exit = false;
 	Painter::init(width, height, title, left, top, dbflag, closeflag);
 	reset();
 }
@@ -20,7 +21,8 @@ Window::~Window() {
 
 void Window::run() {
 	Mouse::reset();
-	while (true) {
+	exit = false;
+	while (!exit) {
 
 		canvas->draw();
 		delay(1);
@@ -55,4 +57,9 @@ Window* Window::reset(int color, int colorPushed) {
 	return this;
 }
 
+void Window::close() {
+	exit = true;
+}
+
 } /* namespace GUI */
+

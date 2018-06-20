@@ -14,7 +14,7 @@
 #include "Mouse.h"
 #include "Cursor.h"
 
-#define CANVAS_INSTANCES 10 // TODO: increase if needs more
+#define CANVAS_INSTANCES 40 // TODO: increase if needs more
 
 namespace GUI {
 
