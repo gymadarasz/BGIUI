@@ -16,8 +16,11 @@
 
 namespace GUI {
 
+typedef void (*WindowLoop)(void);
+
 class Window {
 	Canvas* canvas;
+	WindowLoop loop;
 	bool exit;
 	// TODO: virtual Canvas* setCanvas();
 public:
@@ -30,14 +33,16 @@ public:
 		bool dbflag = false,
 		bool closeflag = true,
 		int color = GUI_WINDOW_COLOR,
-		int colorPushed = GUI_WINDOW_COLOR_PUSHED
+		int colorPushed = GUI_WINDOW_COLOR_PUSHED,
+		int colorSelected = GUI_WINDOW_COLOR_SELECTED
 	);
 	virtual ~Window();
-	virtual void run();
+	virtual void run(WindowLoop loop = 0);
 	virtual Canvas* getCanvas();
 	virtual Window* reset(
 		int color = GUI_WINDOW_COLOR,
-		int colorPushed = GUI_WINDOW_COLOR_PUSHED
+		int colorPushed = GUI_WINDOW_COLOR_PUSHED,
+		int colorSelected = GUI_WINDOW_COLOR_SELECTED
 	);
 	virtual void close();
 };

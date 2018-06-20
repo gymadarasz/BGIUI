@@ -9,17 +9,17 @@
 
 namespace GUI {
 
-Window::Window(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed) {
+Window::Window(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag, int color, int colorPushed, int colorSelected) {
 	exit = false;
 	Painter::init(width, height, title, left, top, dbflag, closeflag);
-	reset();
+	reset(color, colorPushed, colorSelected);
 }
 
 Window::~Window() {
 	Painter::close();
 }
 
-void Window::run() {
+void Window::run(WindowLoop loop) {
 	Mouse::reset();
 	exit = false;
 	while (!exit) {
@@ -44,6 +44,7 @@ void Window::run() {
 			}
 		}
 		canvas->tick();
+		if (loop) loop();
 	}
 }
 
@@ -51,9 +52,9 @@ Canvas* Window::getCanvas() {
 	return canvas;
 }
 
-Window* Window::reset(int color, int colorPushed) {
+Window* Window::reset(int color, int colorPushed, int colorSelected) {
 	Canvas::clearInstances();
-	(canvas = new Canvas())->setup(false, Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, 0);
+	(canvas = new Canvas())->setup(false, Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, colorSelected, 0);
 	return this;
 }
 

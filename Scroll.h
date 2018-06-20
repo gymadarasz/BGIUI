@@ -64,6 +64,7 @@ public:
 		int left = GUI_SCROLL_DEFAULT_LEFT,
 		int color = GUI_SCROLL_COLOR,
 		int colorPushed = GUI_SCROLL_COLOR_PUSHED,
+		int colorSelected = GUI_SCROLL_COLOR_SELECTED,
 		int borderSize = GUI_SCROLL_BORDER_SIZE,
 		int borderColor = GUI_SCROLL_BORDER_COLOR,
 		int borderColorSelected = GUI_SCROLL_BORDER_COLOR_SELECTED,

@@ -60,6 +60,7 @@ Canvas* Canvas::setup(
 	int left,
 	int color,
 	int colorPushed,
+	int colorSelected,
 	int borderSize,
 	int borderColor,
 	int borderColorSelected,
@@ -72,6 +73,7 @@ Canvas* Canvas::setup(
 	setHeight(height);
 	setColor(color);
 	setColorPushed(colorPushed);
+	setColorSelected(colorSelected);
 	setBorderSize(borderSize);
 	setBorderColor(borderColor);
 	setBorderColorSelected(borderColorSelected);
@@ -487,6 +489,11 @@ Canvas* Canvas::setColorPushed(int colorPushed) {
 	return this;
 }
 
+Canvas* Canvas::setColorSelected(int colorSelected) {
+	this->colorSelected = colorSelected;
+	return this;
+}
+
 Canvas* Canvas::setBorderColor(int borderColor) {
 	this->borderColor = borderColor;
 	return this;
@@ -538,7 +545,14 @@ int Canvas::calcHeightFull() {
 }
 
 int Canvas::calcColorCurrent() {
-	return getPushed() ? getColorPushed() : getColor();
+	return
+			getPushed() ?
+					getColorPushed() :
+					(
+							getSelected() ?
+									getColorSelected() :
+									getColor()
+					);
 }
 
 int Canvas::calcBorderColorCurrent() {
@@ -572,7 +586,9 @@ Canvas* Canvas::setSelected(bool selected) {
 		if (getBorderColorSelected() != getBorderColor()) {
 			setChangedBorder(true);
 		}
-		// TODO: getColorSelected() => setChangedInner(true)
+		if (getColorSelected() != getColor()) {
+			setChangedInner(true);
+		}
 	}
 	return this;
 }
@@ -644,6 +660,10 @@ int Canvas::getColor() {
 
 int Canvas::getColorPushed() {
 	return colorPushed;
+}
+
+int Canvas::getColorSelected() {
+	return colorSelected;
 }
 
 int Canvas::getBorderSize() {
@@ -799,6 +819,7 @@ int Canvas::drawChildren(int offsetTop, int offsetLeft) {
 			if (child->getAdjust()) {
 
 				int childMarginSize = child->getMarginSize();
+				int childBorderSize = child->getBorderSize();
 				int childCalcWidhtFull = child->calcWidthFull();
 				int childCalcHeightFull = child->calcHeightFull();
 				bool childLineBreak = child->getLineBreak();
@@ -807,8 +828,8 @@ int Canvas::drawChildren(int offsetTop, int offsetLeft) {
 					cursor.br();
 				}
 
-				offsetTop = childMarginSize + cursor.getTop();
-				offsetLeft = childMarginSize + cursor.getLeft();
+				offsetTop = childMarginSize + childBorderSize + cursor.getTop();
+				offsetLeft = childMarginSize + childBorderSize + cursor.getLeft();
 				if(cursor.step(childCalcWidhtFull + childMarginSize*2, childCalcHeightFull + childMarginSize*2)) {
 					offsetTop = childMarginSize + cursor.getTop();
 					offsetLeft = childMarginSize + cursor.getLeft();

@@ -17,6 +17,8 @@ namespace GUI {
 
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__)
 		initwindow(width, height, title, left, top, dbflag, closeflag);
+		HWND hWnd = GetActiveWindow();
+		SetWindowText(hWnd, title);
 		found = true;
 #endif
 

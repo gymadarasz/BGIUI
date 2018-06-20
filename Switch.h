@@ -33,6 +33,7 @@ public:
 		int left = GUI_SWITCH_DEFAULT_LEFT,
 		int color = GUI_SWITCH_COLOR,
 		int colorPushed = GUI_SWITCH_COLOR_PUSHED,
+		int colorSelected = GUI_SWITCH_COLOR_SELECTED,
 		int borderSize = GUI_SWITCH_BORDER_SIZE,
 		int borderColor = GUI_SWITCH_BORDER_COLOR,
 		int borderColorSelected = GUI_SWITCH_BORDER_COLOR_SELECTED,

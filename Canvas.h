@@ -34,6 +34,7 @@ class Canvas {
 	int height;
 	int color;
 	int colorPushed;
+	int colorSelected;
 	int borderSize;
 	int borderColor;
 	int borderColorSelected;
@@ -118,6 +119,7 @@ protected:
 	virtual bool getAdjust();
 	virtual int getColor();
 	virtual int getColorPushed();
+	virtual int getColorSelected();
 	virtual int getBorderSize();
 	virtual bool getEnabled();
 	virtual bool getNoDraw();
@@ -138,6 +140,7 @@ public:
 		int left = GUI_CANVAS_DEFAULT_LEFT,
 		int color = GUI_CANVAS_COLOR,
 		int colorPushed = GUI_CANVAS_COLOR_PUSHED,
+		int colorSelected = GUI_CANVAS_COLOR_SELECTED,
 		int borderSize = GUI_CANVAS_BORDER_SIZE,
 		int borderColor = GUI_CANVAS_BORDER_COLOR,
 		int borderColorSelected = GUI_CANVAS_BORDER_COLOR_SELECTED,
@@ -200,6 +203,7 @@ public:
 	virtual Canvas* setChangedBorder(bool changedBorder);
 	virtual Canvas* setColor(int color);
 	virtual Canvas* setColorPushed(int colorPushed);
+	virtual Canvas* setColorSelected(int colorSelectd);
 	virtual Canvas* setBorderColor(int borderColor);
 	virtual Canvas* setBorderColorSelected(int borderColorSelected);
 

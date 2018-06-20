@@ -26,6 +26,7 @@ public:
 		int left = GUI_BUTTON_DEFAULT_LEFT,
 		int color = GUI_BUTTON_COLOR,
 		int colorPushed = GUI_BUTTON_COLOR_PUSHED,
+		int colorSelected = GUI_BUTTON_COLOR_SELECTED,
 		int borderSize = GUI_BUTTON_BORDER_SIZE,
 		int borderColor = GUI_BUTTON_BORDER_COLOR,
 		int borderColorSelected = GUI_BUTTON_BORDER_COLOR_SELECTED,

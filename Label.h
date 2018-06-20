@@ -36,6 +36,7 @@ public:
 		int left = GUI_LABEL_DEFAULT_LEFT,
 		int color = GUI_LABEL_COLOR,
 		int colorPushed = GUI_LABEL_COLOR_PUSHED,
+		int colorSelected = GUI_LABEL_COLOR_SELECTED,
 		int borderSize = GUI_LABEL_BORDER_SIZE,
 		int borderColor = GUI_LABEL_BORDER_COLOR,
 		int borderColorSelected = GUI_LABEL_BORDER_COLOR_SELECTED,
