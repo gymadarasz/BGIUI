@@ -51,29 +51,29 @@ class Scroll: public Canvas {
 public:
 	Scroll(Canvas* parent = 0);
 	virtual ~Scroll();
-	virtual Scroll* setup(
-		int value = GUI_SCROLL_DEFAULT_VALUE,
-		int minValue = GUI_SCROLL_DEFAULT_MIN_VALUE,
-		int maxValue = GUI_SCROLL_DEFAULT_MIN_VALUE,
-		char* minusText = GUI_SCROLL_MINUS_TEXT,
-		char* plusText = GUI_SCROLL_PLUS_TEXT,
-		bool adjust = GUI_SCROLL_DEFAULT_ADJUST,
-		int width = GUI_SCROLL_DEFAULT_WIDTH,
-		int height = GUI_SCROLL_DEFAULT_HEIGHT,
-		int top = GUI_SCROLL_DEFAULT_TOP,
-		int left = GUI_SCROLL_DEFAULT_LEFT,
-		int color = GUI_SCROLL_COLOR,
-		int colorPushed = GUI_SCROLL_COLOR_PUSHED,
-		int colorSelected = GUI_SCROLL_COLOR_SELECTED,
-		int borderSize = GUI_SCROLL_BORDER_SIZE,
-		int borderColor = GUI_SCROLL_BORDER_COLOR,
-		int borderColorSelected = GUI_SCROLL_BORDER_COLOR_SELECTED,
-		int marginSize = GUI_SCROLL_MARGIN_SIZE,
-		int areaColor = GUI_SCROLL_AREA_COLOR,
-		int areaColorPushed = GUI_SCROLL_AREA_COLOR_PUSHED,
-		int handlerColor = GUI_SCROLL_HANDLER_COLOR,
-		int handlerColorPushed = GUI_SCROLL_HANDLER_COLOR_PUSHED
-	);
+//	virtual Scroll* setup(
+//		int value = GUI_SCROLL_DEFAULT_VALUE,
+//		int minValue = GUI_SCROLL_DEFAULT_MIN_VALUE,
+//		int maxValue = GUI_SCROLL_DEFAULT_MIN_VALUE,
+////		Text minusText = GUI_SCROLL_MINUS_TEXT,
+////		Text plusText = GUI_SCROLL_PLUS_TEXT,
+//		bool adjust = GUI_SCROLL_DEFAULT_ADJUST,
+//		int width = GUI_SCROLL_DEFAULT_WIDTH,
+//		int height = GUI_SCROLL_DEFAULT_HEIGHT,
+//		int top = GUI_SCROLL_DEFAULT_TOP,
+//		int left = GUI_SCROLL_DEFAULT_LEFT,
+//		int color = GUI_SCROLL_COLOR,
+//		int colorPushed = GUI_SCROLL_COLOR_PUSHED,
+//		int colorSelected = GUI_SCROLL_COLOR_SELECTED,
+//		int borderSize = GUI_SCROLL_BORDER_SIZE,
+//		int borderColor = GUI_SCROLL_BORDER_COLOR,
+//		int borderColorSelected = GUI_SCROLL_BORDER_COLOR_SELECTED,
+//		int marginSize = GUI_SCROLL_MARGIN_SIZE,
+//		int areaColor = GUI_SCROLL_AREA_COLOR,
+//		int areaColorPushed = GUI_SCROLL_AREA_COLOR_PUSHED,
+//		int handlerColor = GUI_SCROLL_HANDLER_COLOR,
+//		int handlerColorPushed = GUI_SCROLL_HANDLER_COLOR_PUSHED
+//	);
 	virtual Scroll* setValue(int value);
 	virtual Scroll* setMinValue(int minValue);
 	virtual Scroll* setMaxValue(int maxValue);

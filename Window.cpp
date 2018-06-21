@@ -24,7 +24,7 @@ void Window::run(WindowLoop loop) {
 	exit = false;
 	while (!exit) {
 
-		canvas->draw();
+		canvas.draw();
 		delay(1);
 
 		Keyboard::check();
@@ -43,18 +43,27 @@ void Window::run(WindowLoop loop) {
 				break;
 			}
 		}
-		canvas->tick();
+		canvas.tick();
 		if (loop) loop();
 	}
 }
 
 Canvas* Window::getCanvas() {
-	return canvas;
+	return &canvas;
 }
 
 Window* Window::reset(int color, int colorPushed, int colorSelected) {
-	Canvas::clearInstances();
-	(canvas = new Canvas())->setup(false, Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, colorSelected, 0);
+
+	//canvas.setup(false, Painter::getmaxwidth(), Painter::getmaxheight(), 0, 0, color, colorPushed, colorSelected, 0);
+	canvas.setAdjust(true);
+	canvas.setWidth(Painter::getmaxwidth());
+	canvas.setHeight(Painter::getmaxheight());
+	canvas.setTop(0);
+	canvas.setLeft(0);
+	canvas.setColor(color);
+	canvas.setColorPushed(colorPushed);
+	canvas.setColorSelected(colorSelected);
+	canvas.setBorderSize(0);
 	return this;
 }
 

@@ -9,75 +9,45 @@
 
 namespace GUI {
 
-int Canvas::next = 0;
+//int Canvas::next = 0;
 Canvas* Canvas::instances[CANVAS_INSTANCES] = {0};
 
 
 // public:
 
 Canvas::Canvas(Canvas* parent) {
-	setId(next++);
+//	if (!next) {
+//		Canvas::clearInstances();
+//	}
 	setParent(parent);
-	setInstance(getId(), this);
+//	id = next;
+//	next++;
+//	if (next >= CANVAS_INSTANCES) {
+//	placeId();
+		bool ok = false;
+		int i = 0;
+		for (; i < CANVAS_INSTANCES; i++) {
+			if (!instances[i]) {
+				ok = true;
+				break;
+			}
+		}
+		id = i;
+		if (!ok) {
+			// needs more canvas,
+			// increase CANVAS_INSTANCES (see above!)
+			exit(1);
+		}
+		instances[id] = this;
+//	}
+//	setInstance(getId(), this);
+
 	setNoDraw(false);
 	setInitializedScreenTop(false);
 	setInitializedScreenLeft(false);
 //	setCalculatedWidth(0);
 //	setCalculatedHeight(0);
-	setup(false, 0, 0);
-}
 
-Canvas::~Canvas() {
-	instances[getId()] = 0;
-}
-
-Canvas* Canvas::getInstance(int id) {
-	return instances[id];
-}
-
-int Canvas::clearInstances() {
-	int ret = 0;
-	for (int i=0; i<CANVAS_INSTANCES; i++) {
-		if(instances[i]) {
-			//delete instances[i];
-			instances[i] = 0;
-			ret++;
-		}
-	}
-	next = 0;
-	return ret;
-}
-
-int Canvas::getId() {
-	return id;
-}
-
-Canvas* Canvas::setup(
-	bool adjust,
-	int width,
-	int height,
-	int top,
-	int left,
-	int color,
-	int colorPushed,
-	int colorSelected,
-	int borderSize,
-	int borderColor,
-	int borderColorSelected,
-	int marginSize
-) {
-	setAdjust(adjust);
-	setTop(top);
-	setLeft(left);
-	setWidth(width);
-	setHeight(height);
-	setColor(color);
-	setColorPushed(colorPushed);
-	setColorSelected(colorSelected);
-	setBorderSize(borderSize);
-	setBorderColor(borderColor);
-	setBorderColorSelected(borderColorSelected);
-	setMarginSize(marginSize);
 	setSelected(false);
 	setPushed(false);
 	setChangedBorder(true);
@@ -98,8 +68,91 @@ Canvas* Canvas::setup(
     setMouseDownHandler(0);
     setMouseUpHandler(0);
 
-	return this;
+//	setup();
+    setAdjust(GUI_CANVAS_DEFAULT_ADJUST);
+	setWidth(GUI_CANVAS_DEFAULT_WIDTH);
+	setHeight(GUI_CANVAS_DEFAULT_HEIGHT);
+	setTop(GUI_CANVAS_DEFAULT_TOP);
+	setLeft(GUI_CANVAS_DEFAULT_LEFT);
+	setColor(GUI_CANVAS_COLOR);
+	setColorPushed(GUI_CANVAS_COLOR_PUSHED);
+	setColorSelected(GUI_CANVAS_COLOR_SELECTED);
+	setBorderSize(GUI_CANVAS_BORDER_SIZE);
+	setBorderColor(GUI_CANVAS_BORDER_COLOR);
+	setBorderColorSelected(GUI_CANVAS_BORDER_COLOR_SELECTED);
+	setMarginSize(GUI_CANVAS_MARGIN_SIZE);
 }
+
+Canvas::~Canvas() {
+	instances[id] = 0;
+}
+
+//Canvas* Canvas::getInstance(int id) {
+//	return instances[id];
+//}
+
+//void Canvas::clearInstances() {
+//	for (int i=0; i<CANVAS_INSTANCES; i++) {
+//		if(instances[i]) {
+//			//delete instances[i];
+//			instances[i] = 0;
+//		}
+//	}
+////	next = 0;
+//}
+
+int Canvas::getId() {
+	return id;
+}
+
+//Canvas* Canvas::setup(
+//	bool adjust,
+//	int width,
+//	int height,
+//	int top,
+//	int left,
+//	int color,
+//	int colorPushed,
+//	int colorSelected,
+//	int borderSize,
+//	int borderColor,
+//	int borderColorSelected,
+//	int marginSize
+//) {
+//	setAdjust(adjust);
+//	setTop(top);
+//	setLeft(left);
+//	setWidth(width);
+//	setHeight(height);
+//	setColor(color);
+//	setColorPushed(colorPushed);
+//	setColorSelected(colorSelected);
+//	setBorderSize(borderSize);
+//	setBorderColor(borderColor);
+//	setBorderColorSelected(borderColorSelected);
+//	setMarginSize(marginSize);
+////	setSelected(false);
+////	setPushed(false);
+////	setChangedBorder(true);
+////	setChangedInner(true);
+////	setLineBreak(false);
+////	setEnabled(false);
+////	setScreenTop(0);
+////	setScreenLeft(0);
+////
+////	// clear event handlers
+////    setTickHandler(0);
+////    setClickHandler(0);
+////    setDblClickHandler(0);
+////    setMouseMoveHandler(0);
+////    setMouseDragHandler(0);
+////    setMouseOverHandler(0);
+////    setMouseLeaveHandler(0);
+////    setMouseDownHandler(0);
+////    setMouseUpHandler(0);
+//
+//	return this;
+//}
 
 int Canvas::tick() {
 	int ret = tickChildren();
@@ -176,7 +229,7 @@ int Canvas::draw(int offsetTop, int offsetLeft) {
 	return ret;
 }
 
-Canvas* Canvas::clear() {
+void Canvas::clear(bool destroy) {
 	if (getInitializedScreenTop() && getInitializedScreenLeft()) {
 		Canvas* root = getRootCanvas();
 		int top = getScreenTop() - getBorderSize();
@@ -188,7 +241,19 @@ Canvas* Canvas::clear() {
 		setChangedBorder(true);
 		setChangedInner(true);
 	}
-	return this;
+
+	if (destroy) {
+		delete instances[id];
+	}
+
+}
+
+void Canvas::clearChildren(bool destroy) {
+	for (int i = 0; i < CANVAS_INSTANCES; i++) {
+		if (instances[i] && instances[i]->parent && instances[i]->parent->id == id) {
+			instances[i]->clear(destroy);
+		}
+	}
 }
 
 Canvas* Canvas::setLineBreak(bool lineBreak) {
@@ -200,7 +265,7 @@ int Canvas::selectNext() {
 	int i = calcFirstSelected() + 1;
 	unselectAll();
 	for (; i < CANVAS_INSTANCES; i++) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		if (canvas && canvas->getEnabled()) {
 			canvas->onMouseOver(0, 0);
 			//canvas->setSelected(true);
@@ -214,7 +279,7 @@ int Canvas::selectPrev() {
 	int i = calcLastSelected() - 1;
 	unselectAll();
 	for (; i >= 0; i--) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		if (canvas && canvas->getEnabled()) {
 			canvas->onMouseOver(0, 0);
 			//canvas->setSelected(true);
@@ -227,7 +292,7 @@ int Canvas::selectPrev() {
 int Canvas::selectedsClick() {
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		if (canvas && canvas->getSelected()) {
 			canvas->onMouseDown(0, 0);
 			canvas->onClick(0, 0);
@@ -239,9 +304,10 @@ int Canvas::selectedsClick() {
 }
 
 int Canvas::clearAll(Canvas* parent) {
+	// TODO: implement: static clearAll(), this->clear() and this->clearChildren() separately
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		Canvas* _parent = canvas ? canvas->getParent() : 0;
 		if (canvas && parent && _parent && parent->getId() == _parent->getId()) {
 			canvas->clear();
@@ -418,6 +484,11 @@ void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
 
 // (setters)
 
+Canvas* Canvas::setParent(Canvas* parent) {
+	this->parent = parent;
+	return this;
+}
+
 Canvas* Canvas::setAdjust(bool adjust) {
 	this->adjust = adjust;
 	return this;
@@ -562,21 +633,17 @@ int Canvas::calcBorderColorCurrent() {
 
 // private:
 
-bool Canvas::setInstance(int id, Canvas* canvas) {
+void Canvas::setInstance(int id, Canvas* canvas) {
 	if (Canvas::instances[id] != canvas) {
 		Canvas::instances[id] = canvas;
-		return true;
+		return;
 	}
-	return false;
+	// instance already exist in place here
+	exit(1);
 }
 
 Canvas* Canvas::setId(int id) {
 	this->id = id;
-	return this;
-}
-
-Canvas* Canvas::setParent(Canvas* parent) {
-	this->parent = parent;
 	return this;
 }
 
@@ -622,13 +689,12 @@ Canvas* Canvas::setNoDraw(bool noDraw) {
 
 Canvas* Canvas::setChildrenChanged(bool changed) {
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* child = instances[i];
-		if (child) {
-			Canvas* parent = child->getParent();
-			if (parent && parent->getId() == getId()) {
-				child->setChangedBorder(true);
-				child->setChangedInner(true);
-			}
+		if (instances[i] && instances[i]->id != id &&
+			instances[i]->parent && instances[i]->parent->id == id)
+		{
+			instances[i]->setChangedBorder(true);
+			//child->setChangedInner(true);
+
 		}
 	}
 	return this;
@@ -752,7 +818,7 @@ int Canvas::calcHeightWithChildren() {
 
 int Canvas::calcFirstSelected() {
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		if (canvas && canvas->getSelected()) {
 			return i;
 		}
@@ -762,7 +828,7 @@ int Canvas::calcFirstSelected() {
 
 int Canvas::calcLastSelected() {
 	for (int i = CANVAS_INSTANCES - 1; i >= 0; i--) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas = instances[i];
 		if (canvas && canvas->getSelected()) {
 			return i;
 		}
@@ -773,7 +839,7 @@ int Canvas::calcLastSelected() {
 int Canvas::unselectAll() {
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* canvas = getInstance(i);
+		Canvas* canvas =instances[i];
 		if (canvas) {
 			canvas->setSelected(false);
 			ret++;
@@ -808,21 +874,21 @@ int Canvas::drawChildren(int offsetTop, int offsetLeft) {
 
 
 	// for each children
-	for (int i = getId()+1; i<CANVAS_INSTANCES; i++) {
-		Canvas* child = getInstance(i);
-		Canvas* parent = child ? child->getParent() : 0;
-		if (child && parent && parent->getId() == getId()) {
+	for (int i = 0; i<CANVAS_INSTANCES; i++) {
+		if (instances[i] && instances[i]->id != id &&
+			instances[i]->parent && instances[i]->parent->id != id)
+		{
 
 //			int offsetTop = 0;
 //			int offsetLeft = 0;
 
-			if (child->getAdjust()) {
+			if (instances[i]->getAdjust()) {
 
-				int childMarginSize = child->getMarginSize();
-				int childBorderSize = child->getBorderSize();
-				int childCalcWidhtFull = child->calcWidthFull();
-				int childCalcHeightFull = child->calcHeightFull();
-				bool childLineBreak = child->getLineBreak();
+				int childMarginSize = instances[i]->getMarginSize();
+				int childBorderSize = instances[i]->getBorderSize();
+				int childCalcWidhtFull = instances[i]->calcWidthFull();
+				int childCalcHeightFull = instances[i]->calcHeightFull();
+				bool childLineBreak = instances[i]->getLineBreak();
 
 				if (childLineBreak) {
 					cursor.br();
@@ -841,18 +907,12 @@ int Canvas::drawChildren(int offsetTop, int offsetLeft) {
 
 			// draw it
 			if (!getNoDraw()) {
-				child->draw(offsetTop, offsetLeft);
+				instances[i]->draw(offsetTop, offsetLeft);
 			}
 			ret++;
+
 		}
 	}
-//	if (getAdjust()) {
-//		setCalculatedWidth(cursor.getWidth());
-//		setCalculatedHeight(cursor.getTop() + cursor.getLineHeight());
-//	} else {
-//		setCalculatedWidth(getWidth());
-//		setCalculatedHeight(getHeight());
-//	}
 	return ret;
 }
 
@@ -869,10 +929,12 @@ bool Canvas::isInside(EventPoint eventPoint) {
 int Canvas::tickChildren() {
 	int ret = 0;
 	for (int i = 0; i < CANVAS_INSTANCES; i++) {
-		Canvas* child = getInstance(i);
-		Canvas* parent = child ? child->getParent() : 0;
-		if (child && parent && parent->getId() == getId()) {
-			ret += child->tick();
+		Canvas* child = instances[i];
+		if (child && child->getId() != getId()) {
+			Canvas* parent = child ? child->getParent() : 0;
+			if (parent && parent->getId() == getId()) {
+				ret += child->tick();
+			}
 		}
 	}
 	return ret;

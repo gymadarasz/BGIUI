@@ -10,66 +10,100 @@
 namespace GUI {
 
 Scroll::Scroll(Canvas* parent): Canvas(parent) {
-	minusButton = 0;
-	scrollAreaCanvas = 0;
-	scrollHandlerCanvas = 0;
-	plusButton = 0;
+	setMinusButton(0);
+	setScrollAreaCanvas(0);
+	setScrollHandlerCanvas(0);
+	setPlusButton(0);
 	setInitializedChildren(false);
 	setInitializedValue(false);
-	setup();
+    setScrollHandler(0);
+//	initializeChildren(/*minusText, plusText, */areaColor, areaColorPushed, handlerColor, handlerColorPushed);
+    initializeChildren(
+    	(char*)GUI_SCROLL_MINUS_TEXT,
+		(char*)GUI_SCROLL_PLUS_TEXT,
+		GUI_SCROLL_AREA_COLOR,
+		GUI_SCROLL_AREA_COLOR_PUSHED,
+		GUI_SCROLL_HANDLER_COLOR,
+		GUI_SCROLL_HANDLER_COLOR_PUSHED
+	);
+
+	setValue(value);
+	setMinValue(minValue);
+	setMaxValue(maxValue);
+//	setup();
+	setValue(GUI_SCROLL_DEFAULT_VALUE);
+	setMinValue(GUI_SCROLL_DEFAULT_MIN_VALUE);
+	setMaxValue(GUI_SCROLL_DEFAULT_MIN_VALUE);
+//	setMinusText(GUI_SCROLL_MINUS_TEXT);
+//	setPlusText(GUI_SCROLL_PLUS_TEXT);
+	setAdjust(GUI_SCROLL_DEFAULT_ADJUST);
+	setWidth(GUI_SCROLL_DEFAULT_WIDTH);
+	setHeight(GUI_SCROLL_DEFAULT_HEIGHT);
+	setTop(GUI_SCROLL_DEFAULT_TOP);
+	setLeft(GUI_SCROLL_DEFAULT_LEFT);
+	setColor(GUI_SCROLL_COLOR);
+	setColorPushed(GUI_SCROLL_COLOR_PUSHED);
+	setColorSelected(GUI_SCROLL_COLOR_SELECTED);
+	setBorderSize(GUI_SCROLL_BORDER_SIZE);
+	setBorderColor(GUI_SCROLL_BORDER_COLOR);
+	setBorderColorSelected(GUI_SCROLL_BORDER_COLOR_SELECTED);
+	setMarginSize(GUI_SCROLL_MARGIN_SIZE);
+//	setAreaColor(GUI_SCROLL_AREA_COLOR);
+//	setAreaColorPushed(GUI_SCROLL_AREA_COLOR_PUSHED);
+//	setHandlerColor(GUI_SCROLL_HANDLER_COLOR);
+//	setHandlerColorPushed(GUI_SCROLL_HANDLER_COLOR_PUSHED);
 }
 
 Scroll::~Scroll() {
 	// TODO Auto-generated destructor stub
 }
 
-Scroll* Scroll::setup(
-	int value,
-	int minValue,
-	int maxValue,
-	char* minusText,
-	char* plusText,
-	bool adjust,
-	int width,
-	int height,
-	int top,
-	int left,
-	int color,
-	int colorPushed,
-	int colorSelected,
-	int borderSize,
-	int borderColor,
-	int borderColorSelected,
-	int marginSize,
-	int areaColor,
-	int areaColorPushed,
-	int handlerColor,
-	int handlerColorPushed
-){
-	Canvas::setup(
-		adjust,
-		width,
-		height,
-		top,
-		left,
-		color,
-		colorPushed,
-		colorSelected,
-		borderSize,
-		borderColor,
-		borderColorSelected,
-		marginSize
-	);
-    setScrollHandler(0);
-	initializeChildren(minusText, plusText, areaColor, areaColorPushed, handlerColor, handlerColorPushed);
-	setValue(value);
-	setMinValue(minValue);
-	setMaxValue(maxValue);
-
-
-	//setEnabled(true);
-	return this;
-}
+//Scroll* Scroll::setup(
+//	int value,
+//	int minValue,
+//	int maxValue,
+////	Text minusText,
+////	Text plusText,
+//	bool adjust,
+//	int width,
+//	int height,
+//	int top,
+//	int left,
+//	int color,
+//	int colorPushed,
+//	int colorSelected,
+//	int borderSize,
+//	int borderColor,
+//	int borderColorSelected,
+//	int marginSize,
+//	int areaColor,
+//	int areaColorPushed,
+//	int handlerColor,
+//	int handlerColorPushed
+//){
+//	Canvas::setup(
+//		adjust,
+//		width,
+//		height,
+//		top,
+//		left,
+//		color,
+//		colorPushed,
+//		colorSelected,
+//		borderSize,
+//		borderColor,
+//		borderColorSelected,
+//		marginSize
+//	);
+//	initializeChildren(/*minusText, plusText, */areaColor, areaColorPushed, handlerColor, handlerColorPushed);
+//	setValue(value);
+//	setMinValue(minValue);
+//	setMaxValue(maxValue);
+//
+//
+//	//setEnabled(true);
+//	return this;
+//}
 
 Scroll* Scroll::setValue(int value) {
 	if (this->value != value) {
@@ -185,7 +219,7 @@ bool Scroll::getInitializedValue() {
 }
 
 // return true if it's the first initialization
-bool Scroll::initializeChildren(char* minusText, char* plusText, int areaColor, int areaColorPushed, int handlerColor, int handlerColorPushed) {
+bool Scroll::initializeChildren(Text minusText, Text plusText, int areaColor, int areaColorPushed, int handlerColor, int handlerColorPushed) {
 	bool ret = false;
 	if (!getInitializedChildren()) {
 		setScrollAreaCanvas(new ScrollAreaCanvas(this));

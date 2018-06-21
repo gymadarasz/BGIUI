@@ -19,7 +19,7 @@ namespace GUI {
 typedef void (*WindowLoop)(void);
 
 class Window {
-	Canvas* canvas;
+	Canvas canvas;
 	WindowLoop loop;
 	bool exit;
 	// TODO: virtual Canvas* setCanvas();
@@ -27,7 +27,7 @@ public:
 	Window(
 	    int width = 0,
 		int height = 0,
-		char* title = (char*)"Window GUI",
+		Text title = (char*)"Window GUI",
 		int left = 0,
 		int top = 0,
 		bool dbflag = false,

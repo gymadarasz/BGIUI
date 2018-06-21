@@ -23,7 +23,7 @@ class Canvas;
 typedef int (*CanvasEventHandler)(Canvas*, ...);
 
 class Canvas {
-	static int next;
+//	static int next;
 	static Canvas* instances[CANVAS_INSTANCES];
 	int id;
 	Canvas* parent;
@@ -65,9 +65,9 @@ class Canvas {
 	CanvasEventHandler onMouseDownHandler;
 	CanvasEventHandler onMouseUpHandler;
 
-	static bool setInstance(int id, Canvas* canvas);
+//	static void clearInstances();
+	static void setInstance(int id, Canvas* canvas);
 	virtual Canvas* setId(int id);
-	virtual Canvas* setParent(Canvas* parent = 0);
 	virtual Canvas* setSelected(bool selected);
 	virtual Canvas* setScreenTop(int screenTop);
 	virtual Canvas* setScreenLeft(int screenLeft);
@@ -129,26 +129,26 @@ protected:
 public:
 	Canvas(Canvas* parent = 0);
 	virtual ~Canvas();
-	static Canvas* getInstance(int id);
-	static int clearInstances();
+//	static Canvas* getInstance(int id);
 	virtual int getId();
-	virtual Canvas* setup(
-		bool adjust = GUI_CANVAS_DEFAULT_ADJUST,
-		int width = GUI_CANVAS_DEFAULT_WIDTH,
-		int height = GUI_CANVAS_DEFAULT_HEIGHT,
-		int top = GUI_CANVAS_DEFAULT_TOP,
-		int left = GUI_CANVAS_DEFAULT_LEFT,
-		int color = GUI_CANVAS_COLOR,
-		int colorPushed = GUI_CANVAS_COLOR_PUSHED,
-		int colorSelected = GUI_CANVAS_COLOR_SELECTED,
-		int borderSize = GUI_CANVAS_BORDER_SIZE,
-		int borderColor = GUI_CANVAS_BORDER_COLOR,
-		int borderColorSelected = GUI_CANVAS_BORDER_COLOR_SELECTED,
-		int marginSize = GUI_CANVAS_MARGIN_SIZE
-	);
+//	virtual Canvas* setup(
+//		bool adjust = GUI_CANVAS_DEFAULT_ADJUST,
+//		int width = GUI_CANVAS_DEFAULT_WIDTH,
+//		int height = GUI_CANVAS_DEFAULT_HEIGHT,
+//		int top = GUI_CANVAS_DEFAULT_TOP,
+//		int left = GUI_CANVAS_DEFAULT_LEFT,
+//		int color = GUI_CANVAS_COLOR,
+//		int colorPushed = GUI_CANVAS_COLOR_PUSHED,
+//		int colorSelected = GUI_CANVAS_COLOR_SELECTED,
+//		int borderSize = GUI_CANVAS_BORDER_SIZE,
+//		int borderColor = GUI_CANVAS_BORDER_COLOR,
+//		int borderColorSelected = GUI_CANVAS_BORDER_COLOR_SELECTED,
+//		int marginSize = GUI_CANVAS_MARGIN_SIZE
+//	);
 	virtual int tick();
 	virtual int draw(int offsetTop = 0, int offsetLeft = 0);
-	virtual Canvas* clear();
+	virtual void clear(bool destroy = false);
+	virtual void clearChildren(bool destroy = false);
 	virtual Canvas* setLineBreak(bool lineBreak);
 	static int selectNext();
 	static int selectPrev();
@@ -190,6 +190,7 @@ public:
 	virtual void onMouseUp(int mouseLeft, int mouseTop);
 
 	// setters
+	virtual Canvas* setParent(Canvas* parent = 0);
 	virtual Canvas* setAdjust(bool adjust);
 	virtual Canvas* setEnabled(bool enabled);
 	virtual Canvas* setWidth(int width);
