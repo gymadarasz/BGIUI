@@ -20,12 +20,22 @@ Window::Window(Canvas* parent, int width, int height, char* title, int left, int
 	border.size = 0;
 	border.color = NOCOLOR;
 	adjust.toParentCursor = false;
+	halt = false;
+	disabled = true;
 }
 
 void Window::run(/*loop function*/) {
+	Mouse::reset();
 	halt = false;
 	while (!halt) {
-		paint();
+		calc();
+		Mouse::check();
+		for (int i=0; i<CANVASES; i++) {
+			if (canvases[i]) {
+				canvases[i]->draw();
+				canvases[i]->tick();
+			}
+		}
 		delay(1);
 	}
 }

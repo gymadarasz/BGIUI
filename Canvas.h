@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include "defs.h"
 #include "Painter.h"
+#include "Mouse.h"
 
 namespace gui {
 
@@ -24,6 +25,9 @@ typedef struct {
 typedef struct {
 	int size = BORDER_SIZE;
 	Color color = BORDER_COLOR;
+	Color colorSelected = BORDER_COLOR_SELECTED;
+	Color colorDisabled = BORDER_COLOR_DISABLED;
+	Color colorPushed = BORDER_COLOR_PUSHED;
 } Border;
 
 typedef struct {
@@ -34,8 +38,10 @@ typedef struct {
 typedef struct {
 	char label[TEXT_BUFFER_SIZE] = "";
 	int size = TEXT_SIZE;
-//	int align = TEXT_ALIGN_CENTER;
 	Color color = TEXT_COLOR;
+	Color colorSelected = TEXT_COLOR_SELECTED;
+	Color colorDisabled = TEXT_COLOR_DISABLED;
+	Color colorPushed = TEXT_COLOR_PUSHED;
 } Text;
 
 typedef struct {
@@ -44,22 +50,26 @@ typedef struct {
 } Adjust;
 
 typedef struct {
-//	int offsetTop = 0;
-//	int offsetLeft = 0;
 	int top = 0;
 	int left = 0;
 	int width = 0;
 	int height = 0;
 	Color color = BOX_COLOR;
+	Color colorSelected = BOX_COLOR_SELECTED;
+	Color colorDisabled = BOX_COLOR_DISABLED;
+	Color colorPushed = BOX_COLOR_PUSHED;
 	bool breakLine = false;
 } Box;
 
 typedef struct {
 	int top = 0;
 	int left = 0;
-//	int adjust = CURSOR_ADJUST_FIX_WIDTH;
 	int lnHeight = 0;
 } Cursor;
+
+class Canvas;
+
+typedef int (*CanvasEventHandler)(Canvas*, ...);
 
 class Canvas {
 protected:
@@ -69,10 +79,20 @@ protected:
 
 	bool paintBorder;
 	bool paintInner;
+	int calculatedTop;
+	int calculatedLeft;
+	int calculatedWidth;
+	int calculatedHeight;
+	int calculatedTextTop;
+	int calculatedTextLeft;
+	int calculatedBorderColor;
+	int calculatedBoxColor;
+	int calculatedTextColor;
 
 	bool disabled;
 	bool selected;
 	bool pushed;
+	bool hidden;
 
 	Text text;
 	Box box;
@@ -86,10 +106,14 @@ protected:
 	virtual bool cursorCheckSpace(int width, int height);
 	virtual void cursorBreakLine(int lnHeight);
 	virtual void cursorStep(int width, int height);
-	virtual void paint(int offsetTop = 0, int offsetLeft = 0);
-	virtual bool select();
+	virtual void calc(int offsetTop = 0, int offsetLeft = 0);
+	virtual Color getClearColor();
+	virtual bool select(bool sel = true);
+	virtual bool push(bool sel = true);
 	virtual void selectNext();
 	virtual void selectPrev();
+
+	virtual bool isInside(EventPoint eventPoint);
 
 public:
 
@@ -112,6 +136,35 @@ public:
 	virtual void setBorderSize(int size);
 	virtual void setBorderColor(int color);
 	virtual void setToCursor(bool toParentCursor = true);
+	virtual void show();
+	virtual void hide();
+	virtual void destroy();
+
+	//-- events
+
+	virtual void draw();
+	virtual void tick();
+
+	CanvasEventHandler onTickHandler;
+	CanvasEventHandler onClickHandler;
+	CanvasEventHandler onDblClickHandler;
+	CanvasEventHandler onMouseMoveHandler;
+	CanvasEventHandler onMouseDragHandler;
+	CanvasEventHandler onMouseOverHandler;
+	CanvasEventHandler onMouseLeaveHandler;
+	CanvasEventHandler onMouseDownHandler;
+	CanvasEventHandler onMouseUpHandler;
+
+	// events
+	virtual void onTick();
+	virtual void onClick(int mouseLeft, int mouseTop);
+	virtual void onDblClick(int mouseLeft, int mouseTop);
+	virtual void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	virtual void onMouseOver(int mouseLeft, int mouseTop);
+	virtual void onMouseLeave(int mouseLeft, int mouseTop);
+	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	virtual void onMouseDown(int mouseLeft, int mouseTop);
+	virtual void onMouseUp(int mouseLeft, int mouseTop);
 };
 
 } /* namespace gui */

@@ -12,7 +12,8 @@
 
 // common
 
-#define CANVASES 40		// increment it if you need more canvases
+#define CANVASES 			48	// increment it if you need more canvases
+#define TEXT_BUFFER_SIZE	48	// change it if you need more or less long strings
 
 #define NOCOLOR -1
 
@@ -24,6 +25,8 @@
 #define BORDER_COLOR				DARKGRAY
 #define BORDER_COLOR_PUSHED			DARKGRAY
 #define BORDER_COLOR_SELECTED		WHITE
+#define BORDER_COLOR_DISABLED		DARKGRAY
+#define BORDER_COLOR_PUSHED			DARKGRAY
 
 #define PADDING_SIZE_HORIZONTAL		8
 #define PADDING_SIZE_VERTICAL		4
@@ -32,14 +35,16 @@
 #define COLOR_PUSHED				DARKGRAY
 #define COLOR_SELECTED				LIGHTGRAY
 
-#define TEXT_BUFFER_SIZE			255
 #define TEXT_SIZE					1
 #define TEXT_COLOR					BLACK
 #define TEXT_COLOR_PUSHED			BLACK
 #define TEXT_COLOR_SELECTED			BLACK
+#define TEXT_COLOR_DISABLED			DARKGRAY
 
 #define BOX_COLOR					LIGHTGRAY
-#define BOX_ADJUST					ADJUST_TO_PARENT_CURSOR
+#define BOX_COLOR_PUSHED			DARKGRAY
+#define BOX_COLOR_SELECTED			LIGHTGRAY
+#define BOX_COLOR_DISABLED			LIGHTGRAY
 
 
 #endif /* STYLE_H_ */
