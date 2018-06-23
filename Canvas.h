@@ -44,16 +44,26 @@ typedef struct {
 	Color colorPushed = TEXT_COLOR_PUSHED;
 } Text;
 
-typedef struct {
-	int toParentCursor = true;
-	bool toTextSize = true;
-} Adjust;
+#define ADJUST_SIZE_NONE 0
+#define ADJUST_SIZE_TO_TEXT 1
+//#define ADJUST_SIZE_TO_PARENT 2
+#define ADJUST_SIZE_TO_PARENT_WIDTH 3
+#define ADJUST_POSITION_NONE 0
+#define ADJUST_POSITION_TO_PARENT_CURSOR 1
+
+//typedef struct {
+//	int position = ADJUST_TO_CURSOR;
+////	int toInnerCursor = true;
+//	int size = ADJUST_TO_TEXT
+//} Adjust;
 
 typedef struct {
 	int top = 0;
 	int left = 0;
+	int adjustPosition = ADJUST_POSITION_TO_PARENT_CURSOR;
 	int width = 0;
 	int height = 0;
+	int adjustSize = ADJUST_SIZE_TO_TEXT;
 	Color color = BOX_COLOR;
 	Color colorSelected = BOX_COLOR_SELECTED;
 	Color colorDisabled = BOX_COLOR_DISABLED;
@@ -79,14 +89,14 @@ protected:
 
 	bool paintBorder;
 	bool paintInner;
-	int calculatedTop;
-	int calculatedLeft;
-	int calculatedWidth;
-	int calculatedHeight;
+	int calculatedInnerTop;
+	int calculatedInnerLeft;
+	int calculatedInnerWidth;
+	int calculatedInnerHeight;
 	int calculatedTextTop;
 	int calculatedTextLeft;
 	int calculatedBorderColor;
-	int calculatedBoxColor;
+	int calculatedInnerColor;
 	int calculatedTextColor;
 
 	bool disabled;
@@ -96,54 +106,64 @@ protected:
 
 	Text text;
 	Box box;
-	Adjust adjust;
+	//Adjust adjust;
 	Border border;
 	Margin margin;
 	Padding padding;
 	Cursor cursor;
 
-	virtual void cursorReset();
-	virtual bool cursorCheckSpace(int width, int height);
-	virtual void cursorBreakLine(int lnHeight);
-	virtual void cursorStep(int width, int height);
-	virtual void calc(int offsetTop = 0, int offsetLeft = 0);
-	virtual Color getClearColor();
-	virtual bool select(bool sel = true);
-	virtual bool push(bool sel = true);
-	virtual void selectNext();
-	virtual void selectPrev();
+	void cursorReset();
+//	bool cursorCheckSpace(int width, int height, int widthMax);
+	void cursorBreakLine(int lnHeight);
+	void cursorStep(int width, int height);
 
-	virtual bool isInside(EventPoint eventPoint);
+	void calc(int offsetTop = 0, int offsetLeft = 0);
+
+	Color getClearColor();
+	bool select(bool sel = true);
+	bool push(bool sel = true);
+
+	int getSelectedId();
+	void selectNext();
+	void selectPrev();
+	void clickSelected();
+
+	bool isInside(EventPoint eventPoint);
+	bool isChanged();
 
 public:
 
 	Canvas(Canvas* parent = 0);
-	virtual ~Canvas();
-	virtual void setSize(int width, int height);
-	virtual void setSize(int width);
-	virtual void setColor(int color);
-	virtual void setText(const char* str);
-	virtual void setText(char* str);
-	virtual void setTextColor(int color);
-	virtual void setTextSize(int size);
-	virtual void setBreakLine(bool br = true);
-	virtual void setPosition(int top, int left);
-	virtual void enable();
-	virtual void disable();
-	virtual void setMargin(int horizontal, int vertical);
-	virtual void setPadding(int horizontal, int vertical);
-	virtual void setBorder(int size, int color);
-	virtual void setBorderSize(int size);
-	virtual void setBorderColor(int color);
-	virtual void setToCursor(bool toParentCursor = true);
-	virtual void show();
-	virtual void hide();
-	virtual void destroy();
+	void setSize(int width, int height);
+	void setSize(int width);
+	void setColor(int color);
+	void setText(const char* str);
+	void setText(char* str);
+	void setTextColor(int color);
+	void setTextSize(int size);
+	void setBreakLine(bool br = true);
+	void setPosition(int top, int left);
+	void enable();
+	void disable();
+	void setMargin(int horizontal, int vertical);
+	void setMarginVertical(int vertical);
+	void setPadding(int horizontal, int vertical);
+	void setPaddingVertical(int vertical);
+	void setBorder(int size = 0, int color = NOCOLOR);
+	void setBorderSize(int size);
+	void setBorderColor(int color);
+//	void setToCursor(bool toParentCursor = true);
+//	void setToInnerCursor(bool toInnerCuros = true);
+	void setAdjustSize(int adjustSize);
+	void setAdjustPosition(int adjustPosition);
+	void show();
+	void hide();
+	void destroy();
 
 	//-- events
 
-	virtual void draw();
-	virtual void tick();
+	void draw();
+	void tick();
 
 	CanvasEventHandler onTickHandler;
 	CanvasEventHandler onClickHandler;
@@ -156,15 +176,15 @@ public:
 	CanvasEventHandler onMouseUpHandler;
 
 	// events
-	virtual void onTick();
-	virtual void onClick(int mouseLeft, int mouseTop);
-	virtual void onDblClick(int mouseLeft, int mouseTop);
-	virtual void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	virtual void onMouseOver(int mouseLeft, int mouseTop);
-	virtual void onMouseLeave(int mouseLeft, int mouseTop);
-	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
-	virtual void onMouseDown(int mouseLeft, int mouseTop);
-	virtual void onMouseUp(int mouseLeft, int mouseTop);
+	void onTick();
+	void onClick(int mouseLeft, int mouseTop);
+	void onDblClick(int mouseLeft, int mouseTop);
+	void onMouseMove(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	void onMouseOver(int mouseLeft, int mouseTop);
+	void onMouseLeave(int mouseLeft, int mouseTop);
+	void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
+	void onMouseDown(int mouseLeft, int mouseTop);
+	void onMouseUp(int mouseLeft, int mouseTop);
 };
 
 } /* namespace gui */

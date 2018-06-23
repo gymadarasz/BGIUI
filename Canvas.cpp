@@ -17,12 +17,12 @@ void Canvas::cursorReset() {
 	cursor.lnHeight = 0;
 }
 
-bool Canvas::cursorCheckSpace(int width, int height) {
-	if (cursor.left + width > box.width) {
-		return false;
-	}
-	return true;
-}
+//bool Canvas::cursorCheckSpace(int parentInnerWidth, int nextChildOuterWidth) {
+//	if (cursor.left + nextChildOuterWidth > parentInnerWidth) {
+//		return true;
+//	}
+//	return false;
+//}
 
 void Canvas::cursorBreakLine(int lnHeight) {
 	cursor.left = 0;
@@ -43,54 +43,75 @@ void Canvas::cursorStep(int width, int height) {
 void Canvas::calc(int offsetTop, int offsetLeft) {
 
 	calculatedBorderColor = border.color;
-	calculatedBoxColor = box.color;
+	calculatedInnerColor = box.color;
 	calculatedTextColor = text.color;
 	if (selected) {
 		calculatedBorderColor = border.colorSelected;
-		calculatedBoxColor = box.colorSelected;
+		calculatedInnerColor = box.colorSelected;
 		calculatedTextColor = text.colorSelected;
 	}
 	if (pushed) {
 		calculatedBorderColor = border.colorPushed;
-		calculatedBoxColor = box.colorPushed;
+		calculatedInnerColor = box.colorPushed;
 		calculatedTextColor = text.colorPushed;
 	}
 	if (disabled) {
 		calculatedBorderColor = border.colorDisabled;
-		calculatedBoxColor = box.colorDisabled;
+		calculatedInnerColor = box.colorDisabled;
 		calculatedTextColor = text.colorDisabled;
 	}
 	if (hidden) {
 		// TODO: clear only first time, next use NOCOLOR!
-		calculatedBorderColor = calculatedBoxColor = calculatedTextColor = getClearColor();
+		calculatedBorderColor = calculatedInnerColor = calculatedTextColor = getClearColor();
 	}
 
 
 	int innerWidth = box.width;
 	int innerHeight = box.height;
 
-	if (adjust.toTextSize) {
+	if (box.adjustSize == ADJUST_SIZE_TO_TEXT) {
 		innerWidth += Painter::getTextWidth(text.label, text.size) + padding.horizontal*2;
 		innerHeight += Painter::getTextHeight(text.label, text.size) + padding.vertical*2;
 	}
 
 	int innerTop = box.top + margin.vertical + border.size;
 	int innerLeft = box.left + margin.horizontal + border.size;
+
+	if (parent) {
+		if(box.adjustSize == ADJUST_SIZE_TO_PARENT_WIDTH) {
+			innerWidth = parent->calculatedInnerWidth - (margin.horizontal + border.size)*2;
+//			innerLeft = 0;
+//			if (box.adjustSize == ADJUST_SIZE_TO_PARENT_HEIGHT) {
+//				innerHeight = parent->calculatedInnerHeight - (margin.horizontal - border.size)*2;
+//				innerTop = 0;
+//			}
+		}
+	}
+
 	int outerWidth = innerWidth + (margin.horizontal + border.size)*2;
 	int outerHeight = innerHeight + (margin.vertical + border.size)*2;
 
-	if (box.breakLine) {
-		parent->cursorBreakLine(outerHeight);
-	}
 
-	if (adjust.toParentCursor && parent) {
+	if (parent && box.adjustSize == ADJUST_POSITION_TO_PARENT_CURSOR) {
 
-		if (!parent->cursorCheckSpace(outerWidth, outerHeight)) {
+//		if (box.breakLine) {
+//			parent->cursorBreakLine(outerHeight);
+//		}
+
+		// have to break line OR not enough space in parent?
+		if (box.breakLine || parent->cursor.left + outerWidth > parent->calculatedInnerWidth) {
 			parent->cursorBreakLine(outerHeight);
 		}
+
 		innerTop += parent->cursor.top;
 		innerLeft += parent->cursor.left;
 		parent->cursorStep(outerWidth, outerHeight);
+
+		// extending parent height to cursor size
+		parent->calculatedInnerHeight = parent->calculatedInnerHeight >= parent->cursor.top + parent->cursor.lnHeight ?
+				parent->calculatedInnerHeight :
+				parent->cursor.top + parent->cursor.lnHeight;
+
 	}
 
 	// apply the given extra offset argumanets
@@ -98,10 +119,10 @@ void Canvas::calc(int offsetTop, int offsetLeft) {
 	innerLeft += offsetLeft;
 
 
-	calculatedTop = innerTop;
-	calculatedLeft = innerLeft;
-	calculatedWidth = innerWidth;
-	calculatedHeight = innerHeight;
+	calculatedInnerTop = innerTop;
+	calculatedInnerLeft = innerLeft;
+	calculatedInnerWidth = innerWidth;
+	calculatedInnerHeight = innerHeight;
 
 	// paint text (+ padding size)
 	calculatedTextTop = innerTop + padding.vertical;
@@ -120,13 +141,13 @@ void Canvas::calc(int offsetTop, int offsetLeft) {
 void Canvas::draw() {
 
 	if (paintInner) {
-		Painter::fillrect(calculatedTop, calculatedLeft, calculatedWidth, calculatedHeight, calculatedBoxColor);
-		Painter::text(calculatedTextTop, calculatedTextLeft, text.label, calculatedTextColor, calculatedBoxColor, text.size);
+		Painter::fillrect(calculatedInnerTop, calculatedInnerLeft, calculatedInnerWidth, calculatedInnerHeight, calculatedInnerColor);
+		Painter::text(calculatedTextTop, calculatedTextLeft, text.label, calculatedTextColor, calculatedInnerColor, text.size);
 		paintInner = false;
 	}
 
 	if (paintBorder) {
-		Painter::rect(calculatedTop, calculatedLeft, calculatedWidth, calculatedHeight, calculatedBorderColor, border.size);
+		Painter::rect(calculatedInnerTop, calculatedInnerLeft, calculatedInnerWidth, calculatedInnerHeight, calculatedBorderColor, border.size);
 		paintBorder = false;
 	}
 
@@ -143,7 +164,7 @@ Color Canvas::getClearColor() {
 
 
 bool Canvas::select(bool sel) {
-	if (!disabled || !hidden) {
+	if (!disabled && !hidden) {
 		for (int i=0; i<CANVASES; i++) {
 			if (canvases[i] && canvases[i]->selected) {
 				canvases[i]->selected = false;
@@ -164,8 +185,19 @@ bool Canvas::push(bool psh) {
 	return pushed;
 }
 
+int Canvas::getSelectedId() {
+	for (int i=0; i<CANVASES; i++) {
+		if (canvases[i] && canvases[i]->selected) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 void Canvas::selectNext() {
-	for (int i = id; i<CANVASES; i++) {
+	int sid = getSelectedId();
+	int i = sid + 1 < CANVASES ? sid + 1 : 0;
+	for (; i < CANVASES; i++) {
 		if (canvases[i] && canvases[i]->select()) {
 			break;
 		}
@@ -173,21 +205,46 @@ void Canvas::selectNext() {
 }
 
 void Canvas::selectPrev() {
-	for (int i = CANVASES+1; i >= 0; i++) {
+	int sid = getSelectedId();
+	int i = sid - 1 >= 0 ? sid - 1 : CANVASES - 1;
+	for (; i >= 0; i--) {
 		if (canvases[i] && canvases[i]->select()) {
 			break;
 		}
 	}
 }
 
+void Canvas::clickSelected() {
+	for (int i = 0; i<CANVASES; i++) {
+		if (canvases[i] && canvases[i]->selected) {
+			canvases[i]->onMouseDown(0, 0);
+			canvases[i]->onClick(0, 0);
+			canvases[i]->onMouseUp(0, 0);
+			break;
+		}
+	}
+}
+
 bool Canvas::isInside(EventPoint eventPoint) {
-    int top = calculatedTop;
-    int left = calculatedLeft;
-    int fullwidth = calculatedWidth;
-    int fullheight = calculatedHeight;
+    int top = calculatedInnerTop;
+    int left = calculatedInnerLeft;
+    int fullwidth = calculatedInnerWidth;
+    int fullheight = calculatedInnerHeight;
     int right = left + fullwidth;
     int bottom = top + fullheight;
     return eventPoint.left >= left && eventPoint.left <= right && eventPoint.top >= top && eventPoint.top <= bottom;
+}
+
+bool Canvas::isChanged() {
+	if (paintBorder || paintInner) {
+		return true;
+	}
+	for (int i=0; i<CANVASES; i++) {
+		if (canvases[i] && canvases[i]->parent && canvases[i]->parent->id == id && canvases[i]->isChanged()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -195,6 +252,8 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 Canvas::Canvas(Canvas* parent) {
 	this->parent = parent;
+	parent ? parent->disabled = true : 0;
+
 	for (id=0; id<CANVASES; id++) {
 		if (!canvases[id]) {
 			canvases[id] = this;
@@ -204,6 +263,7 @@ Canvas::Canvas(Canvas* parent) {
 
 	paintBorder = true;
 	paintInner = true;
+
 	disabled = false;
 	selected = false;
 	pushed = false;
@@ -219,43 +279,40 @@ Canvas::Canvas(Canvas* parent) {
 	onMouseDownHandler = 0;
 	onMouseUpHandler = 0;
 
-	calculatedTop = 0;
-	calculatedLeft = 0;
-	calculatedWidth = 0;
-	calculatedHeight = 0;
+	calculatedInnerTop = 0;
+	calculatedInnerLeft = 0;
+	calculatedInnerWidth = 0;
+	calculatedInnerHeight = 0;
 	calculatedTextTop = 0;
 	calculatedTextLeft = 0;
 	calculatedBorderColor = NOCOLOR;
-	calculatedBoxColor = NOCOLOR;
+	calculatedInnerColor = NOCOLOR;
 	calculatedTextColor = NOCOLOR;
 }
-
-Canvas::~Canvas() {}
-
 
 void Canvas::setSize(int width, int height) {
 	if (box.width != width || box.height != height) {
 		box.width = width;
 		box.height = height;
-		adjust.toTextSize = false;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+//		adjust.toTextSize = false;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
 void Canvas::setSize(int width) {
 	if (box.width != width) {
 		box.width = width;
-		adjust.toTextSize = false;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+//		adjust.toTextSize = false;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
 void Canvas::setColor(int color) {
 	if (box.color != color) {
-		box.color = color;
-		parent->paintInner = true;
+		calculatedInnerColor = box.color = color;
+		paintInner = true;
 	}
 }
 
@@ -267,7 +324,7 @@ void Canvas::setText(char* str) {
 	int i = 0;
 	while(str[i]) {
 		if (text.label[i] != str[i]) {
-			parent->paintInner = true;
+			paintInner = true;
 		}
 		text.label[i] = str[i];
 		i++;
@@ -278,23 +335,23 @@ void Canvas::setText(char* str) {
 void Canvas::setTextColor(int color) {
 	if (text.color != color) {
 		text.color = color;
-		parent->paintInner = true;
+		paintInner = true;
 	}
 }
 
 void Canvas::setTextSize(int size) {
 	if (text.size != size) {
 		text.size = size;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
 void Canvas::setBreakLine(bool br) {
 	if (box.breakLine != br) {
 		box.breakLine = br;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
@@ -302,9 +359,9 @@ void Canvas::setPosition(int top, int left) {
 	if (box.top != top || box.left != left) {
 		box.top = top;
 		box.left = left;
-		adjust.toParentCursor = false;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+//		adjust.toParentCursor = false;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
@@ -336,9 +393,17 @@ void Canvas::setMargin(int horizontal, int vertical) {
 	if (margin.horizontal != horizontal || margin.vertical != vertical) {
 		margin.horizontal = horizontal;
 		margin.vertical = vertical;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+		paintBorder = true;
+		paintInner = true;
 
+	}
+}
+
+void Canvas::setMarginVertical(int vertical) {
+	if (margin.vertical != vertical) {
+		margin.vertical = vertical;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
@@ -346,9 +411,17 @@ void Canvas::setPadding(int horizontal, int vertical) {
 	if (padding.horizontal != horizontal || padding.vertical != vertical) {
 		padding.horizontal = horizontal;
 		padding.vertical = vertical;
-		parent->paintBorder = true;
-		parent->paintInner = true;
+		paintBorder = true;
+		paintInner = true;
 
+	}
+}
+
+void Canvas::setPaddingVertical(int vertical) {
+	if (padding.vertical != vertical) {
+		padding.vertical = vertical;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
@@ -374,10 +447,33 @@ void Canvas::setBorderColor(int color) {
 	}
 }
 
-void Canvas::setToCursor(bool toParentCursor) {
-	if (adjust.toParentCursor != toParentCursor) {
-		adjust.toParentCursor = toParentCursor;
-		parent->paintInner = true;
+//void Canvas::setToCursor(bool toParentCursor) {
+//	if (adjust.toParentCursor != toParentCursor) {
+//		adjust.toParentCursor = toParentCursor;
+//		paintInner = true;
+//	}
+//}
+//
+//void Canvas::setToInnerCursor(bool toInnerCursor) {
+//	if (adjust.toInnerCursor != toInnerCursor) {
+//		adjust.toInnerCursor = toInnerCursor;
+//		paintInner = true;
+//	}
+//}
+
+void Canvas::setAdjustSize(int adjustSize) {
+	if (box.adjustSize != adjustSize) {
+		box.adjustSize = adjustSize;
+		paintBorder = true;
+		paintInner = true;
+	}
+}
+
+void Canvas::setAdjustPosition(int adjustPosition) {
+	if (box.adjustPosition != adjustPosition) {
+		box.adjustPosition = adjustPosition;
+		paintBorder = true;
+		paintInner = true;
 	}
 }
 
@@ -422,8 +518,8 @@ void Canvas::tick() {
         return ;
     }
 
-    int top = calculatedTop;
-    int left = calculatedLeft;
+    int top = calculatedInnerTop;
+    int left = calculatedInnerLeft;
 
     // mouse down?
     if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
