@@ -7,9 +7,9 @@
 
 #include "Painter.h"
 
-#include "style.h"
+#include "defs.h"
 
-namespace GUI {
+namespace gui {
 
 	int Painter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
 
@@ -48,7 +48,7 @@ namespace GUI {
 	}
 
     void Painter::hline(int x, int y1, int y2, int color) {
-        if (color == GUI_NOCOLOR) {
+        if (color == NOCOLOR) {
             return ;
         }
 
@@ -59,7 +59,7 @@ namespace GUI {
     }
 
     void Painter::vline(int x1, int y, int x2, int color) {
-        if (color == GUI_NOCOLOR) {
+        if (color == NOCOLOR) {
             return ;
         }
 
@@ -69,74 +69,93 @@ namespace GUI {
         setcolor(c);
     }
 
-	void Painter::rect(int top, int left, int width, int height, int color) {
-        int bottom = top+height;
-        int right = left+width;
+	void Painter::rect(int top, int left, int width, int height, int color, int size) {
+		if (size && color != NOCOLOR) {
+			int bottom = top+height;
+			int right = left+width;
 
-		hline(left, top, bottom, color);
-		vline(left, top, right, color);
-		hline(right, top, bottom, color);
-		vline(left, bottom, right, color);
-	}
+			for (int i=0; i < size; i++) {
 
-	void Painter::fillrect(int top, int left, int width, int height, int color, int borderColor) {
-        int bottom = top+height;
-        int right = left+width;
+				top -= 1;
+				left -= 1;
+				bottom += 1;
+				right += 1;
 
-		if (borderColor == -1) {
-			borderColor = color;
-		}
+				hline(left, top, bottom, color);
+				vline(left, top, right, color);
+				hline(right, top, bottom, color);
+				vline(left, bottom, right, color);
 
-		hline(left, top, bottom, borderColor);
-		vline(left, top, right, borderColor);
-		hline(right, top, bottom, borderColor);
-		vline(left, bottom, right, borderColor);
-
-		top++;
-		left++;
-		width -= 2;
-		height -= 2;
-		for (int y=top; y<bottom; y++) {
-			vline(left, y, right, color);
+			}
 		}
 	}
 
-	int Painter::getmaxwidth() {
+	void Painter::fillrect(int top, int left, int width, int height, int color) {
+		if (color != NOCOLOR) {
+			int bottom = top+height;
+			int right = left+width+1;
+
+			for (int y=top; y<=bottom; y++) {
+				vline(left, y, right, color);
+			}
+		}
+	}
+
+	int Painter::getMaxWidth() {
 		return getmaxx();
 	}
 
-	int Painter::getmaxheight() {
+	int Painter::getMaxHeight() {
 		return getmaxy();
 	}
 
-	int Painter::getTextWidth(char* text) {
+	int Painter::getTextWidth(char* text, int size, int style) {
 		if (!text) {
 			return 0;
 		}
-		return textwidth(text);
+        struct textsettingstype textinfo;
+        gettextsettings(&textinfo);
+        settextstyle(style, HORIZ_DIR, size);
+		int ret = textwidth(text);
+        settextstyle(textinfo.font, textinfo.direction, textinfo.charsize);
+        return ret;
 	}
 
-	int Painter::getTextHeight(char* text) {
+	int Painter::getTextHeight(char* text, int size, int style) {
 		if (!text) {
 			return 0;
 		}
-		return textheight(text);
+        struct textsettingstype textinfo;
+        gettextsettings(&textinfo);
+        settextstyle(style, HORIZ_DIR, size);
+		int ret = textheight(text);
+        settextstyle(textinfo.font, textinfo.direction, textinfo.charsize);
+        return ret;
 	}
 
-	void Painter::text(int top, int left, char* text, int color, int bgcolor) {
-        if (color == GUI_NOCOLOR) {
-            if (bgcolor != GUI_NOCOLOR) {
-                fillrect(top, left, getTextWidth(text), getTextHeight(text), bgcolor);
-            }
+	void Painter::text(int top, int left, char* text, int color, int bgcolor, int size, int style) {
+        if (!size || (color == NOCOLOR && bgcolor == NOCOLOR)) {
+        	return ;
         }
 
         int c = getcolor();
         int b = getbkcolor();
+        struct textsettingstype textinfo;
+        gettextsettings(&textinfo);
+
         setcolor(color);
         setbkcolor(bgcolor);
-        outtextxy(left, top, text);
+        settextstyle(style, HORIZ_DIR, size);
+
+        if (size && bgcolor && color == NOCOLOR) {
+        	fillrect(top, left, getTextWidth(text), getTextHeight(text), bgcolor);
+        } else {
+        	outtextxy(left, top, text);
+        }
+
         setcolor(c);
         setbkcolor(b);
+        settextstyle(textinfo.font, textinfo.direction, textinfo.charsize);
 	}
 
 } /* namespace GUI */

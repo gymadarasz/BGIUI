@@ -1,18 +1,18 @@
 /*
- * Button.h
+ * Container.h
  *
  *  Created on: Jun 21, 2018
  *      Author: Gyula
  */
 
-#ifndef BUTTON_H_
-#define BUTTON_H_
+#ifndef CONTAINER_H_
+#define CONTAINER_H_
 
 namespace gui {
 
-class Button {
+class Container {
 };
 
 } /* namespace gui */
 
-#endif /* BUTTON_H_ */
+#endif /* CONTAINER_H_ */

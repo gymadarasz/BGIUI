@@ -10,7 +10,7 @@
 
 #include <graphics.h>
 
-namespace GUI {
+namespace gui {
 
 class Painter {
 public:
@@ -27,13 +27,13 @@ public:
 	static void clear();
 	static void hline(int x, int y1, int y2, int color);
     static void vline(int x1, int y, int x2, int color);
-	static void rect(int top, int left, int width, int height, int color);
-	static void fillrect(int top, int left, int width, int height, int color, int borderColor = -1);
-	static int getmaxwidth();
-	static int getmaxheight();
-	static int getTextWidth(char* text);
-	static int getTextHeight(char* text);
-	static void text(int top, int left, char* text, int color, int bgcolor);
+	static void rect(int top, int left, int width, int height, int color, int size = 1);
+	static void fillrect(int top, int left, int width, int height, int color);
+	static int getMaxWidth();
+	static int getMaxHeight();
+	static int getTextWidth(char* text, int size = 1, int style = DEFAULT_FONT);
+	static int getTextHeight(char* text, int size = 1, int style = DEFAULT_FONT);
+	static void text(int top, int left, char* text, int color, int bgcolor, int size = 10, int style = DEFAULT_FONT);
 };
 
 } /* namespace GUI */
