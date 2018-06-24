@@ -150,8 +150,10 @@ Canvas::Canvas(Canvas* parent, int width, int height) {
 
 	realTop = box.top;
 	realLeft = box.left;
-	fullWidth = box.width + (border.size + margin.horizontal)*2;
-	fullHeight = box.height + (border.size + padding.vertical)*2;
+	setWidth(box.width + (border.size + margin.horizontal)*2);
+	setHeight(box.height + (border.size + padding.vertical)*2);
+//	fullWidth = box.width + (border.size + margin.horizontal)*2;
+//	fullHeight = box.height + (border.size + padding.vertical)*2;
 
 	latestBorderColor = NOCOLOR;
 	latestInnerColor = NOCOLOR;
@@ -173,24 +175,36 @@ Canvas::Canvas(Canvas* parent, int width, int height) {
 		this->parent = parent;
 
 		this->parent->inactive = true;
-		if (this->parent->box.width < fullWidth) {
-			this->parent->box.width = fullWidth;
-		}
+//		if (this->parent->box.width < fullWidth) {
+//			this->parent->box.width = fullWidth;
+//		}
 	}
 }
 
-Canvas::~Canvas() {}
+Canvas::~Canvas() {
+	clear();
+	canvases[id] = 0;
+}
 
 void Canvas::setSize(int width, int height) {
-	if (box.width != width || box.height != height) {
-		box.width = width;
+	setWidth(width);
+	setHeight(height);
+}
+
+void Canvas::setHeight(int height) {
+	if (box.height != height) {
 		box.height = height;
+		fullHeight = box.height + (border.size + margin.vertical)*2;
 	}
 }
 
-void Canvas::setSize(int width) {
+void Canvas::setWidth(int width) {
 	if (box.width != width) {
 		box.width = width;
+		fullWidth = box.width + (border.size + margin.horizontal)*2;
+		if (parent && parent->box.width < fullWidth) {
+			parent->box.width = fullWidth;
+		}
 	}
 }
 
@@ -246,15 +260,10 @@ void Canvas::setText(char* str, int size) {
 
 	if (redraw) {
 		if (box.fitToText || box.width < Painter::getTextWidth(text.label, text.size) + padding.horizontal*2) {
-			box.width = Painter::getTextWidth(text.label, text.size) + padding.horizontal*2;
-			fullWidth = box.width + (border.size + margin.horizontal)*2;
-			if (parent && parent->box.width < fullWidth) {
-				parent->box.width = fullWidth;
-			}
+			setWidth(Painter::getTextWidth(text.label, text.size) + padding.horizontal*2);
 		}
 		if (box.fitToText || box.height < Painter::getTextHeight(text.label, text.size) + padding.vertical*2) {
-			box.height = Painter::getTextHeight(text.label, text.size) + padding.vertical*2;
-			fullHeight = box.height + (border.size + padding.vertical)*2;
+			setHeight(Painter::getTextHeight(text.label, text.size) + padding.vertical*2);
 		}
 	}
 
@@ -308,11 +317,11 @@ void Canvas::setBreakLine(bool br) {
 	}
 }
 
-void Canvas::setPosition(int top, int left) {
+void Canvas::setPosition(int top, int left, bool positioned) {
 	if (box.top != top || box.left != left) {
 		box.top = top;
 		box.left = left;
-		box.positioned = true;
+		box.positioned = positioned;
 	}
 }
 
@@ -395,6 +404,12 @@ void Canvas::setSwitch(bool switchable) {
 	this->switchable = switchable;
 }
 
+
+int Canvas::getFullWidth() {
+	return fullWidth;
+}
+
+
 void Canvas::enable() {
 	if (disabled) {
 		disabled = false;
@@ -460,7 +475,7 @@ void Canvas::destroy() {
 
 void Canvas::calc() {
 
-	// calculate size
+	// calculate size (may it's already calculated... if not use setSize(), setWidth() or setHeight())
 	fullWidth = box.width + (border.size + margin.horizontal)*2;
 	fullHeight = box.height + (border.size + margin.vertical)*2;
 

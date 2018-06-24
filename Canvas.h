@@ -136,7 +136,8 @@ public:
 	Canvas(Canvas* parent = 0, int width = 0, int height = 0);
 	virtual ~Canvas();
 	virtual void setSize(int width, int height);
-	virtual void setSize(int width);
+	virtual void setWidth(int width);
+	virtual void setHeight(int height);
 	virtual void setColor(int color, int colorSelected = GUI_UNDEFINED, int colorDisabled = GUI_UNDEFINED, int colorPushed = GUI_UNDEFINED);
 	virtual void setColorSelected(int colorSelected);
 	virtual void setColorDisabled(int colorDisabled);
@@ -149,7 +150,7 @@ public:
 	virtual void setTextColorPushed(int colorPushed);
 	virtual void setTextSize(int size);
 	virtual void setBreakLine(bool br = true);
-	virtual void setPosition(int top, int left);
+	virtual void setPosition(int top, int left, bool positioned = true);
 	virtual void setMargin(int horizontal, int vertical);
 	virtual void setMarginVertical(int vertical);
 	virtual void setPadding(int horizontal, int vertical);
@@ -161,6 +162,8 @@ public:
 	virtual void setBorderColorDisabled(int colorDisabled);
 	virtual void setBorderColorPushed(int colorPushed);
 	virtual void setSwitch(bool switchable = true);
+
+	virtual int getFullWidth();
 
 	virtual void enable();
 	virtual void disable();
