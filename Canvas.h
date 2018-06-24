@@ -44,26 +44,12 @@ typedef struct {
 	Color colorPushed = TEXT_COLOR_PUSHED;
 } Text;
 
-//#define ADJUST_SIZE_NONE 0
-//#define ADJUST_SIZE_TO_TEXT 1
-////#define ADJUST_SIZE_TO_PARENT 2
-//#define ADJUST_SIZE_TO_PARENT_WIDTH 3
-//#define ADJUST_POSITION_NONE 0
-//#define ADJUST_POSITION_TO_PARENT_CURSOR 1
-
-//typedef struct {
-//	int position = ADJUST_TO_CURSOR;
-////	int toInnerCursor = true;
-//	int size = ADJUST_TO_TEXT
-//} Adjust;
 
 typedef struct {
 	int top = 0;
 	int left = 0;
-//	int adjustPosition = ADJUST_POSITION_TO_PARENT_CURSOR;
 	int width = 0;
 	int height = 0;
-//	int adjustSize = ADJUST_SIZE_TO_TEXT;
 	Color color = BOX_COLOR;
 	Color colorSelected = BOX_COLOR_SELECTED;
 	Color colorDisabled = BOX_COLOR_DISABLED;
@@ -90,21 +76,6 @@ protected:
 	Canvas* parent;
 	int id;
 
-//	bool paintBorder;
-//	bool paintInner;
-//	int calculatedInnerTop;
-//	int calculatedInnerLeft;
-//	int calculatedInnerWidth;
-//	int calculatedInnerHeight;
-//	int calculatedTextTop;
-//	int calculatedTextLeft;
-//	int calculatedBorderColor;
-//	int calculatedInnerColor;
-//	int calculatedTextColor;
-
-//	bool recalc;
-//	bool redraw;
-
 	Color latestBorderColor;
 	Color latestInnerColor;
 	Color latestTextColor;
@@ -122,26 +93,17 @@ protected:
 
 	Text text;
 	Box box;
-	//Adjust adjust;
 	Border border;
 	Margin margin;
 	Padding padding;
 	Cursor cursor;
 
-//	struct {
-//		Text text;
-//		Box box;
-//		Border border;
-//		Margin margin;
-//		Padding padding;
-//	} current;
+
+	//-- events
 
 	virtual void cursorReset();
-//	virtual bool cursorCheckSpace(int width, int height, int widthMax);
 	virtual void cursorBreakLine(int lnHeight);
 	virtual void cursorStep(int width, int height);
-
-//	virtual void calc(int offsetTop = 0, int offsetLeft = 0);
 
 	virtual Color getClearColor();
 	virtual bool select(bool sel = true);
@@ -153,9 +115,18 @@ protected:
 	virtual void clickSelected();
 
 	virtual bool isInside(EventPoint eventPoint);
-//	virtual bool isChanged();
 
 public:
+
+	CanvasEventHandler onTickHandler;
+	CanvasEventHandler onClickHandler;
+	CanvasEventHandler onDblClickHandler;
+	CanvasEventHandler onMouseMoveHandler;
+	CanvasEventHandler onMouseDragHandler;
+	CanvasEventHandler onMouseOverHandler;
+	CanvasEventHandler onMouseLeaveHandler;
+	CanvasEventHandler onMouseDownHandler;
+	CanvasEventHandler onMouseUpHandler;
 
 	Canvas(Canvas* parent = 0);
 	virtual ~Canvas();
@@ -174,8 +145,6 @@ public:
 	virtual void setTextSize(int size);
 	virtual void setBreakLine(bool br = true);
 	virtual void setPosition(int top, int left);
-	virtual void enable();
-	virtual void disable();
 	virtual void setMargin(int horizontal, int vertical);
 	virtual void setMarginVertical(int vertical);
 	virtual void setPadding(int horizontal, int vertical);
@@ -186,10 +155,10 @@ public:
 	virtual void setBorderColorSelected(int colorSelected);
 	virtual void setBorderColorDisabled(int colorDisabled);
 	virtual void setBorderColorPushed(int colorPushed);
-//	void setToCursor(bool toParentCursor = true);
-//	void setToInnerCursor(bool toInnerCuros = true);
-//	virtual void setAdjustSize(int adjustSize);
-//	virtual void setAdjustPosition(int adjustPosition);
+
+	virtual void enable();
+	virtual void disable();
+
 	virtual void show();
 	virtual void hide();
 	virtual void destroy();
@@ -198,20 +167,7 @@ public:
 	//	virtual void clear();
 	virtual void calc();
 	virtual void draw();
-
-	//-- events
-
 	virtual void tick();
-
-	CanvasEventHandler onTickHandler;
-	CanvasEventHandler onClickHandler;
-	CanvasEventHandler onDblClickHandler;
-	CanvasEventHandler onMouseMoveHandler;
-	CanvasEventHandler onMouseDragHandler;
-	CanvasEventHandler onMouseOverHandler;
-	CanvasEventHandler onMouseLeaveHandler;
-	CanvasEventHandler onMouseDownHandler;
-	CanvasEventHandler onMouseUpHandler;
 
 	// events
 	virtual void onTick();
