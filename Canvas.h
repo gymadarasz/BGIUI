@@ -44,12 +44,12 @@ typedef struct {
 	Color colorPushed = TEXT_COLOR_PUSHED;
 } Text;
 
-#define ADJUST_SIZE_NONE 0
-#define ADJUST_SIZE_TO_TEXT 1
-//#define ADJUST_SIZE_TO_PARENT 2
-#define ADJUST_SIZE_TO_PARENT_WIDTH 3
-#define ADJUST_POSITION_NONE 0
-#define ADJUST_POSITION_TO_PARENT_CURSOR 1
+//#define ADJUST_SIZE_NONE 0
+//#define ADJUST_SIZE_TO_TEXT 1
+////#define ADJUST_SIZE_TO_PARENT 2
+//#define ADJUST_SIZE_TO_PARENT_WIDTH 3
+//#define ADJUST_POSITION_NONE 0
+//#define ADJUST_POSITION_TO_PARENT_CURSOR 1
 
 //typedef struct {
 //	int position = ADJUST_TO_CURSOR;
@@ -60,15 +60,18 @@ typedef struct {
 typedef struct {
 	int top = 0;
 	int left = 0;
-	int adjustPosition = ADJUST_POSITION_TO_PARENT_CURSOR;
+//	int adjustPosition = ADJUST_POSITION_TO_PARENT_CURSOR;
 	int width = 0;
 	int height = 0;
-	int adjustSize = ADJUST_SIZE_TO_TEXT;
+//	int adjustSize = ADJUST_SIZE_TO_TEXT;
 	Color color = BOX_COLOR;
 	Color colorSelected = BOX_COLOR_SELECTED;
 	Color colorDisabled = BOX_COLOR_DISABLED;
 	Color colorPushed = BOX_COLOR_PUSHED;
 	bool breakLine = false;
+
+	bool fitToText = true;
+	bool positioned = false;
 } Box;
 
 typedef struct {
@@ -87,18 +90,29 @@ protected:
 	Canvas* parent;
 	int id;
 
-	bool paintBorder;
-	bool paintInner;
-	int calculatedInnerTop;
-	int calculatedInnerLeft;
-	int calculatedInnerWidth;
-	int calculatedInnerHeight;
-	int calculatedTextTop;
-	int calculatedTextLeft;
-	int calculatedBorderColor;
-	int calculatedInnerColor;
-	int calculatedTextColor;
+//	bool paintBorder;
+//	bool paintInner;
+//	int calculatedInnerTop;
+//	int calculatedInnerLeft;
+//	int calculatedInnerWidth;
+//	int calculatedInnerHeight;
+//	int calculatedTextTop;
+//	int calculatedTextLeft;
+//	int calculatedBorderColor;
+//	int calculatedInnerColor;
+//	int calculatedTextColor;
+
 //	bool recalc;
+//	bool redraw;
+
+	Color latestBorderColor;
+	Color latestInnerColor;
+	Color latestTextColor;
+
+	int realTop;
+	int realLeft;
+	int fullWidth;
+	int fullHeight;
 
 	bool disabled;
 	bool selected;
@@ -114,12 +128,20 @@ protected:
 	Padding padding;
 	Cursor cursor;
 
+//	struct {
+//		Text text;
+//		Box box;
+//		Border border;
+//		Margin margin;
+//		Padding padding;
+//	} current;
+
 	virtual void cursorReset();
 //	virtual bool cursorCheckSpace(int width, int height, int widthMax);
 	virtual void cursorBreakLine(int lnHeight);
 	virtual void cursorStep(int width, int height);
 
-	virtual void calc(int offsetTop = 0, int offsetLeft = 0);
+//	virtual void calc(int offsetTop = 0, int offsetLeft = 0);
 
 	virtual Color getClearColor();
 	virtual bool select(bool sel = true);
@@ -131,7 +153,7 @@ protected:
 	virtual void clickSelected();
 
 	virtual bool isInside(EventPoint eventPoint);
-	virtual bool isChanged();
+//	virtual bool isChanged();
 
 public:
 
@@ -166,15 +188,19 @@ public:
 	virtual void setBorderColorPushed(int colorPushed);
 //	void setToCursor(bool toParentCursor = true);
 //	void setToInnerCursor(bool toInnerCuros = true);
-	virtual void setAdjustSize(int adjustSize);
-	virtual void setAdjustPosition(int adjustPosition);
+//	virtual void setAdjustSize(int adjustSize);
+//	virtual void setAdjustPosition(int adjustPosition);
 	virtual void show();
 	virtual void hide();
 	virtual void destroy();
 
+
+	//	virtual void clear();
+	virtual void calc();
+	virtual void draw();
+
 	//-- events
 
-	virtual void draw();
 	virtual void tick();
 
 	CanvasEventHandler onTickHandler;

@@ -33,10 +33,11 @@ Window::Window(Canvas* parent, int width, int height, char* title, int left, int
 //	adjust.toTextSize = false;
 	//	disabled = true;
 
+
 	halt = false;
 }
 
-void Window::run(/*loop function*/) {
+void Window::run(WindowLoop loop) {
 	Mouse::reset();
 	halt = false;
 	while (!halt) {
@@ -57,13 +58,13 @@ void Window::run(/*loop function*/) {
 			}
 		}
 
-		calc();
 		for (int i=0; i<CANVASES; i++) {
 			if (canvases[i]) {
-				canvases[i]->draw();
 				canvases[i]->tick();
 			}
 		}
+
+		loop();
 		delay(1);
 	}
 }

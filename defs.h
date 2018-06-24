@@ -17,6 +17,7 @@
 
 #define GUI_NONE -1
 #define GUI_UNDEFINED -1
+#define NOCOLOR -1
 
 //
 #define MARGIN_SIZE_HORIZONTAL		4
