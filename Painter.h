@@ -31,7 +31,9 @@ public:
 	static void fillrect(int top, int left, int width, int height, int color);
 	static int getMaxWidth();
 	static int getMaxHeight();
+	static int getTextWidth(const char* text, int size = 1, int style = DEFAULT_FONT);
 	static int getTextWidth(char* text, int size = 1, int style = DEFAULT_FONT);
+	static int getTextHeight(const char* text, int size = 1, int style = DEFAULT_FONT);
 	static int getTextHeight(char* text, int size = 1, int style = DEFAULT_FONT);
 	static void text(int top, int left, char* text, int color, int bgcolor, int size = 10, int style = DEFAULT_FONT);
 };

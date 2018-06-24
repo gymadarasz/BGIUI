@@ -13,6 +13,7 @@ namespace gui {
 
 Window::Window(Canvas* parent, int width, int height, char* title, int left, int top, bool dbflag, bool closeflag): Canvas(parent) {
 	Painter::init(width, height, title, left, top, dbflag, closeflag);
+	delay(100);
 
 //	box.width = Painter::getMaxWidth();
 //	box.height = Painter::getMaxHeight();
@@ -25,7 +26,8 @@ Window::Window(Canvas* parent, int width, int height, char* title, int left, int
 	setPosition(0, 0);
 	setSize(Painter::getMaxWidth(), Painter::getMaxHeight());
 	setMargin(0, 0);
-	setBorder(0, NOCOLOR);
+	setBorder(0, GUI_NONE);
+	setPadding(0, 0);
 //	adjust.toParentCursor = false;
 //	adjust.toInnerCursor = false;
 //	adjust.toTextSize = false;

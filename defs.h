@@ -15,7 +15,8 @@
 #define CANVASES 			48	// increment it if you need more canvases
 #define TEXT_BUFFER_SIZE	48	// change it if you need more or less long strings
 
-#define NOCOLOR -1
+#define GUI_NONE -1
+#define GUI_UNDEFINED -1
 
 //
 #define MARGIN_SIZE_HORIZONTAL		4
@@ -28,7 +29,7 @@
 #define BORDER_COLOR_DISABLED		DARKGRAY
 #define BORDER_COLOR_PUSHED			DARKGRAY
 
-#define PADDING_SIZE_HORIZONTAL		8
+#define PADDING_SIZE_HORIZONTAL		12
 #define PADDING_SIZE_VERTICAL		4
 
 #define COLOR						LIGHTGRAY

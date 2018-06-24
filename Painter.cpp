@@ -48,7 +48,7 @@ namespace gui {
 	}
 
     void Painter::hline(int x, int y1, int y2, int color) {
-        if (color == NOCOLOR) {
+        if (color == GUI_NONE) {
             return ;
         }
 
@@ -59,7 +59,7 @@ namespace gui {
     }
 
     void Painter::vline(int x1, int y, int x2, int color) {
-        if (color == NOCOLOR) {
+        if (color == GUI_NONE) {
             return ;
         }
 
@@ -70,7 +70,7 @@ namespace gui {
     }
 
 	void Painter::rect(int top, int left, int width, int height, int color, int size) {
-		if (size && color != NOCOLOR) {
+		if (size && color != GUI_NONE) {
 			int bottom = top+height;
 			int right = left+width;
 
@@ -91,7 +91,7 @@ namespace gui {
 	}
 
 	void Painter::fillrect(int top, int left, int width, int height, int color) {
-		if (color != NOCOLOR) {
+		if (color != GUI_NONE) {
 			int bottom = top+height;
 			int right = left+width+1;
 
@@ -109,6 +109,10 @@ namespace gui {
 		return getmaxy();
 	}
 
+	int Painter::getTextWidth(const char* text, int size, int style) {
+		return getTextWidth((char*)text, size, style);
+	}
+
 	int Painter::getTextWidth(char* text, int size, int style) {
 		if (!text) {
 			return 0;
@@ -119,6 +123,10 @@ namespace gui {
 		int ret = textwidth(text);
         settextstyle(textinfo.font, textinfo.direction, textinfo.charsize);
         return ret;
+	}
+
+	int Painter::getTextHeight(const char* text, int size, int style) {
+		return getTextHeight((char*)text, size, style);
 	}
 
 	int Painter::getTextHeight(char* text, int size, int style) {
@@ -134,7 +142,7 @@ namespace gui {
 	}
 
 	void Painter::text(int top, int left, char* text, int color, int bgcolor, int size, int style) {
-        if (!size || (color == NOCOLOR && bgcolor == NOCOLOR)) {
+        if (!size || (color == GUI_NONE && bgcolor == GUI_NONE)) {
         	return ;
         }
 
@@ -147,7 +155,7 @@ namespace gui {
         setbkcolor(bgcolor);
         settextstyle(style, HORIZ_DIR, size);
 
-        if (size && bgcolor && color == NOCOLOR) {
+        if (size && bgcolor && color == GUI_NONE) {
         	fillrect(top, left, getTextWidth(text), getTextHeight(text), bgcolor);
         } else {
         	outtextxy(left, top, text);
