@@ -59,7 +59,11 @@ bool Canvas::select(bool sel) {
 
 bool Canvas::push(bool psh) {
 	if (!inactive && !disabled && !hidden) {
-		pushed = psh;
+		if (!switchable) {
+			pushed = psh;
+		} else if (psh) {
+			pushed = !pushed;
+		}
 		draw();
 	}
 	return pushed;
@@ -117,7 +121,7 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 // public:
 
-Canvas::Canvas(Canvas* parent) {
+Canvas::Canvas(Canvas* parent, int width, int height) {
 	this->parent = parent;
 
 	for (id=0; id<CANVASES; id++) {
@@ -132,6 +136,7 @@ Canvas::Canvas(Canvas* parent) {
 	pushed = false;
 	hidden = false;
 	inactive = false;
+	switchable = false;
 
 	onTickHandler = 0;
 	onClickHandler = 0;
@@ -148,16 +153,30 @@ Canvas::Canvas(Canvas* parent) {
 	fullWidth = box.width + (border.size + margin.horizontal)*2;
 	fullHeight = box.height + (border.size + padding.vertical)*2;
 
-	if (parent) {
-		parent->inactive = true;
-		if (parent->box.width < fullWidth) {
-			parent->box.width = fullWidth;
-		}
-	}
-
 	latestBorderColor = NOCOLOR;
 	latestInnerColor = NOCOLOR;
 	latestTextColor = NOCOLOR;
+
+	halt = false;
+
+	// main screen
+	if (!this->parent) {
+		Painter::init(width, height);
+		delay(100);
+
+		setPosition(0, 0);
+		setSize(Painter::getMaxWidth(), Painter::getMaxHeight());
+		setMargin(0, 0);
+		setBorder(0, GUI_NONE);
+		setPadding(0, 0);
+	} else {
+		this->parent = parent;
+
+		this->parent->inactive = true;
+		if (this->parent->box.width < fullWidth) {
+			this->parent->box.width = fullWidth;
+		}
+	}
 }
 
 Canvas::~Canvas() {}
@@ -372,6 +391,10 @@ void Canvas::setBorderColorPushed(int colorPushed) {
 	}
 }
 
+void Canvas::setSwitch(bool switchable) {
+	this->switchable = switchable;
+}
+
 void Canvas::enable() {
 	if (disabled) {
 		disabled = false;
@@ -402,6 +425,7 @@ void Canvas::show() {
 				canvases[i]->show();
 			}
 		}
+		draw();
 	}
 }
 
@@ -413,7 +437,17 @@ void Canvas::hide() {
 				canvases[i]->hide();
 			}
 		}
+		draw();
 	}
+}
+
+
+void Canvas::activate() {
+	this->inactive = false;
+}
+
+void Canvas::inactivate() {
+	this->inactive = true;
 }
 
 void Canvas::destroy() {
@@ -433,7 +467,7 @@ void Canvas::calc() {
 	// calculate real (on screen) position
 	int parentCursorRealTop = 0;
 	int parentCursorRealLeft = 0;
-	if (!box.positioned && parent) {
+	if (!hidden && !box.positioned && parent) {
 		parentCursorRealTop = parent->realTop;
 		parentCursorRealLeft = parent->realLeft;
 
@@ -444,7 +478,6 @@ void Canvas::calc() {
 		parentCursorRealTop += parent->cursor.top;
 		parentCursorRealLeft += parent->cursor.left;
 
-		parent->cursorStep(fullWidth, fullHeight);
 	}
 	realTop = parentCursorRealTop + box.top + margin.vertical + border.size;
 	realLeft = parentCursorRealLeft + box.left + margin.horizontal + border.size;
@@ -457,17 +490,19 @@ void Canvas::calc() {
 		}
 	}
 
-
 	// height fit to cursor (maybe children push down the size?)
 	if (cursor.top + cursor.lnHeight > box.height) {
 		box.height = cursor.top + cursor.lnHeight;
 		fullHeight = box.height + (border.size + margin.vertical)*2;
 	}
 
+	if (!hidden && !box.positioned && parent) {
+		parent->cursorStep(fullWidth, fullHeight);
+	}
 
 }
 
-void Canvas::draw() {
+void Canvas::draw(Color clearColor) {
 
 	int borderColor = border.color;
 	int innerColor = box.color;
@@ -490,6 +525,17 @@ void Canvas::draw() {
 		innerColor = box.colorDisabled;
 		textColor = text.colorDisabled;
 	}
+
+
+	if (hidden) {
+		clearColor = getClearColor();
+	}
+	if (clearColor != GUI_UNDEFINED) {
+		borderColor = clearColor;
+		innerColor = clearColor;
+		textColor = clearColor;
+	}
+
 
 	if (latestBorderColor != borderColor) {
 		// draw border
@@ -535,6 +581,46 @@ void Canvas::draw() {
 		}
 	}
 
+}
+
+void Canvas::clear() {
+	draw(getClearColor());
+}
+
+
+void Canvas::run(CanvasLoop loop) {
+	calc();
+	draw();
+
+	Mouse::reset();
+	halt = false;
+	while (!halt) {
+		Mouse::check();
+
+		Keyboard::check();
+		if (Keyboard::keypress.happened) {
+			switch (Keyboard::keypress.key) {
+			case KEY_LEFT:
+				selectPrev();
+				break;
+			case KEY_RIGHT:
+				selectNext();
+				break;
+			case KEY_SPACE:
+				clickSelected();
+				break;
+			}
+		}
+
+		for (int i=0; i<CANVASES; i++) {
+			if (canvases[i]) {
+				canvases[i]->tick();
+			}
+		}
+
+		loop();
+		delay(1);
+	}
 }
 
 //--events

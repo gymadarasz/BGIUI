@@ -12,8 +12,11 @@
 #include "defs.h"
 #include "Painter.h"
 #include "Mouse.h"
+#include "Keyboard.h"
 
 namespace gui {
+
+typedef void (*CanvasLoop)(void);
 
 typedef int Color;
 
@@ -90,6 +93,7 @@ protected:
 	bool pushed;
 	bool hidden;
 	bool inactive;
+	bool switchable;
 
 	Text text;
 	Box box;
@@ -98,6 +102,7 @@ protected:
 	Padding padding;
 	Cursor cursor;
 
+	bool halt;
 
 	//-- events
 
@@ -128,7 +133,7 @@ public:
 	CanvasEventHandler onMouseDownHandler;
 	CanvasEventHandler onMouseUpHandler;
 
-	Canvas(Canvas* parent = 0);
+	Canvas(Canvas* parent = 0, int width = 0, int height = 0);
 	virtual ~Canvas();
 	virtual void setSize(int width, int height);
 	virtual void setSize(int width);
@@ -155,18 +160,22 @@ public:
 	virtual void setBorderColorSelected(int colorSelected);
 	virtual void setBorderColorDisabled(int colorDisabled);
 	virtual void setBorderColorPushed(int colorPushed);
+	virtual void setSwitch(bool switchable = true);
 
 	virtual void enable();
 	virtual void disable();
-
 	virtual void show();
 	virtual void hide();
+	virtual void activate();
+	virtual void inactivate();
 	virtual void destroy();
 
 
-	//	virtual void clear();
 	virtual void calc();
-	virtual void draw();
+	virtual void draw(Color clearColor = GUI_UNDEFINED);
+	virtual void clear();
+
+	void run(CanvasLoop loop = 0);
 	virtual void tick();
 
 	// events

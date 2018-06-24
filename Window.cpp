@@ -7,67 +7,23 @@
 
 #include "Window.h"
 
-#include "Keyboard.h"
 
 namespace gui {
 
-Window::Window(Canvas* parent, int width, int height, char* title, int left, int top, bool dbflag, bool closeflag): Canvas(parent) {
-	Painter::init(width, height, title, left, top, dbflag, closeflag);
-	delay(100);
-
-//	box.width = Painter::getMaxWidth();
-//	box.height = Painter::getMaxHeight();
-//	box.top = 0;
-//	box.left = 0;
-//	margin.horizontal = 0;
-//	margin.vertical = 0;
-//	border.size = 0;
-//	border.color = NOCOLOR;
-	setPosition(0, 0);
-	setSize(Painter::getMaxWidth(), Painter::getMaxHeight());
-	setMargin(0, 0);
-	setBorder(0, GUI_NONE);
-	setPadding(0, 0);
-//	adjust.toParentCursor = false;
-//	adjust.toInnerCursor = false;
-//	adjust.toTextSize = false;
-	//	disabled = true;
+//Window::Window(Canvas* parent, int width, int height, char* title, int left, int top, bool dbflag, bool closeflag): Canvas(parent) {
+//	Painter::init(width, height, title, left, top, dbflag, closeflag);
+//	delay(100);
+//
+//	setPosition(0, 0);
+//	setSize(Painter::getMaxWidth(), Painter::getMaxHeight());
+//	setMargin(0, 0);
+//	setBorder(0, GUI_NONE);
+//	setPadding(0, 0);
+//
+//	halt = false;
+//}
 
 
-	halt = false;
-}
-
-void Window::run(WindowLoop loop) {
-	Mouse::reset();
-	halt = false;
-	while (!halt) {
-		Mouse::check();
-
-		Keyboard::check();
-		if (Keyboard::keypress.happened) {
-			switch (Keyboard::keypress.key) {
-			case KEY_LEFT:
-				selectPrev();
-				break;
-			case KEY_RIGHT:
-				selectNext();
-				break;
-			case KEY_SPACE:
-				clickSelected();
-				break;
-			}
-		}
-
-		for (int i=0; i<CANVASES; i++) {
-			if (canvases[i]) {
-				canvases[i]->tick();
-			}
-		}
-
-		loop();
-		delay(1);
-	}
-}
 
 } /* namespace gui */
 
