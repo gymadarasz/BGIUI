@@ -1,0 +1,42 @@
+/*
+ * solid.h
+ *
+ *  Created on: Jun 25, 2018
+ *      Author: Gyula
+ */
+
+#ifndef GUI_THEMES_BLUE_H_
+#define GUI_THEMES_BLUE_H_
+
+#include <graphics.h>
+
+#define MARGIN_SIZE_HORIZONTAL		4
+#define MARGIN_SIZE_VERTICAL		4
+
+#define BORDER_SIZE					1
+#define BORDER_COLOR				BLUE
+#define BORDER_COLOR_SELECTED		WHITE
+#define BORDER_COLOR_DISABLED		DARKGRAY
+#define BORDER_COLOR_PUSHED			DARKGRAY
+
+#define PADDING_SIZE_HORIZONTAL		12
+#define PADDING_SIZE_VERTICAL		4
+
+#define COLOR						BLACK
+#define COLOR_PUSHED				BLUE
+#define COLOR_SELECTED				BLACK
+
+#define TEXT_SIZE					1
+#define TEXT_COLOR					LIGHTBLUE
+#define TEXT_COLOR_PUSHED			BLUE
+#define TEXT_COLOR_SELECTED			WHITE
+#define TEXT_COLOR_DISABLED			DARKGRAY
+
+#define BOX_COLOR					BLACK
+#define BOX_COLOR_PUSHED			BLACK
+#define BOX_COLOR_SELECTED			BLACK
+#define BOX_COLOR_DISABLED			BLACK
+
+
+
+#endif /* GUI_THEMES_BLUE_H_ */

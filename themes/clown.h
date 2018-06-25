@@ -1,0 +1,42 @@
+/*
+ * solid.h
+ *
+ *  Created on: Jun 25, 2018
+ *      Author: Gyula
+ */
+
+#ifndef GUI_THEMES_CLOWN_H_
+#define GUI_THEMES_CLOWN_H_
+
+#include <graphics.h>
+
+#define MARGIN_SIZE_HORIZONTAL		4
+#define MARGIN_SIZE_VERTICAL		4
+
+#define BORDER_SIZE					1
+#define BORDER_COLOR				RED
+#define BORDER_COLOR_SELECTED		CYAN
+#define BORDER_COLOR_DISABLED		LIGHTCYAN
+#define BORDER_COLOR_PUSHED			MAGENTA
+
+#define PADDING_SIZE_HORIZONTAL		12
+#define PADDING_SIZE_VERTICAL		4
+
+#define COLOR						DARKGRAY
+#define COLOR_PUSHED				LIGHTBLUE
+#define COLOR_SELECTED				BLACK
+
+#define TEXT_SIZE					1
+#define TEXT_COLOR					WHITE
+#define TEXT_COLOR_PUSHED			YELLOW
+#define TEXT_COLOR_SELECTED			LIGHTGRAY
+#define TEXT_COLOR_DISABLED			LIGHTRED
+
+#define BOX_COLOR					LIGHTMAGENTA
+#define BOX_COLOR_PUSHED			BLUE
+#define BOX_COLOR_SELECTED			LIGHTBLUE
+#define BOX_COLOR_DISABLED			BROWN
+
+
+
+#endif /* GUI_THEMES_CLOWN_H_ */
