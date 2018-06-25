@@ -12,6 +12,7 @@
 
 namespace gui {
 
+#define KEY_ENTER 13 // hacky enter
 #define KEY_SPACE 32 // hacky space
 
 typedef struct {

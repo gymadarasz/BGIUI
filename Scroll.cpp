@@ -9,6 +9,42 @@
 
 namespace gui {
 
+// ----------- ScrollHandler ---------
+
+// public
+
+ScrollHandler::ScrollHandler(Canvas* parent, int width, int height): Canvas(parent, width, height) {}
+
+ScrollHandler::~ScrollHandler() {}
+
+void ScrollHandler::onKeyPress(int key) {
+	Canvas::onKeyPress(key);
+
+	Scroll* scroll = (Scroll*)parent;
+
+	switch (key) {
+
+	case KEY_UP:
+		scroll->setValue(scroll->getValue()+1);
+		break;
+
+	case KEY_DOWN:
+		scroll->setValue(scroll->getValue()-1);
+		break;
+
+	case KEY_HOME:
+		scroll->setValue(scroll->getMinValue());
+		break;
+
+	case KEY_END:
+		scroll->setValue(scroll->getMaxValue());
+		break;
+	}
+}
+
+
+// --------- Scroll ------------
+
 int Scroll::repositionScrollHandlerCanvas() {
 	int newHandlerPosition = -1;
 	int areaWidth = box.width;
@@ -27,13 +63,12 @@ int Scroll::repositionScrollHandlerCanvas() {
 // public
 
 Scroll::Scroll(Canvas* parent, int width, int height): Canvas(parent, width, height) {
-	handler = new Canvas(this);
+	handler = new ScrollHandler(this);
 	handler->setText("<->");
 	setInterval(0, 100);
 	setValue(0);
 	if (!width) {
 		setWidth(handler->getFullWidth() * 3);
-
 	}
 }
 
@@ -93,6 +128,7 @@ void Scroll::onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurre
 	Canvas::onMouseDrag(mouseLeftFrom, mouseTopFrom, mouseLeftCurrent, mouseTopCurrent);
 	onClick(mouseLeftCurrent, mouseTopCurrent);
 }
+
 
 void Scroll::onScroll(int oldValue, int newValue) {
 	if (onScrollHandler) {

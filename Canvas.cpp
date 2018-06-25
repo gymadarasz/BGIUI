@@ -46,9 +46,9 @@ bool Canvas::select(bool sel) {
 		for (int i=0; i<CANVASES; i++) {
 			if (canvases[i] && canvases[i]->selected) {
 				if (canvases[i]->selected) {
+					canvases[i]->selected = false;
 					canvases[i]->draw();
 				}
-				canvases[i]->selected = false;
 			}
 		}
 
@@ -148,6 +148,7 @@ Canvas::Canvas(Canvas* parent, int width, int height) {
 	onMouseLeaveHandler = 0;
 	onMouseDownHandler = 0;
 	onMouseUpHandler = 0;
+	onKeyPressHandler = 0;
 
 	realTop = box.top;
 	realLeft = box.left;
@@ -647,17 +648,22 @@ void Canvas::run(CanvasLoop loop) {
 
 		Keyboard::check();
 		if (Keyboard::keypress.happened) {
+
 			switch (Keyboard::keypress.key) {
+
 			case KEY_LEFT:
 				selectPrev();
 				break;
 			case KEY_RIGHT:
 				selectNext();
 				break;
+
+			case KEY_ENTER:
 			case KEY_SPACE:
 				clickSelected();
 				break;
 			}
+
 		}
 
 		_canvasDeleted = false;
@@ -730,6 +736,12 @@ void Canvas::tick() {
     if (Mouse::events.mouseUp.happend && isInside(Mouse::events.mouseUp.position)) {
         onMouseUp(Mouse::events.mouseUp.position.left-left, Mouse::events.mouseUp.position.top-top);
     }
+
+    if (selected) {
+    	if (Keyboard::keypress.happened) {
+    		onKeyPress(Keyboard::keypress.key);
+    	}
+    }
 }
 
 
@@ -792,6 +804,14 @@ void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
 
 	if (onMouseUpHandler) {
 		onMouseUpHandler(this, mouseLeft, mouseTop);
+	}
+}
+
+
+void Canvas::onKeyPress(int key) {
+
+	if (onKeyPressHandler) {
+		onKeyPressHandler(this, key);
 	}
 }
 

@@ -133,6 +133,7 @@ public:
 	CanvasEventHandler onMouseLeaveHandler;
 	CanvasEventHandler onMouseDownHandler;
 	CanvasEventHandler onMouseUpHandler;
+	CanvasEventHandler onKeyPressHandler;
 
 	Canvas(Canvas* parent = 0, int width = 0, int height = 0);
 	virtual ~Canvas();
@@ -196,6 +197,7 @@ public:
 	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
 	virtual void onMouseDown(int mouseLeft, int mouseTop);
 	virtual void onMouseUp(int mouseLeft, int mouseTop);
+	virtual void onKeyPress(int key);
 };
 
 } /* namespace gui */

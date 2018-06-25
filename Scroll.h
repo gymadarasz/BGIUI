@@ -8,10 +8,19 @@
 #ifndef SCROLL_H_
 #define SCROLL_H_
 
+#include <graphics.h>
 #include "Canvas.h"
 
 namespace gui {
 
+class Scroll;
+
+class ScrollHandler: public Canvas {
+public:
+	ScrollHandler(Canvas* canvas = 0, int width = 0, int height = 0);
+	virtual ~ScrollHandler();
+	virtual void onKeyPress(int key);
+};
 
 class Scroll: public Canvas {
 	Canvas* handler;
@@ -33,6 +42,14 @@ public:
 	virtual void onClick(int mouseLeft, int mouseTop);
 	virtual void onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent);
 	virtual void onScroll(int oldValue, int newValue);
+
+	int getMinValue() const {
+		return minValue;
+	}
+
+	int getMaxValue() const {
+		return maxValue;
+	}
 };
 
 
