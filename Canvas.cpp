@@ -7,6 +7,8 @@
 
 #include "Canvas.h"
 
+#include <stdio.h>
+
 namespace gui {
 
 Canvas* Canvas::canvases[CANVASES] = {0};
@@ -244,6 +246,14 @@ void Canvas::setColorPushed(int colorPushed) {
 	}
 }
 
+void Canvas::setTextf(const char* format, ...) {
+    char dest[1024 * 16];
+    va_list argptr;
+    va_start(argptr, format);
+    vsprintf(dest, format, argptr);
+    va_end(argptr);
+    setText(dest);
+}
 
 void Canvas::setText(const char* str, int size) {
 	setText((char*)str, size);
@@ -261,6 +271,11 @@ void Canvas::setText(char* str, int size) {
 	}
 	text.label[i] = 0;
 
+	if (size != GUI_UNDEFINED && text.size != size) {
+		setTextSize(size);
+		redraw = true;
+	}
+
 	if (redraw) {
 		if (box.fitToText || box.width < Painter::getTextWidth(text.label, text.size) + padding.horizontal*2) {
 			setWidth(Painter::getTextWidth(text.label, text.size) + padding.horizontal*2);
@@ -268,14 +283,11 @@ void Canvas::setText(char* str, int size) {
 		if (box.fitToText || box.height < Painter::getTextHeight(text.label, text.size) + padding.vertical*2) {
 			setHeight(Painter::getTextHeight(text.label, text.size) + padding.vertical*2);
 		}
-		if (isRunning()) {
-			//draw();
-		}
+//		if (isRunning()) {
+//			draw();
+//		}
 	}
 
-	if (size != GUI_UNDEFINED) {
-		setTextSize(size);
-	}
 }
 
 void Canvas::setTextColor(int color, int colorSelected, int colorDisabled, int colorPushed) {

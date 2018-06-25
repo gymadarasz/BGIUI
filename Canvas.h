@@ -144,6 +144,7 @@ public:
 	virtual void setColorSelected(int colorSelected);
 	virtual void setColorDisabled(int colorDisabled);
 	virtual void setColorPushed(int colorPushed);
+	virtual void setTextf(const char* fmt, ...);
 	virtual void setText(const char* str, int size = GUI_UNDEFINED);
 	virtual void setText(char* str, int size = GUI_UNDEFINED);
 	virtual void setTextColor(int color, int colorSelected = GUI_UNDEFINED, int colorDisabled = GUI_UNDEFINED, int colorPushed = GUI_UNDEFINED);

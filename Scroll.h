@@ -32,7 +32,7 @@ public:
 
 	CanvasEventHandler onScrollHandler;
 
-	Scroll(Canvas* canvas = 0, int width = 0, int height = 0);
+	Scroll(Canvas* parent = 0, int width = 0, int height = 0);
 	virtual ~Scroll();
 	virtual void setInterval(int minValue, int maxValue);
 	virtual void setValue(int value);

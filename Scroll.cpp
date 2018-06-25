@@ -47,15 +47,17 @@ void ScrollHandler::onKeyPress(int key) {
 
 int Scroll::repositionScrollHandlerCanvas() {
 	int newHandlerPosition = -1;
-	int areaWidth = box.width;
-	int handlerWidth = handler->getFullWidth();
-	int scrollSize = areaWidth - handlerWidth;
-	int maxminDiff = abs(maxValue - minValue);
-	if (maxminDiff > 0) {
-		newHandlerPosition = (scrollSize * value) / maxminDiff;
-		handler->setPosition(0, newHandlerPosition, false);
+	if (handler) {
+		int areaWidth = box.width;
+		int handlerWidth = handler->getFullWidth();
+		int scrollSize = areaWidth - handlerWidth;
+		int maxminDiff = abs(maxValue - minValue);
+		if (maxminDiff > 0) {
+			newHandlerPosition = (scrollSize * value) / maxminDiff;
+			handler->setPosition(0, newHandlerPosition, false);
+		}
+		//draw();
 	}
-	//draw();
 	return newHandlerPosition;
 }
 
@@ -63,11 +65,16 @@ int Scroll::repositionScrollHandlerCanvas() {
 // public
 
 Scroll::Scroll(Canvas* parent, int width, int height): Canvas(parent, width, height) {
+	handler = 0;
+	value = 0;
+	minValue = 0;
+	maxValue = 0;
+	onScrollHandler = 0;
 	handler = new ScrollHandler(this);
 	handler->setText("<->");
-	setInterval(0, 100);
 	setValue(0);
-	if (!width) {
+	setInterval(0, 100);
+	if (!width && handler) {
 		setWidth(handler->getFullWidth() * 3);
 	}
 }
@@ -114,14 +121,15 @@ int Scroll::getValue() {
 void Scroll::onClick(int mouseLeft, int mouseTop) {
 	Canvas::onClick(mouseLeft, mouseTop);
 
-	int areaWidth = box.width;
-	int handlerWidth = handler->getFullWidth();
-	int scrollSize = areaWidth - handlerWidth;
-	int minmaxDiff = abs(maxValue - minValue);
-	int clickLeft = mouseLeft - (handlerWidth / 2);
-	int newValue = (clickLeft * minmaxDiff) / scrollSize;
-	setValue(newValue);
-
+	if (handler) {
+		int areaWidth = box.width;
+		int handlerWidth = handler->getFullWidth();
+		int scrollSize = areaWidth - handlerWidth;
+		int minmaxDiff = abs(maxValue - minValue);
+		int clickLeft = mouseLeft - (handlerWidth / 2);
+		int newValue = (clickLeft * minmaxDiff) / scrollSize;
+		setValue(newValue);
+	}
 }
 
 void Scroll::onMouseDrag(int mouseLeftFrom, int mouseTopFrom, int mouseLeftCurrent, int mouseTopCurrent) {
