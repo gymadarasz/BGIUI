@@ -10,6 +10,7 @@
 namespace gui {
 
 Canvas* Canvas::canvases[CANVASES] = {0};
+int Canvas::_canvasDeleted = 0;
 
 void Canvas::cursorReset() {
 	cursor.top = 0;
@@ -159,7 +160,7 @@ Canvas::Canvas(Canvas* parent, int width, int height) {
 	latestInnerColor = NOCOLOR;
 	latestTextColor = NOCOLOR;
 
-	halt = false;
+	running = false;
 
 	// main screen
 	if (!this->parent) {
@@ -183,6 +184,7 @@ Canvas::Canvas(Canvas* parent, int width, int height) {
 
 Canvas::~Canvas() {
 	clear();
+	deleteChildren();
 	canvases[id] = 0;
 }
 
@@ -264,6 +266,9 @@ void Canvas::setText(char* str, int size) {
 		}
 		if (box.fitToText || box.height < Painter::getTextHeight(text.label, text.size) + padding.vertical*2) {
 			setHeight(Painter::getTextHeight(text.label, text.size) + padding.vertical*2);
+		}
+		if (isRunning()) {
+			//draw();
 		}
 	}
 
@@ -404,9 +409,23 @@ void Canvas::setSwitch(bool switchable) {
 	this->switchable = switchable;
 }
 
+Canvas* Canvas::getParent() {
+	return parent;
+}
 
 int Canvas::getFullWidth() {
 	return fullWidth;
+}
+
+bool Canvas::isPushed() {
+	return pushed;
+}
+
+bool Canvas::isRunning() {
+	if (running || (parent && parent->isRunning())) {
+		return true;
+	}
+	return false;
 }
 
 
@@ -418,6 +437,9 @@ void Canvas::enable() {
 				canvases[i]->enable();
 			}
 		}
+		if (isRunning()) {
+			draw();
+		}
 	}
 }
 
@@ -428,6 +450,9 @@ void Canvas::disable() {
 			if (canvases[i] && canvases[i]->parent && canvases[i]->parent->id == id) {
 				canvases[i]->disable();
 			}
+		}
+		if (isRunning()) {
+			draw();
 		}
 	}
 }
@@ -463,14 +488,6 @@ void Canvas::activate() {
 
 void Canvas::inactivate() {
 	this->inactive = true;
-}
-
-void Canvas::destroy() {
-	int i = id;
-	for (; i<CANVASES; i++) {
-		canvases[i] = canvases[i+1];
-		canvases[i]->id--;
-	}
 }
 
 void Canvas::calc() {
@@ -602,14 +619,30 @@ void Canvas::clear() {
 	draw(getClearColor());
 }
 
+void Canvas::redraw() {
+	calc();
+	draw();
+}
+
+void Canvas::deleteChildren() {
+	for (int i=0; i<CANVASES; i++) {
+		if (canvases[i] && canvases[i]->parent && canvases[i]->parent->id == id) {
+			canvases[i]->deleteChildren();
+			delete canvases[i];
+			canvases[i] = 0;
+			_canvasDeleted++;
+		}
+	}
+}
+
 
 void Canvas::run(CanvasLoop loop) {
 	calc();
 	draw();
 
 	Mouse::reset();
-	halt = false;
-	while (!halt) {
+	running = true;
+	while (running) {
 		Mouse::check();
 
 		Keyboard::check();
@@ -627,9 +660,13 @@ void Canvas::run(CanvasLoop loop) {
 			}
 		}
 
+		_canvasDeleted = false;
 		for (int i=0; i<CANVASES; i++) {
 			if (canvases[i]) {
 				canvases[i]->tick();
+				if (_canvasDeleted) {
+					break;
+				}
 			}
 		}
 
@@ -760,4 +797,3 @@ void Canvas::onMouseUp(int mouseLeft, int mouseTop) {
 
 
 } /* namespace gui */
-

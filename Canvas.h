@@ -74,6 +74,7 @@ class Canvas;
 typedef int (*CanvasEventHandler)(Canvas*, ...);
 
 class Canvas {
+	static int _canvasDeleted;
 protected:
 	static Canvas* canvases[CANVASES];
 	Canvas* parent;
@@ -102,7 +103,7 @@ protected:
 	Padding padding;
 	Cursor cursor;
 
-	bool halt;
+	bool running;
 
 	//-- events
 
@@ -163,7 +164,10 @@ public:
 	virtual void setBorderColorPushed(int colorPushed);
 	virtual void setSwitch(bool switchable = true);
 
+	virtual Canvas* getParent();
 	virtual int getFullWidth();
+	virtual bool isPushed();
+	virtual bool isRunning();
 
 	virtual void enable();
 	virtual void disable();
@@ -171,14 +175,15 @@ public:
 	virtual void hide();
 	virtual void activate();
 	virtual void inactivate();
-	virtual void destroy();
 
 
 	virtual void calc();
 	virtual void draw(Color clearColor = GUI_UNDEFINED);
 	virtual void clear();
+	virtual void redraw();
+	virtual void deleteChildren();
 
-	void run(CanvasLoop loop = 0);
+	virtual void run(CanvasLoop loop = 0);
 	virtual void tick();
 
 	// events

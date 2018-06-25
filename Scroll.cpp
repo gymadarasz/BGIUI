@@ -52,14 +52,24 @@ void Scroll::setInterval(int minValue, int maxValue) {
 }
 
 void Scroll::setValue(int value) {
-	this->value = value;
 	if (value < this->minValue) {
 		value = this->minValue;
 	}
 	if (value > this->maxValue) {
 		value = this->maxValue;
 	}
-	repositionScrollHandlerCanvas();
+	if (this->value != value) {
+		handler->clear();
+		int oldValue = this->value;
+		this->value = value;
+
+		repositionScrollHandlerCanvas();
+
+		cursorReset();
+		handler->calc();
+		handler->draw();
+		onScroll(oldValue, this->value);
+	}
 }
 
 int Scroll::getValue() {
@@ -75,21 +85,7 @@ void Scroll::onClick(int mouseLeft, int mouseTop) {
 	int minmaxDiff = abs(maxValue - minValue);
 	int clickLeft = mouseLeft - (handlerWidth / 2);
 	int newValue = (clickLeft * minmaxDiff) / scrollSize;
-	if (newValue < minValue) {
-		newValue = minValue;
-	}
-	if (newValue > maxValue) {
-		newValue = maxValue;
-	}
-	if (value != newValue) {
-		int oldValue = value;
-		handler->clear();
-		setValue(newValue);
-		cursorReset();
-		handler->calc();
-		handler->draw();
-		onScroll(oldValue, newValue);
-	}
+	setValue(newValue);
 
 }
 
