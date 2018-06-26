@@ -8,11 +8,11 @@
 #ifndef CANVAS_H_
 #define CANVAS_H_
 
-#include <stdlib.h>
+
 #include "defs.h"
-#include "Painter.h"
-#include "Mouse.h"
-#include "Keyboard.h"
+#include "hardware/Painter.h"
+#include "hardware/Mouse.h"
+#include "hardware/Keyboard.h"
 
 namespace gui {
 

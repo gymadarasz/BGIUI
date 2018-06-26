@@ -7,7 +7,6 @@
 
 #include "Canvas.h"
 
-#include <stdio.h>
 
 namespace gui {
 

@@ -7,7 +7,7 @@
 
 #include "Painter.h"
 
-#include "defs.h"
+#include "../defs.h"
 
 namespace gui {
 
