@@ -9,7 +9,11 @@
 
 namespace gui {
 
-EventKeypress Keyboard::keypress = {false, -1};
+Keyboard::Keyboard() {
+	keypress = {false, -1};
+}
+
+Keyboard::~Keyboard() {}
 
 bool Keyboard::check() {
 	keypress.happened = false;

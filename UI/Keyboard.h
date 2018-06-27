@@ -21,8 +21,10 @@ typedef struct {
 } EventKeypress;
 
 class Keyboard {
-	static EventKeypress keypress;
+	EventKeypress keypress;
 public:
+	Keyboard();
+	virtual ~Keyboard();
 	virtual bool check();
 	virtual EventKeypress getKeypress();
 };

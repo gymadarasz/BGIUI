@@ -123,13 +123,13 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 // public:
 
-Canvas::Canvas(
-		Canvas* parent, int width, int height,
-		Painter* scr, Keyboard* kbrd, Mouse* mse) {
+Canvas::Canvas(Canvas* parent,
+		int width, int height,
+		Keyboard* kbrd, Mouse* mse) {
 	this->parent = parent;
-	this->scr = scr;
-	this->kbrd = kbrd;
-	this->mse = mse;
+
+	this->kbrd = kbrd ? kbrd : (parent ? parent->kbrd : 0);
+	this->mse = mse ? mse : (parent ? parent->mse : 0);
 
 	for (id=0; id<CANVASES; id++) {
 		if (!canvases[id]) {
@@ -171,14 +171,16 @@ Canvas::Canvas(
 
 	// main screen
 	if (!this->parent) {
-		Painter::init(width, height);
+		init(width, height);
 		delay(100);
 
+
 		setPosition(0, 0);
-		setSize(Painter::getMaxWidth(), Painter::getMaxHeight());
+		setSize(getMaxWidth(), getMaxHeight());
 		setMargin(0, 0);
-		setBorder(0, GUI_NONE);
+		setBorder(0, NOCOLOR);
 		setPadding(0, 0);
+		//setColor(4);
 	} else {
 		this->parent = parent;
 
@@ -281,11 +283,11 @@ void Canvas::setText(char* str, int size) {
 	}
 
 	if (redraw) {
-		if (box.fitToText || box.width < Painter::getTextWidth(text.label, text.size) + padding.horizontal*2) {
-			setWidth(Painter::getTextWidth(text.label, text.size) + padding.horizontal*2);
+		if (box.fitToText || box.width < getTextWidth(text.label, text.size) + padding.horizontal*2) {
+			setWidth(getTextWidth(text.label, text.size) + padding.horizontal*2);
 		}
-		if (box.fitToText || box.height < Painter::getTextHeight(text.label, text.size) + padding.vertical*2) {
-			setHeight(Painter::getTextHeight(text.label, text.size) + padding.vertical*2);
+		if (box.fitToText || box.height < getTextHeight(text.label, text.size) + padding.vertical*2) {
+			setHeight(getTextHeight(text.label, text.size) + padding.vertical*2);
 		}
 //		if (isRunning()) {
 //			draw();
@@ -588,7 +590,7 @@ void Canvas::draw(Color clearColor) {
 
 	if (latestBorderColor != borderColor) {
 		// draw border
-		Painter::rect(
+		rect(
 				realTop + margin.vertical + border.size,
 				realLeft + margin.horizontal + border.size,
 				box.width,
@@ -601,7 +603,7 @@ void Canvas::draw(Color clearColor) {
 	bool redrawText = false;
 	if (latestInnerColor != innerColor) {
 		// draw inner box
-		Painter::fillrect(
+		fillrect(
 				realTop + margin.vertical + border.size,
 				realLeft + margin.horizontal + border.size,
 				box.width,
@@ -613,7 +615,7 @@ void Canvas::draw(Color clearColor) {
 
 	if (latestTextColor != textColor || redrawText) {
 		// draw text
-		Painter::text(
+		putText(
 				realTop + margin.vertical + border.size + padding.vertical,
 				realLeft + margin.horizontal + border.size + padding.horizontal,
 				text.label,
@@ -657,10 +659,14 @@ void Canvas::run(CanvasLoop loop) {
 	calc();
 	draw();
 
-	Mouse::reset();
+	if (mse) {
+		mse->reset();
+	}
 	running = true;
 	while (running) {
-		Mouse::check();
+		if (mse) {
+			mse->check();
+		}
 
 		if (kbrd && kbrd->check()) {
 
@@ -709,47 +715,49 @@ void Canvas::tick() {
     int top = realTop;
     int left = realLeft;
 
-    // mouse down?
-    if (Mouse::events.mouseDown.happend && isInside(Mouse::events.mouseDown.position)) {
-        onMouseDown(Mouse::events.mouseDown.position.left-left, Mouse::events.mouseDown.position.top-top);
-    }
+    if (mse) {
+		// mouse down?
+		if (mse->getEvents().mouseDown.happend && isInside(mse->getEvents().mouseDown.position)) {
+			onMouseDown(mse->getEvents().mouseDown.position.left-left, mse->getEvents().mouseDown.position.top-top);
+		}
 
-    // click?
-    if (Mouse::events.click.happend && isInside(Mouse::events.click.position)) {
-        onClick(Mouse::events.click.position.left-left, Mouse::events.click.position.top-top);
-    }
+		// click?
+		if (mse->getEvents().click.happend && isInside(mse->getEvents().click.position)) {
+			onClick(mse->getEvents().click.position.left-left, mse->getEvents().click.position.top-top);
+		}
 
-    // dblclick?
-    if (Mouse::events.dblClick.happend && isInside(Mouse::events.dblClick.position)) {
-        onDblClick(Mouse::events.dblClick.position.left-left, Mouse::events.dblClick.position.top-top);
-    }
+		// dblclick?
+		if (mse->getEvents().dblClick.happend && isInside(mse->getEvents().dblClick.position)) {
+			onDblClick(mse->getEvents().dblClick.position.left-left, mse->getEvents().dblClick.position.top-top);
+		}
 
-    // mouse move, over, leave?
-    if (Mouse::events.mouseMove.happend) {
-        if (isInside(Mouse::events.mouseMove.current) && isInside(Mouse::events.mouseMove.previous)) {
-            onMouseMove(
-                Mouse::events.mouseMove.current.left-left, Mouse::events.mouseMove.current.top-top,
-                Mouse::events.mouseMove.previous.left-left, Mouse::events.mouseMove.previous.top-top
-            );
-        } else if (isInside(Mouse::events.mouseMove.current)) {
-            onMouseOver(Mouse::events.mouseMove.current.left-left, Mouse::events.mouseMove.current.top-top);
-        } else if (isInside(Mouse::events.mouseMove.previous)) {
-            onMouseLeave(Mouse::events.mouseMove.previous.left-left, Mouse::events.mouseMove.previous.top-top);
-        }
-    }
+		// mouse move, over, leave?
+		if (mse->getEvents().mouseMove.happend) {
+			if (isInside(mse->getEvents().mouseMove.current) && isInside(mse->getEvents().mouseMove.previous)) {
+				onMouseMove(
+					mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top,
+					mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top
+				);
+			} else if (isInside(mse->getEvents().mouseMove.current)) {
+				onMouseOver(mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top);
+			} else if (isInside(mse->getEvents().mouseMove.previous)) {
+				onMouseLeave(mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top);
+			}
+		}
 
-    if (Mouse::events.mouseDrag.happend) {
-        if (isInside(Mouse::events.mouseDrag.current) && isInside(Mouse::events.mouseDrag.previous)) {
-            onMouseDrag(
-                Mouse::events.mouseDrag.current.left-left, Mouse::events.mouseDrag.current.top-top,
-                Mouse::events.mouseDrag.previous.left-left, Mouse::events.mouseDrag.previous.top-top
-            );
-        }
-    }
+		if (mse->getEvents().mouseDrag.happend) {
+			if (isInside(mse->getEvents().mouseDrag.current) && isInside(mse->getEvents().mouseDrag.previous)) {
+				onMouseDrag(
+					mse->getEvents().mouseDrag.current.left-left, mse->getEvents().mouseDrag.current.top-top,
+					mse->getEvents().mouseDrag.previous.left-left, mse->getEvents().mouseDrag.previous.top-top
+				);
+			}
+		}
 
-    // mouse up?
-    if (Mouse::events.mouseUp.happend && isInside(Mouse::events.mouseUp.position)) {
-        onMouseUp(Mouse::events.mouseUp.position.left-left, Mouse::events.mouseUp.position.top-top);
+		// mouse up?
+		if (mse->getEvents().mouseUp.happend && isInside(mse->getEvents().mouseUp.position)) {
+			onMouseUp(mse->getEvents().mouseUp.position.left-left, mse->getEvents().mouseUp.position.top-top);
+		}
     }
 
     if (kbrd && selected) {

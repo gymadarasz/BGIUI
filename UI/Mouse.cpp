@@ -9,10 +9,9 @@
 
 namespace gui {
 
-int Mouse::lastMouseLeft;
-int Mouse::lastMouseTop;
-bool Mouse::lbtndown;
-MouseEvents Mouse::events;
+MouseEvents Mouse::getEvents() {
+	return events;
+}
 
 void Mouse::reset() {
 	lastMouseLeft = mousex();

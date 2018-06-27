@@ -13,7 +13,9 @@ namespace gui {
 
 // public
 
-ScrollHandler::ScrollHandler(Canvas* parent, int width, int height): Canvas(parent, width, height) {}
+ScrollHandler::ScrollHandler(Canvas* parent, int width, int height): Canvas(parent, width, height) {
+
+}
 
 ScrollHandler::~ScrollHandler() {}
 

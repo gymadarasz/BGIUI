@@ -14,7 +14,8 @@ namespace gui {
 
 class Painter {
 public:
-	static int init(
+	virtual ~Painter();
+	virtual int init(
 		int width = 0,
 		int height = 0,
 		char* title = (char*)"Windows BGI",
@@ -23,19 +24,19 @@ public:
 		bool dbflag = false,
 		bool closeflag = true
 	);
-	static int close();
-	static void clear();
-	static void hline(int x, int y1, int y2, int color);
-    static void vline(int x1, int y, int x2, int color);
-	static void rect(int top, int left, int width, int height, int color, int size = 1);
-	static void fillrect(int top, int left, int width, int height, int color);
-	static int getMaxWidth();
-	static int getMaxHeight();
-	static int getTextWidth(const char* text, int size = 1, int style = DEFAULT_FONT);
-	static int getTextWidth(char* text, int size = 1, int style = DEFAULT_FONT);
-	static int getTextHeight(const char* text, int size = 1, int style = DEFAULT_FONT);
-	static int getTextHeight(char* text, int size = 1, int style = DEFAULT_FONT);
-	static void text(int top, int left, char* text, int color, int bgcolor, int size = 10, int style = DEFAULT_FONT);
+	virtual int close();
+	virtual void clearScreen();
+	virtual void hline(int x, int y1, int y2, int color);
+	virtual void vline(int x1, int y, int x2, int color);
+	virtual void rect(int top, int left, int width, int height, int color, int size = 1);
+	virtual void fillrect(int top, int left, int width, int height, int color);
+	virtual int getMaxWidth();
+	virtual int getMaxHeight();
+	virtual int getTextWidth(const char* text, int size = 1, int style = DEFAULT_FONT);
+	virtual int getTextWidth(char* text, int size = 1, int style = DEFAULT_FONT);
+	virtual int getTextHeight(const char* text, int size = 1, int style = DEFAULT_FONT);
+	virtual int getTextHeight(char* text, int size = 1, int style = DEFAULT_FONT);
+	virtual void putText(int top, int left, char* text, int color, int bgcolor, int size = 10, int style = DEFAULT_FONT);
 };
 
 } /* namespace GUI */

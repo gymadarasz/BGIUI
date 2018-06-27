@@ -11,6 +11,8 @@
 
 namespace gui {
 
+	Painter::~Painter() {}
+
 	int Painter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
 
 		int found = false;
@@ -33,7 +35,7 @@ namespace gui {
 		found = true;
 #endif
 
-		clear();
+		clearScreen();
 
 		return found;
 	}
@@ -43,7 +45,7 @@ namespace gui {
 		return 0;
 	}
 
-	void Painter::clear() {
+	void Painter::clearScreen() {
 		cleardevice();
 	}
 
@@ -141,7 +143,7 @@ namespace gui {
         return ret;
 	}
 
-	void Painter::text(int top, int left, char* text, int color, int bgcolor, int size, int style) {
+	void Painter::putText(int top, int left, char* text, int color, int bgcolor, int size, int style) {
         if (!size || (color == GUI_NONE && bgcolor == GUI_NONE)) {
         	return ;
         }

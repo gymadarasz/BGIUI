@@ -13,17 +13,17 @@
 namespace gui {
 
 typedef struct {
-	int top;
-	int left;
+	int top = -1;
+	int left = -1;
 } EventPoint;
 
 typedef struct {
-    bool happend;
+    bool happend = false;
     EventPoint position;
 } EventMousePoint;
 
 typedef struct{
-    bool happend;
+    bool happend = false;
     EventPoint current;
     EventPoint previous;
 } EventMouseMove;
@@ -39,13 +39,14 @@ typedef struct {
 } MouseEvents;
 
 class Mouse {
-    static int lastMouseLeft;
-    static int lastMouseTop;
-    static bool lbtndown;
+    int lastMouseLeft;
+    int lastMouseTop;
+    bool lbtndown;
+    MouseEvents events;
 public:
-    static MouseEvents events;
-    static void reset();
-    static void check();
+    MouseEvents getEvents();
+    void reset();
+    void check();
 };
 
 } /* namespace GUI */
