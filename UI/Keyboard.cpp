@@ -5,18 +5,24 @@
  *      Author: Gyula
  */
 
-#include "Keyboard.h"
+#include "../UI/Keyboard.h"
 
 namespace gui {
 
 EventKeypress Keyboard::keypress = {false, -1};
 
-void Keyboard::check() {
+bool Keyboard::check() {
 	keypress.happened = false;
 	if (kbhit()) {
 		keypress.happened = true;
 		while(!(keypress.key = getch()));
 	}
+	return keypress.happened;
+}
+
+EventKeypress Keyboard::getKeypress() {
+	return keypress;
 }
 
 } /* namespace GUI */
+

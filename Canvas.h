@@ -10,9 +10,9 @@
 
 
 #include "defs.h"
-#include "hardware/Painter.h"
-#include "hardware/Mouse.h"
-#include "hardware/Keyboard.h"
+#include "UI/Keyboard.h"
+#include "UI/Mouse.h"
+#include "UI/Painter.h"
 
 namespace gui {
 
@@ -80,6 +80,11 @@ protected:
 	Canvas* parent;
 	int id;
 
+	// interfaces
+	Keyboard* kbrd;
+	Mouse* mse;
+	Painter* scr;
+
 	Color latestBorderColor;
 	Color latestInnerColor;
 	Color latestTextColor;
@@ -135,7 +140,9 @@ public:
 	CanvasEventHandler onMouseUpHandler;
 	CanvasEventHandler onKeyPressHandler;
 
-	Canvas(Canvas* parent = 0, int width = 0, int height = 0);
+	Canvas(
+			Canvas* parent = 0, int width = 0, int height = 0,
+			Painter* scr = 0, Keyboard* kbrd = 0, Mouse* mse = 0);
 	virtual ~Canvas();
 	virtual void setSize(int width, int height);
 	virtual void setWidth(int width);

@@ -5,7 +5,7 @@
  *      Author: Gyula
  */
 
-#include "Painter.h"
+#include "../UI/Painter.h"
 
 #include "../defs.h"
 

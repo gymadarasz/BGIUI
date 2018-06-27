@@ -5,7 +5,7 @@
  *      Author: Gyula
  */
 
-#include "Mouse.h"
+#include "../UI/Mouse.h"
 
 namespace gui {
 

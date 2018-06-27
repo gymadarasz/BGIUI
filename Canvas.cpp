@@ -123,8 +123,13 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 // public:
 
-Canvas::Canvas(Canvas* parent, int width, int height) {
+Canvas::Canvas(
+		Canvas* parent, int width, int height,
+		Painter* scr, Keyboard* kbrd, Mouse* mse) {
 	this->parent = parent;
+	this->scr = scr;
+	this->kbrd = kbrd;
+	this->mse = mse;
 
 	for (id=0; id<CANVASES; id++) {
 		if (!canvases[id]) {
@@ -657,10 +662,9 @@ void Canvas::run(CanvasLoop loop) {
 	while (running) {
 		Mouse::check();
 
-		Keyboard::check();
-		if (Keyboard::keypress.happened) {
+		if (kbrd && kbrd->check()) {
 
-			switch (Keyboard::keypress.key) {
+			switch (kbrd->getKeypress().key) {
 
 			case KEY_LEFT:
 				selectPrev();
@@ -748,9 +752,10 @@ void Canvas::tick() {
         onMouseUp(Mouse::events.mouseUp.position.left-left, Mouse::events.mouseUp.position.top-top);
     }
 
-    if (selected) {
-    	if (Keyboard::keypress.happened) {
-    		onKeyPress(Keyboard::keypress.key);
+    if (kbrd && selected) {
+    	EventKeypress keypress = kbrd->getKeypress();
+    	if (keypress.happened) {
+    		onKeyPress(keypress.key);
     	}
     }
 }
