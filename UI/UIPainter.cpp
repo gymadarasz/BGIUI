@@ -5,15 +5,13 @@
  *      Author: Gyula
  */
 
-#include "../UI/Painter.h"
-
-#include "../defs.h"
+#include "../UI/UIPainter.h"
 
 namespace gui {
 
-	Painter::~Painter() {}
+	UIPainter::~UIPainter() {}
 
-	int Painter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
+	int UIPainter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
 
 		int found = false;
 
@@ -40,16 +38,16 @@ namespace gui {
 		return found;
 	}
 
-	int Painter::close() {
+	int UIPainter::close() {
 		closegraph();
 		return 0;
 	}
 
-	void Painter::clearScreen() {
+	void UIPainter::clearScreen() {
 		cleardevice();
 	}
 
-    void Painter::hline(int x, int y1, int y2, int color) {
+    void UIPainter::hline(int x, int y1, int y2, int color) {
         if (color == GUI_NONE) {
             return ;
         }
@@ -60,7 +58,7 @@ namespace gui {
         setcolor(c);
     }
 
-    void Painter::vline(int x1, int y, int x2, int color) {
+    void UIPainter::vline(int x1, int y, int x2, int color) {
         if (color == GUI_NONE) {
             return ;
         }
@@ -71,7 +69,7 @@ namespace gui {
         setcolor(c);
     }
 
-	void Painter::rect(int top, int left, int width, int height, int color, int size) {
+	void UIPainter::rect(int top, int left, int width, int height, int color, int size) {
 		if (size && color != GUI_NONE) {
 			int bottom = top+height;
 			int right = left+width;
@@ -92,7 +90,7 @@ namespace gui {
 		}
 	}
 
-	void Painter::fillrect(int top, int left, int width, int height, int color) {
+	void UIPainter::fillrect(int top, int left, int width, int height, int color) {
 		if (color != GUI_NONE) {
 			int bottom = top+height;
 			int right = left+width+1;
@@ -103,19 +101,19 @@ namespace gui {
 		}
 	}
 
-	int Painter::getMaxWidth() {
+	int UIPainter::getMaxWidth() {
 		return getmaxx();
 	}
 
-	int Painter::getMaxHeight() {
+	int UIPainter::getMaxHeight() {
 		return getmaxy();
 	}
 
-	int Painter::getTextWidth(const char* text, int size, int style) {
+	int UIPainter::getTextWidth(const char* text, int size, int style) {
 		return getTextWidth((char*)text, size, style);
 	}
 
-	int Painter::getTextWidth(char* text, int size, int style) {
+	int UIPainter::getTextWidth(char* text, int size, int style) {
 		if (!text) {
 			return 0;
 		}
@@ -127,11 +125,11 @@ namespace gui {
         return ret;
 	}
 
-	int Painter::getTextHeight(const char* text, int size, int style) {
+	int UIPainter::getTextHeight(const char* text, int size, int style) {
 		return getTextHeight((char*)text, size, style);
 	}
 
-	int Painter::getTextHeight(char* text, int size, int style) {
+	int UIPainter::getTextHeight(char* text, int size, int style) {
 		if (!text) {
 			return 0;
 		}
@@ -143,7 +141,7 @@ namespace gui {
         return ret;
 	}
 
-	void Painter::putText(int top, int left, char* text, int color, int bgcolor, int size, int style) {
+	void UIPainter::putText(int top, int left, char* text, int color, int bgcolor, int size, int style) {
         if (!size || (color == GUI_NONE && bgcolor == GUI_NONE)) {
         	return ;
         }

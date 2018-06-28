@@ -5,21 +5,51 @@
  *      Author: Gyula
  */
 
-#include "../UI/Mouse.h"
+#include "../UI/UIMouse.h"
 
 namespace gui {
 
-MouseEvents Mouse::getEvents() {
+EventPoint* UIMouse::initEventPoint(EventPoint* eventPoint) {
+	eventPoint->top = -1;
+	eventPoint->left = -1;
+	return eventPoint;
+}
+
+EventMousePoint* UIMouse::initEventMousePoint(EventMousePoint* eventMousePoint)  {
+	eventMousePoint->happend = false;
+	initEventPoint(&eventMousePoint->position);
+	return eventMousePoint;
+}
+
+EventMouseMove* UIMouse::initEventMouseMove(EventMouseMove* eventMouseMove) {
+	eventMouseMove->happend = false;
+	initEventPoint(&eventMouseMove->current);
+	initEventPoint(&eventMouseMove->previous);
+
+	return eventMouseMove;
+}
+
+void UIMouse::initMouseEvents() {
+	initEventMousePoint(&events.click);
+	initEventMousePoint(&events.dblClick);
+	initEventMousePoint(&events.mouseDown);
+	initEventMouseMove(&events.mouseDrag);
+	initEventMouseMove(&events.mouseMove);
+	initEventMousePoint(&events.mouseUp);
+}
+
+
+MouseEvents UIMouse::getEvents() {
 	return events;
 }
 
-void Mouse::reset() {
+void UIMouse::reset() {
 	lastMouseLeft = mousex();
 	lastMouseTop = mousey();
 	lbtndown = false;
 }
 
-void Mouse::check() {
+void UIMouse::check() {
 	int top, left;
 
 	// mouse released (mouse up)?

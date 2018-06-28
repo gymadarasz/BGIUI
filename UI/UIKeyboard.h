@@ -5,10 +5,10 @@
  *      Author: Gyula
  */
 
-#ifndef KEYBOARD_H_
-#define KEYBOARD_H_
+#ifndef GUI_UIKEYBOARD_H_
+#define GUI_UIKEYBOARD_H_
 
-#include <graphics.h>
+#include "../defs.h"
 
 namespace gui {
 
@@ -20,15 +20,15 @@ typedef struct {
 	int key;
 } EventKeypress;
 
-class Keyboard {
+class UIKeyboard {
 	EventKeypress keypress;
 public:
-	Keyboard();
-	virtual ~Keyboard();
+	UIKeyboard();
+	virtual ~UIKeyboard();
 	virtual bool check();
 	virtual EventKeypress getKeypress();
 };
 
-} /* namespace GUI */
+} /* namespace gui */
 
-#endif /* KEYBOARD_H_ */
+#endif /* GUI_UIKEYBOARD_H_ */

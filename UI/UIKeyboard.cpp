@@ -5,17 +5,17 @@
  *      Author: Gyula
  */
 
-#include "../UI/Keyboard.h"
+#include "../UI/UIKeyboard.h"
 
 namespace gui {
 
-Keyboard::Keyboard() {
+UIKeyboard::UIKeyboard() {
 	keypress = {false, -1};
 }
 
-Keyboard::~Keyboard() {}
+UIKeyboard::~UIKeyboard() {}
 
-bool Keyboard::check() {
+bool UIKeyboard::check() {
 	keypress.happened = false;
 	if (kbhit()) {
 		keypress.happened = true;
@@ -24,7 +24,7 @@ bool Keyboard::check() {
 	return keypress.happened;
 }
 
-EventKeypress Keyboard::getKeypress() {
+EventKeypress UIKeyboard::getKeypress() {
 	return keypress;
 }
 

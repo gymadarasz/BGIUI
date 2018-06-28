@@ -13,6 +13,55 @@ namespace gui {
 Canvas* Canvas::canvases[CANVASES] = {0};
 int Canvas::_canvasDeleted = 0;
 
+// initializers:
+void Canvas::initMargin() {
+	margin.horizontal = MARGIN_SIZE_HORIZONTAL;
+	margin.vertical = MARGIN_SIZE_VERTICAL;
+}
+
+void Canvas::initBorder() {
+	border.size = BORDER_SIZE;
+	border.color = BORDER_COLOR;
+	border.colorSelected = BORDER_COLOR_SELECTED;
+	border.colorDisabled = BORDER_COLOR_DISABLED;
+	border.colorPushed = BORDER_COLOR_PUSHED;
+}
+
+void Canvas::initPadding() {
+	padding.horizontal = PADDING_SIZE_HORIZONTAL;
+	padding.vertical = PADDING_SIZE_VERTICAL;
+}
+
+void Canvas::initText() {
+	text.label[0] = '\0';
+	text.size = TEXT_SIZE;
+	text.color = TEXT_COLOR;
+	text.colorSelected = TEXT_COLOR_SELECTED;
+	text.colorDisabled = TEXT_COLOR_DISABLED;
+	text.colorPushed = TEXT_COLOR_PUSHED;
+}
+
+void Canvas::initBox() {
+	box.top = 0;
+	box.left = 0;
+	box.width = 0;
+	box.height = 0;
+	box.color = BOX_COLOR;
+	box.colorSelected = BOX_COLOR_SELECTED;
+	box.colorDisabled = BOX_COLOR_DISABLED;
+	box.colorPushed = BOX_COLOR_PUSHED;
+	box.breakLine = false;
+
+	box.fitToText = true;
+	box.positioned = false;
+}
+
+void Canvas::initCursor() {
+	cursor.top = 0;
+	cursor.left = 0;
+	cursor.lnHeight = 0;
+}
+
 void Canvas::cursorReset() {
 	cursor.top = 0;
 	cursor.left = 0;
@@ -125,7 +174,7 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 Canvas::Canvas(Canvas* parent,
 		int width, int height,
-		Keyboard* kbrd, Mouse* mse) {
+		UIKeyboard* kbrd, UIMouse* mse) {
 	this->parent = parent;
 
 	this->kbrd = kbrd ? kbrd : (parent ? parent->kbrd : 0);
@@ -137,6 +186,11 @@ Canvas::Canvas(Canvas* parent,
 			break;
 		}
 	}
+
+	initMargin();
+	initBorder();
+	initPadding();
+	initText();
 
 	disabled = false;
 	selected = false;

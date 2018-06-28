@@ -8,6 +8,8 @@
 #ifndef GUI_THEMES_SOLID_H_
 #define GUI_THEMES_SOLID_H_
 
+#include "../defs.h"
+
 #define MARGIN_SIZE_HORIZONTAL		4
 #define MARGIN_SIZE_VERTICAL		4
 

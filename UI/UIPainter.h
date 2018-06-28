@@ -5,16 +5,17 @@
  *      Author: Gyula
  */
 
-#ifndef PAINTER_H_
-#define PAINTER_H_
+#ifndef GUI_UIPAINTER_H_
+#define GUI_UIPAINTER_H_
 
-#include <graphics.h>
+
+#include "../defs.h"
 
 namespace gui {
 
-class Painter {
+class UIPainter {
 public:
-	virtual ~Painter();
+	virtual ~UIPainter();
 	virtual int init(
 		int width = 0,
 		int height = 0,
@@ -39,6 +40,6 @@ public:
 	virtual void putText(int top, int left, char* text, int color, int bgcolor, int size = 10, int style = DEFAULT_FONT);
 };
 
-} /* namespace GUI */
+} /* namespace gui */
 
-#endif /* PAINTER_H_ */
+#endif /* GUI_UIPAINTER_H_ */

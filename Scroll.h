@@ -9,11 +9,10 @@
 #define SCROLL_H_
 
 
+#include "defs.h"
 #include "Canvas.h"
 
 namespace gui {
-
-class Scroll;
 
 class ScrollHandler: public Canvas {
 public:

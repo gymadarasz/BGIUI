@@ -5,25 +5,26 @@
  *      Author: Gyula
  */
 
-#ifndef MOUSE_H_
-#define MOUSE_H_
+#ifndef GUI_UIMOUSE_H_
+#define GUI_UIMOUSE_H_
 
-#include <graphics.h>
+
+#include "../defs.h"
 
 namespace gui {
 
 typedef struct {
-	int top = -1;
-	int left = -1;
+	int top;
+	int left;
 } EventPoint;
 
 typedef struct {
-    bool happend = false;
+    bool happend;
     EventPoint position;
 } EventMousePoint;
 
-typedef struct{
-    bool happend = false;
+typedef struct {
+    bool happend;
     EventPoint current;
     EventPoint previous;
 } EventMouseMove;
@@ -38,17 +39,22 @@ typedef struct {
     EventMousePoint mouseUp;
 } MouseEvents;
 
-class Mouse {
+class UIMouse {
     int lastMouseLeft;
     int lastMouseTop;
     bool lbtndown;
     MouseEvents events;
+    EventPoint* initEventPoint(EventPoint* eventPoint);
+    EventMousePoint* initEventMousePoint(EventMousePoint* eventMousePoint);
+    EventMouseMove* initEventMouseMove(EventMouseMove* eventMouseMove);
+    void initMouseEvents();
+
 public:
     MouseEvents getEvents();
     void reset();
     void check();
 };
 
-} /* namespace GUI */
+} /* namespace gui */
 
-#endif /* MOUSE_H_ */
+#endif /* GUI_UIMOUSE_H_ */

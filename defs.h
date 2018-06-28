@@ -19,11 +19,27 @@
 
 #elif defined(__APPLE__) || defined(__MACH__)
 
+#error "unsupported hardware"
 
 #elif defined(unix) || defined(__unix) || defined(__unix__) || defined(linux) || defined(__linux) || defined(__linux__)
 
+#include <graphics.h>
 
-#elif defined(ARDUINO_AVR_ADK) || defined(TEENSYDUINO)
+#elif defined(ARDUINO) || defined(ARDUINO_AVR_ADK) || defined(TEENSYDUINO)
+
+#include <Adafruit_GFX.h>
+#define BLACK   0x0000
+#define BLUE    0x001F
+#define RED     0xF800
+#define GREEN   0x07E0
+#define CYAN    0x07FF
+#define MAGENTA 0xF81F
+#define YELLOW  0xFFE0
+#define WHITE   0xFFFF
+
+#define DARKGRAY		0x5555
+#define LIGHTGRAY		0xaaaa
+#define DEFAULT_FONT	0
 
 #endif
 
@@ -40,5 +56,13 @@
 #define GUI_NONE -1
 #define GUI_UNDEFINED -1
 #define NOCOLOR -1
+
+
+//#include "UI/UIKeyboard.h"
+//#include "UI/UIMouse.h"
+//#include "UI/UIPainter.h"
+//#include "Canvas.h"
+//#include "Scroll.h"
+//#include "Menu.h"
 
 #endif /* DEFS_H_ */

@@ -10,9 +10,9 @@
 
 
 #include "defs.h"
-#include "UI/Keyboard.h"
-#include "UI/Mouse.h"
-#include "UI/Painter.h"
+#include "UI/UIKeyboard.h"
+#include "UI/UIMouse.h"
+#include "UI/UIPainter.h"
 
 namespace gui {
 
@@ -21,59 +21,59 @@ typedef void (*CanvasLoop)(void);
 typedef int Color;
 
 typedef struct {
-	int horizontal = MARGIN_SIZE_HORIZONTAL;
-	int vertical = MARGIN_SIZE_VERTICAL;
+	int horizontal;
+	int vertical;
 } Margin;
 
 typedef struct {
-	int size = BORDER_SIZE;
-	Color color = BORDER_COLOR;
-	Color colorSelected = BORDER_COLOR_SELECTED;
-	Color colorDisabled = BORDER_COLOR_DISABLED;
-	Color colorPushed = BORDER_COLOR_PUSHED;
+	int size;
+	Color color;
+	Color colorSelected;
+	Color colorDisabled;
+	Color colorPushed;
 } Border;
 
 typedef struct {
-	int horizontal = PADDING_SIZE_HORIZONTAL;
-	int vertical = PADDING_SIZE_VERTICAL;
+	int horizontal;
+	int vertical;
 } Padding;
 
 typedef struct {
-	char label[TEXT_BUFFER_SIZE] = "";
-	int size = TEXT_SIZE;
-	Color color = TEXT_COLOR;
-	Color colorSelected = TEXT_COLOR_SELECTED;
-	Color colorDisabled = TEXT_COLOR_DISABLED;
-	Color colorPushed = TEXT_COLOR_PUSHED;
+	char label[TEXT_BUFFER_SIZE];
+	int size;
+	Color color;
+	Color colorSelected;
+	Color colorDisabled;
+	Color colorPushed;
 } Text;
 
 
 typedef struct {
-	int top = 0;
-	int left = 0;
-	int width = 0;
-	int height = 0;
-	Color color = BOX_COLOR;
-	Color colorSelected = BOX_COLOR_SELECTED;
-	Color colorDisabled = BOX_COLOR_DISABLED;
-	Color colorPushed = BOX_COLOR_PUSHED;
-	bool breakLine = false;
+	int top;
+	int left;
+	int width;
+	int height;
+	Color color;
+	Color colorSelected;
+	Color colorDisabled;
+	Color colorPushed;
+	bool breakLine;
 
-	bool fitToText = true;
-	bool positioned = false;
+	bool fitToText;
+	bool positioned;
 } Box;
 
 typedef struct {
-	int top = 0;
-	int left = 0;
-	int lnHeight = 0;
+	int top;
+	int left;
+	int lnHeight;
 } Cursor;
 
 class Canvas;
 
 typedef int (*CanvasEventHandler)(Canvas*, ...);
 
-class Canvas: public Painter {
+class Canvas: public UIPainter {
 	static int _canvasDeleted;
 protected:
 	static Canvas* canvases[CANVASES];
@@ -81,8 +81,8 @@ protected:
 	int id;
 
 	// user input interfaces
-	Keyboard* kbrd;
-	Mouse* mse;
+	UIKeyboard* kbrd;
+	UIMouse* mse;
 
 	Color latestBorderColor;
 	Color latestInnerColor;
@@ -108,6 +108,14 @@ protected:
 	Cursor cursor;
 
 	bool running;
+
+	// initializers
+	void initMargin();
+	void initBorder();
+	void initPadding();
+	void initText();
+	void initBox();
+	void initCursor();
 
 	//-- events
 
@@ -140,7 +148,7 @@ public:
 	CanvasEventHandler onKeyPressHandler;
 
 	Canvas(Canvas* parent = 0, int width = 0, int height = 0,
-			Keyboard* kbrd = 0, Mouse* mse = 0);
+			UIKeyboard* kbrd = 0, UIMouse* mse = 0);
 	virtual ~Canvas();
 	virtual void setSize(int width, int height);
 	virtual void setWidth(int width);

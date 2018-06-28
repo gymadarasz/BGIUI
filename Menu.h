@@ -8,6 +8,7 @@
 #ifndef GUI_MENU_H_
 #define GUI_MENU_H_
 
+#include "defs.h"
 #include "Canvas.h"
 
 namespace gui {
