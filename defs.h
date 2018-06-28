@@ -11,21 +11,7 @@
 
 // more info: https://arduino.stackexchange.com/questions/21137/arduino-how-to-get-the-board-type-in-code
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) || defined(_WIN64) || defined(__CYGWIN__) || defined(__MINGW32__)
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <graphics.h>
-
-#elif defined(__APPLE__) || defined(__MACH__)
-
-#error "unsupported hardware"
-
-#elif defined(unix) || defined(__unix) || defined(__unix__) || defined(linux) || defined(__linux) || defined(__linux__)
-
-#include <graphics.h>
-
-#elif defined(ARDUINO) || defined(ARDUINO_AVR_ADK) || defined(TEENSYDUINO)
+#if defined(ARDUSIM) || defined(ARDUINO) || defined(ARDUINO_AVR_ADK) || defined(TEENSYDUINO)
 
 #include <Adafruit_GFX.h>
 #define BLACK   0x0000
@@ -40,6 +26,20 @@
 #define DARKGRAY		0x5555
 #define LIGHTGRAY		0xaaaa
 #define DEFAULT_FONT	0
+
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32) || defined(_WIN64) || defined(__CYGWIN__) || defined(__MINGW32__)
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <graphics.h>
+
+#elif defined(__APPLE__) || defined(__MACH__)
+
+#error "unsupported hardware"
+
+#elif defined(unix) || defined(__unix) || defined(__unix__) || defined(linux) || defined(__linux) || defined(__linux__)
+
+#include <graphics.h>
 
 #endif
 
