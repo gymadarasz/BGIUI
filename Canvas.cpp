@@ -751,7 +751,9 @@ void Canvas::run(CanvasLoop loop) {
 			}
 		}
 
-		loop();
+		if (loop) {
+			loop();
+		}
 		delay(1);
 	}
 }

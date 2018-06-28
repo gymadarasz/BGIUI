@@ -10,7 +10,8 @@
 namespace gui {
 
 UIKeyboard::UIKeyboard() {
-	keypress = {false, -1};
+	keypress.happened = false;
+	keypress.key = -1;
 }
 
 UIKeyboard::~UIKeyboard() {}
