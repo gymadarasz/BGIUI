@@ -189,6 +189,7 @@ Canvas::Canvas(Canvas* parent,
 
 	initMargin();
 	initBorder();
+	initBox();
 	initPadding();
 	initText();
 
@@ -217,9 +218,9 @@ Canvas::Canvas(Canvas* parent,
 //	fullWidth = box.width + (border.size + margin.horizontal)*2;
 //	fullHeight = box.height + (border.size + padding.vertical)*2;
 
-	latestBorderColor = NOCOLOR;
-	latestInnerColor = NOCOLOR;
-	latestTextColor = NOCOLOR;
+	latestBorderColor = GUI_UNDEFINED;
+	latestInnerColor = GUI_UNDEFINED;
+	latestTextColor = GUI_UNDEFINED;
 
 	running = false;
 

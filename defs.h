@@ -54,8 +54,8 @@
 #define TEXT_BUFFER_SIZE	64	// change it if you need more or less long strings
 
 #define GUI_NONE -1
-#define GUI_UNDEFINED -1
-#define NOCOLOR -1
+#define GUI_UNDEFINED -2
+#define NOCOLOR GUI_NONE
 
 
 //#include "UI/UIKeyboard.h"
