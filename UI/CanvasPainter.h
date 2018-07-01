@@ -5,17 +5,17 @@
  *      Author: Gyula
  */
 
-#ifndef GUI_UIPAINTER_H_
-#define GUI_UIPAINTER_H_
+#ifndef GUI_CANVASPAINTER_H_
+#define GUI_CANVASPAINTER_H_
 
 
-#include "../defs.h"
+#include "../guidefs.h"
 
 namespace gui {
 
-class UIPainter {
+class CanvasPainter {
 public:
-	virtual ~UIPainter();
+	virtual ~CanvasPainter();
 	virtual int init(
 		int width = 0,
 		int height = 0,
@@ -42,4 +42,4 @@ public:
 
 } /* namespace gui */
 
-#endif /* GUI_UIPAINTER_H_ */
+#endif /* GUI_CANVASPAINTER_H_ */

@@ -5,18 +5,18 @@
  *      Author: Gyula
  */
 
-#include "../UI/UIKeyboard.h"
+#include "CanvasKeyboard.h"
 
 namespace gui {
 
-UIKeyboard::UIKeyboard() {
+CanvasKeyboard::CanvasKeyboard() {
 	keypress.happened = false;
 	keypress.key = -1;
 }
 
-UIKeyboard::~UIKeyboard() {}
+CanvasKeyboard::~CanvasKeyboard() {}
 
-bool UIKeyboard::check() {
+bool CanvasKeyboard::check() {
 	keypress.happened = false;
 	if (kbhit()) {
 		keypress.happened = true;
@@ -25,7 +25,7 @@ bool UIKeyboard::check() {
 	return keypress.happened;
 }
 
-EventKeypress UIKeyboard::getKeypress() {
+CanvasEventKeypress CanvasKeyboard::getKeypress() {
 	return keypress;
 }
 

@@ -9,8 +9,8 @@
 #define SCROLL_H_
 
 
-#include "defs.h"
 #include "Canvas.h"
+#include "guidefs.h"
 
 namespace gui {
 

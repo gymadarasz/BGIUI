@@ -82,9 +82,9 @@ void Canvas::cursorStep(int width, int height) {
 	}
 }
 
-Color Canvas::getClearColor() {
+CanvasColor Canvas::getClearColor() {
 	Canvas* behind = parent ? parent : this;
-	Color color = behind->box.color;
+	CanvasColor color = behind->box.color;
 	if (behind->selected) color = behind->box.colorSelected;
 	if (behind->pushed) color = behind->box.colorPushed;
 	if (behind->disabled) color = behind->box.colorDisabled;
@@ -160,7 +160,7 @@ void Canvas::clickSelected() {
 	}
 }
 
-bool Canvas::isInside(EventPoint eventPoint) {
+bool Canvas::isInside(CanvasEventPoint eventPoint) {
     int top = realTop;
     int left = realLeft;
     int fullwidth = fullWidth;
@@ -174,7 +174,7 @@ bool Canvas::isInside(EventPoint eventPoint) {
 
 Canvas::Canvas(Canvas* parent,
 		int width, int height,
-		UIKeyboard* kbrd, UIMouse* mse) {
+		CanvasKeyboard* kbrd, CanvasMouse* mse) {
 	this->parent = parent;
 
 	this->kbrd = kbrd ? kbrd : (parent ? parent->kbrd : 0);
@@ -608,7 +608,7 @@ void Canvas::calc() {
 
 }
 
-void Canvas::draw(Color clearColor) {
+void Canvas::draw(CanvasColor clearColor) {
 
 	int borderColor = border.color;
 	int innerColor = box.color;
@@ -818,7 +818,7 @@ void Canvas::tick() {
     }
 
     if (kbrd && selected) {
-    	EventKeypress keypress = kbrd->getKeypress();
+    	CanvasEventKeypress keypress = kbrd->getKeypress();
     	if (keypress.happened) {
     		onKeyPress(keypress.key);
     	}

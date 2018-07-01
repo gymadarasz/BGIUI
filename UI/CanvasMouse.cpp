@@ -5,23 +5,23 @@
  *      Author: Gyula
  */
 
-#include "../UI/UIMouse.h"
+#include "CanvasMouse.h"
 
 namespace gui {
 
-EventPoint* UIMouse::initEventPoint(EventPoint* eventPoint) {
+CanvasEventPoint* CanvasMouse::initEventPoint(CanvasEventPoint* eventPoint) {
 	eventPoint->top = -1;
 	eventPoint->left = -1;
 	return eventPoint;
 }
 
-EventMousePoint* UIMouse::initEventMousePoint(EventMousePoint* eventMousePoint)  {
+CanvasEventMousePoint* CanvasMouse::initEventMousePoint(CanvasEventMousePoint* eventMousePoint)  {
 	eventMousePoint->happend = false;
 	initEventPoint(&eventMousePoint->position);
 	return eventMousePoint;
 }
 
-EventMouseMove* UIMouse::initEventMouseMove(EventMouseMove* eventMouseMove) {
+CanvasEventMouseMove* CanvasMouse::initEventMouseMove(CanvasEventMouseMove* eventMouseMove) {
 	eventMouseMove->happend = false;
 	initEventPoint(&eventMouseMove->current);
 	initEventPoint(&eventMouseMove->previous);
@@ -29,7 +29,7 @@ EventMouseMove* UIMouse::initEventMouseMove(EventMouseMove* eventMouseMove) {
 	return eventMouseMove;
 }
 
-void UIMouse::initMouseEvents() {
+void CanvasMouse::initMouseEvents() {
 	initEventMousePoint(&events.click);
 	initEventMousePoint(&events.dblClick);
 	initEventMousePoint(&events.mouseDown);
@@ -39,17 +39,17 @@ void UIMouse::initMouseEvents() {
 }
 
 
-MouseEvents UIMouse::getEvents() {
+CanvasMouseEvents CanvasMouse::getEvents() {
 	return events;
 }
 
-void UIMouse::reset() {
+void CanvasMouse::reset() {
 	lastMouseLeft = mousex();
 	lastMouseTop = mousey();
 	lbtndown = false;
 }
 
-void UIMouse::check() {
+void CanvasMouse::check() {
 	int top, left;
 
 	// mouse released (mouse up)?

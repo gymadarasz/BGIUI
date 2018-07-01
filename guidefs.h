@@ -5,8 +5,8 @@
  *      Author: Gyula
  */
 
-#ifndef DEFS_H_
-#define DEFS_H_
+#ifndef GUIDEFS_H_
+#define GUIDEFS_H_
 
 
 // more info: https://arduino.stackexchange.com/questions/21137/arduino-how-to-get-the-board-type-in-code
@@ -65,4 +65,4 @@
 //#include "Scroll.h"
 //#include "Menu.h"
 
-#endif /* DEFS_H_ */
+#endif /* GUIDEFS_H_ */
