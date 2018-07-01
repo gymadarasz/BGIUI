@@ -173,12 +173,16 @@ bool Canvas::isInside(CanvasEventPoint eventPoint) {
 // public:
 
 Canvas::Canvas(Canvas* parent,
-		int width, int height,
-		CanvasKeyboard* kbrd, CanvasMouse* mse) {
+		int width, int height/*,
+		CanvasPainter* scr, CanvasKeyboard* kbrd, CanvasMouse* mse*/) {
 	this->parent = parent;
 
-	this->kbrd = kbrd ? kbrd : (parent ? parent->kbrd : 0);
-	this->mse = mse ? mse : (parent ? parent->mse : 0);
+	//	this->scr = scr ? scr : (parent ? parent->scr : 0);
+	//	this->kbrd = kbrd ? kbrd : (parent ? parent->kbrd : 0);
+	//	this->mse = mse ? mse : (parent ? parent->mse : 0);
+	this->scr = parent && parent->scr ? parent->scr : new CanvasPainter(width, height);
+	this->kbrd = parent && parent->kbrd ? parent->kbrd : new CanvasKeyboard();
+	this->mse = parent && parent->mse ? parent->mse : new CanvasMouse();
 
 	for (id=0; id<CANVASES; id++) {
 		if (!canvases[id]) {
@@ -226,12 +230,11 @@ Canvas::Canvas(Canvas* parent,
 
 	// main screen
 	if (!this->parent) {
-		init(width, height);
-		delay(100);
+//		scr->init(width, height);
 
 
 		setPosition(0, 0);
-		setSize(getMaxWidth(), getMaxHeight());
+		setSize(scr->getMaxWidth(), scr->getMaxHeight());
 		setMargin(0, 0);
 		setBorder(0, NOCOLOR);
 		setPadding(0, 0);
@@ -338,11 +341,13 @@ void Canvas::setText(char* str, int size) {
 	}
 
 	if (redraw) {
-		if (box.fitToText || box.width < getTextWidth(text.label, text.size) + padding.horizontal*2) {
-			setWidth(getTextWidth(text.label, text.size) + padding.horizontal*2);
+		int textWidth = scr->getTextWidth(text.label, text.size);
+		int textHeight = scr->getTextHeight(text.label, text.size);
+		if (box.fitToText || box.width < textWidth + padding.horizontal*2) {
+			setWidth(textWidth + padding.horizontal*2);
 		}
-		if (box.fitToText || box.height < getTextHeight(text.label, text.size) + padding.vertical*2) {
-			setHeight(getTextHeight(text.label, text.size) + padding.vertical*2);
+		if (box.fitToText || box.height < textHeight + padding.vertical*2) {
+			setHeight(textHeight + padding.vertical*2);
 		}
 //		if (isRunning()) {
 //			draw();
@@ -645,7 +650,7 @@ void Canvas::draw(CanvasColor clearColor) {
 
 	if (latestBorderColor != borderColor) {
 		// draw border
-		rect(
+		scr->rect(
 				realTop + margin.vertical + border.size,
 				realLeft + margin.horizontal + border.size,
 				box.width,
@@ -658,7 +663,7 @@ void Canvas::draw(CanvasColor clearColor) {
 	bool redrawText = false;
 	if (latestInnerColor != innerColor) {
 		// draw inner box
-		fillrect(
+		scr->fillrect(
 				realTop + margin.vertical + border.size,
 				realLeft + margin.horizontal + border.size,
 				box.width,
@@ -670,7 +675,7 @@ void Canvas::draw(CanvasColor clearColor) {
 
 	if (latestTextColor != textColor || redrawText) {
 		// draw text
-		putText(
+		scr->putText(
 				realTop + margin.vertical + border.size + padding.vertical,
 				realLeft + margin.horizontal + border.size + padding.horizontal,
 				text.label,
@@ -714,16 +719,13 @@ void Canvas::run(CanvasLoop loop) {
 	calc();
 	draw();
 
-	if (mse) {
-		mse->reset();
-	}
+	mse->reset();
+
 	running = true;
 	while (running) {
-		if (mse) {
-			mse->check();
-		}
+		mse->check();
 
-		if (kbrd && kbrd->check()) {
+		if (kbrd->check()) {
 
 			switch (kbrd->getKeypress().key) {
 
@@ -772,52 +774,50 @@ void Canvas::tick() {
     int top = realTop;
     int left = realLeft;
 
-    if (mse) {
-		// mouse down?
-		if (mse->getEvents().mouseDown.happend && isInside(mse->getEvents().mouseDown.position)) {
-			onMouseDown(mse->getEvents().mouseDown.position.left-left, mse->getEvents().mouseDown.position.top-top);
-		}
+	// mouse down?
+	if (mse->getEvents().mouseDown.happend && isInside(mse->getEvents().mouseDown.position)) {
+		onMouseDown(mse->getEvents().mouseDown.position.left-left, mse->getEvents().mouseDown.position.top-top);
+	}
 
-		// click?
-		if (mse->getEvents().click.happend && isInside(mse->getEvents().click.position)) {
-			onClick(mse->getEvents().click.position.left-left, mse->getEvents().click.position.top-top);
-		}
+	// click?
+	if (mse->getEvents().click.happend && isInside(mse->getEvents().click.position)) {
+		onClick(mse->getEvents().click.position.left-left, mse->getEvents().click.position.top-top);
+	}
 
-		// dblclick?
-		if (mse->getEvents().dblClick.happend && isInside(mse->getEvents().dblClick.position)) {
-			onDblClick(mse->getEvents().dblClick.position.left-left, mse->getEvents().dblClick.position.top-top);
-		}
+	// dblclick?
+	if (mse->getEvents().dblClick.happend && isInside(mse->getEvents().dblClick.position)) {
+		onDblClick(mse->getEvents().dblClick.position.left-left, mse->getEvents().dblClick.position.top-top);
+	}
 
-		// mouse move, over, leave?
-		if (mse->getEvents().mouseMove.happend) {
-			if (isInside(mse->getEvents().mouseMove.current) && isInside(mse->getEvents().mouseMove.previous)) {
-				onMouseMove(
-					mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top,
-					mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top
-				);
-			} else if (isInside(mse->getEvents().mouseMove.current)) {
-				onMouseOver(mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top);
-			} else if (isInside(mse->getEvents().mouseMove.previous)) {
-				onMouseLeave(mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top);
-			}
+	// mouse move, over, leave?
+	if (mse->getEvents().mouseMove.happend) {
+		if (isInside(mse->getEvents().mouseMove.current) && isInside(mse->getEvents().mouseMove.previous)) {
+			onMouseMove(
+				mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top,
+				mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top
+			);
+		} else if (isInside(mse->getEvents().mouseMove.current)) {
+			onMouseOver(mse->getEvents().mouseMove.current.left-left, mse->getEvents().mouseMove.current.top-top);
+		} else if (isInside(mse->getEvents().mouseMove.previous)) {
+			onMouseLeave(mse->getEvents().mouseMove.previous.left-left, mse->getEvents().mouseMove.previous.top-top);
 		}
+	}
 
-		if (mse->getEvents().mouseDrag.happend) {
-			if (isInside(mse->getEvents().mouseDrag.current) && isInside(mse->getEvents().mouseDrag.previous)) {
-				onMouseDrag(
-					mse->getEvents().mouseDrag.current.left-left, mse->getEvents().mouseDrag.current.top-top,
-					mse->getEvents().mouseDrag.previous.left-left, mse->getEvents().mouseDrag.previous.top-top
-				);
-			}
+	if (mse->getEvents().mouseDrag.happend) {
+		if (isInside(mse->getEvents().mouseDrag.current) && isInside(mse->getEvents().mouseDrag.previous)) {
+			onMouseDrag(
+				mse->getEvents().mouseDrag.current.left-left, mse->getEvents().mouseDrag.current.top-top,
+				mse->getEvents().mouseDrag.previous.left-left, mse->getEvents().mouseDrag.previous.top-top
+			);
 		}
+	}
 
-		// mouse up?
-		if (mse->getEvents().mouseUp.happend && isInside(mse->getEvents().mouseUp.position)) {
-			onMouseUp(mse->getEvents().mouseUp.position.left-left, mse->getEvents().mouseUp.position.top-top);
-		}
-    }
+	// mouse up?
+	if (mse->getEvents().mouseUp.happend && isInside(mse->getEvents().mouseUp.position)) {
+		onMouseUp(mse->getEvents().mouseUp.position.left-left, mse->getEvents().mouseUp.position.top-top);
+	}
 
-    if (kbrd && selected) {
+    if (selected) {
     	CanvasEventKeypress keypress = kbrd->getKeypress();
     	if (keypress.happened) {
     		onKeyPress(keypress.key);

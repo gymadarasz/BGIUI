@@ -73,16 +73,13 @@ class Canvas;
 
 typedef int (*CanvasEventHandler)(Canvas*, ...);
 
-class Canvas: public CanvasPainter {
+class Canvas {
 	static int _canvasDeleted;
 protected:
 	static Canvas* canvases[CANVASES];
 	Canvas* parent;
 	int id;
 
-	// user input interfaces
-	CanvasKeyboard* kbrd;
-	CanvasMouse* mse;
 
 	CanvasColor latestBorderColor;
 	CanvasColor latestInnerColor;
@@ -136,6 +133,11 @@ protected:
 
 public:
 
+	// user input interfaces
+	CanvasPainter* scr;
+	CanvasKeyboard* kbrd;
+	CanvasMouse* mse;
+
 	CanvasEventHandler onTickHandler;
 	CanvasEventHandler onClickHandler;
 	CanvasEventHandler onDblClickHandler;
@@ -147,8 +149,8 @@ public:
 	CanvasEventHandler onMouseUpHandler;
 	CanvasEventHandler onKeyPressHandler;
 
-	Canvas(Canvas* parent = 0, int width = 0, int height = 0,
-			CanvasKeyboard* kbrd = 0, CanvasMouse* mse = 0);
+	Canvas(Canvas* parent = 0, int width = 0, int height = 0 /*,
+			CanvasPainter* scr = 0, CanvasKeyboard* kbrd = 0, CanvasMouse* mse = 0*/);
 	virtual ~Canvas();
 	virtual void setSize(int width, int height);
 	virtual void setWidth(int width);

@@ -15,8 +15,7 @@ namespace gui {
 
 class CanvasPainter {
 public:
-	virtual ~CanvasPainter();
-	virtual int init(
+	CanvasPainter(
 		int width = 0,
 		int height = 0,
 		char* title = (char*)"Windows BGI",
@@ -25,6 +24,7 @@ public:
 		bool dbflag = false,
 		bool closeflag = true
 	);
+	virtual ~CanvasPainter();
 	virtual int close();
 	virtual void clearScreen();
 	virtual void hline(int x, int y1, int y2, int color);

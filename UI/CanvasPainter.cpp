@@ -9,34 +9,35 @@
 
 namespace gui {
 
-	CanvasPainter::~CanvasPainter() {}
+	CanvasPainter::CanvasPainter(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
 
-	int CanvasPainter::init(int width, int height, char* title, int left, int top, bool dbflag, bool closeflag) {
-
-		int found = false;
+//		int found = false;
 
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__)
 		initwindow(width, height, title, left, top, dbflag, closeflag);
 		HWND hWnd = GetActiveWindow();
 		SetWindowText(hWnd, title);
-		found = true;
+//		found = true;
 #endif
 
 #if defined(linux)
 		initGraphics(width, height);
-		found = true;
+//		found = true;
 #endif
 
 #if defined(__BORLANDC__)
 		int g=DETECT,d;
 		initgraph(&g,&d,(char*)"../../bgi");
-		found = true;
+//		found = true;
 #endif
 
 		clearScreen();
+		delay(100);
 
-		return found;
+//		return found;
 	}
+
+	CanvasPainter::~CanvasPainter() {}
 
 	int CanvasPainter::close() {
 		closegraph();
